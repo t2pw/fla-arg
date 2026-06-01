@@ -1,9 +1,131 @@
-<div class="page-section">
-  <div class="page-label">// page 29A ── end_a.html　「記録を残す」</div>
-  <div class="page-sep"></div>
-  <meta name="page-id" content="29a">
+<!--
+  福島地域記録データアーカイブ ── page 29A
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="29a">
+<title>end_a ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:14px;
+  line-height:2.4;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:600px; margin:0 auto; }
 
-  <div class="end-block">
+#breadcrumb {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a9888;
+  margin-bottom:32px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+/* ページラベル */
+#page-label {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#7a9a7a;
+  margin-bottom:8px; letter-spacing:0.15em;
+}
+
+/* 区切り線 */
+.page-sep {
+  height:1px; background:#c4c0b0; margin-bottom:32px;
+}
+
+/* エンディングブロック */
+#end-block {
+  background:#f8f4e8; border:1px solid #c4b89a;
+  padding:32px 28px; margin-bottom:32px;
+  position:relative;
+}
+#end-block::before {
+  content:'';
+  position:absolute; left:44px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+
+.end-date {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a8a68;
+  margin-bottom:20px; letter-spacing:0.1em;
+  padding-left:20px;
+}
+
+.end-text {
+  font-size:14px; color:#3a3020;
+  line-height:2.8; text-align:justify;
+  padding-left:20px;
+}
+.end-text p { margin-bottom:1.2em; text-indent:1em; }
+.end-text p:last-child { margin-bottom:0; }
+.notable { border-bottom:1px solid #8a7a5a; }
+
+/* 桃の花キャンバス */
+#momo-canvas {
+  display:block; width:100%; max-width:480px;
+  margin:24px auto;
+}
+
+/* エピローグへボタン */
+#to-epilogue {
+  text-align:center; margin-bottom:32px;
+}
+.epilogue-btn {
+  display:inline-block;
+  border:1px solid #c4a870; background:none;
+  color:#6a5830;
+  font-family:'MS Mincho','游明朝',serif;
+  font-size:13px; padding:14px 48px;
+  text-decoration:none;
+  letter-spacing:0.2em;
+  transition:background 0.2s;
+}
+.epilogue-btn:hover { background:#f0e4c8; border-color:#8a6a30; }
+
+/* ナビ */
+#nav {
+  font-family:'MS Gothic',monospace;
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px;
+  font-family:'MS Gothic',monospace;
+  color:#c4c0b0; line-height:1.8;
+}
+
+.fade-in { animation:fi 1.2s ease both; }
+@keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="momo_kiroku.html">archive / momo_kiroku /</a> end_a
+  </div>
+
+  <div id="page-label">// page 29A ── end_a.html　「記録を残す」</div>
+  <div class="page-sep"></div>
+
+  <div id="end-block" class="fade-in">
     <div class="end-date">── エンディングA　記録を残す</div>
     <div class="end-text">
       <p>あなたは、記録を残すことを選んだ。</p>
@@ -17,12 +139,55 @@
     </div>
   </div>
 
-  <div class="to-epilogue">
+  <canvas id="momo-canvas" width="480" height="100"></canvas>
+
+  <div id="to-epilogue">
     <a href="epilogue.html" class="epilogue-btn">エピローグへ</a>
   </div>
 
-  <div class="nav-bar">
+  <div id="nav">
     <a href="momo_kiroku.html">◄ 28｜桃の手記へ戻る</a>
     <a href="epilogue.html">30｜エピローグ ►</a>
   </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。
+  </div>
+
 </div>
+<script>
+(function(){
+  const cv = document.getElementById('momo-canvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = '#f0ece0'; ctx.fillRect(0,0,W,H);
+  function branch(x,y,angle,len,depth){
+    if(depth===0||len<3) return;
+    ctx.strokeStyle=`rgba(90,60,30,${0.25+depth*0.07})`;
+    ctx.lineWidth=depth*0.6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x,y);
+    const nx=x+Math.cos(angle)*len, ny=y+Math.sin(angle)*len;
+    ctx.lineTo(nx,ny); ctx.stroke();
+    branch(nx,ny,angle-0.45+(Math.random()-0.5)*0.2,len*0.7,depth-1);
+    branch(nx,ny,angle+0.45+(Math.random()-0.5)*0.2,len*0.65,depth-1);
+    if(depth<=3){
+      for(let i=0;i<4;i++){
+        const pa=Math.random()*Math.PI*2, pr=2+Math.random()*4;
+        ctx.beginPath();
+        ctx.arc(nx+Math.cos(pa)*pr, ny+Math.sin(pa)*pr, 1.5+Math.random()*2.5, 0, Math.PI*2);
+        ctx.fillStyle=Math.random()>0.4?`rgba(240,180,190,0.7)`:`rgba(250,230,235,0.8)`;
+        ctx.fill();
+      }
+    }
+  }
+  [48,120,200,280,360,440].forEach(x=>{ branch(x,H,-Math.PI/2,22,7); });
+  for(let i=0;i<18;i++){
+    ctx.beginPath();
+    ctx.arc(Math.random()*W, Math.random()*H*0.85, 1+Math.random()*2, 0, Math.PI*2);
+    ctx.fillStyle=`rgba(240,180,190,${0.3+Math.random()*0.4})`; ctx.fill();
+  }
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
