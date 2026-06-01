@@ -1,0 +1,487 @@
+<!--
+  福島地域記録データアーカイブ ── page 10
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="10">
+<title>map_001 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+.fh-val.now { color:#3a6a7a; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:78%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 地図キャンバス */
+#map-wrap {
+  position:relative; margin-bottom:20px;
+  border:1px solid #b8b4a4; overflow:hidden;
+  background:#e8e0c8;
+}
+#map-canvas { display:block; width:100%; }
+.map-caption {
+  font-size:10px; color:#7a7060; text-align:center;
+  padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em;
+}
+
+/* 地点リスト */
+#locations {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#locations h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.loc-item {
+  display:flex; gap:12px; padding:7px 0;
+  border-bottom:1px solid #e8e4d8; align-items:flex-start;
+}
+.loc-item:last-child { border-bottom:none; }
+.loc-marker {
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:bold; flex-shrink:0;
+  margin-top:3px;
+}
+.marker-red { background:#c4604a; color:#f8e8e0; }
+.marker-blue { background:#4a6a9a; color:#e0e8f4; }
+.marker-green { background:#4a8a5a; color:#e0f0e4; }
+.marker-gold { background:#a87a2a; color:#f8f0d8; }
+.marker-gray { background:#8a8878; color:#f0f0e8; }
+.loc-body { flex:1; }
+.loc-name {
+  font-size:12px; color:#3a3020;
+  font-family:'MS Mincho','游明朝',serif;
+  margin-bottom:2px;
+}
+.loc-name.notable { color:#3a6a3a; border-bottom:1px dashed #6a9a6a; cursor:default; }
+.loc-name.notable:hover { color:#1a4a1a; }
+.loc-desc { font-size:10px; color:#7a7060; line-height:1.7; }
+.loc-hint {
+  font-size:10px; color:#5a8a6a; cursor:default;
+  border-bottom:1px dashed #8aba8a; margin-left:6px;
+}
+.loc-hint:hover { color:#2a5a3a; }
+
+/* 暗号パネル */
+#cipher {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#cipher h3 {
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.cipher-block {
+  background:#f0e8d0; border:1px solid #d4c4a0;
+  padding:10px 14px; margin-bottom:10px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.cipher-label {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#8a7848; margin-bottom:6px;
+}
+.cipher-text {
+  font-size:13px; color:#3a3020; line-height:2.2;
+}
+.cipher-code {
+  font-family:'MS Gothic',monospace;
+  font-size:12px; color:#4a6a4a;
+  background:#e8f0e0; border:1px solid #c4d4c0;
+  padding:6px 10px; margin-top:8px;
+  letter-spacing:0.15em; word-break:break-all;
+}
+.lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
+
+/* 注目ポイント */
+#notice-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#notice-block h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.notice-row {
+  display:flex; gap:10px; padding:5px 0;
+  border-bottom:1px solid #d8e4d0; font-size:11px; line-height:1.8;
+}
+.notice-row:last-child { border-bottom:none; }
+.notice-icon { color:#8a9a8a; min-width:14px; }
+.notice-text { color:#3a4a3a; flex:1; }
+.hint {
+  color:#4a7a5a; font-size:10px; cursor:default;
+  border-bottom:1px dashed #8aba8a;
+}
+.hint:hover { color:#2a5a3a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a> map_001.txt
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">map_001.dat ── 福島市中心部・手描き地図（復元）</div>
+    <div class="fh-row">
+      <span>作成推定：<span class="fh-val warn">昭和二十四〜二十六年頃</span></span>
+      <span>作成者：<span class="fh-val warn">蛸川氏（推定）</span></span>
+      <span>復元率：<span class="fh-val">78%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：78% ── 一部の地名・注釈が判読不能</div>
+
+  <!-- 地図キャンバス -->
+  <div id="map-wrap">
+    <canvas id="map-canvas" width="580" height="400"></canvas>
+    <div class="map-caption">
+      福島市中心部・手描き地図（昭和二十四年頃推定）── 蛸川氏の帳面より復元
+    </div>
+  </div>
+
+  <!-- 地点リスト -->
+  <div id="locations">
+    <h3>// LOCATION LIST ── 地図上の印の解読</h3>
+
+    <div class="loc-item">
+      <div class="loc-marker marker-red">A</div>
+      <div class="loc-body">
+        <div class="loc-name">福島駅周辺</div>
+        <div class="loc-desc">
+          K鉄の要所。小蘭が1949年に最初に辿り着いた場所の近く。
+          <span class="loc-hint" title="現在も東北新幹線・在来線が通る福島市の玄関口">── 現在も変わらぬ交通の要衝</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="loc-item">
+      <div class="loc-marker marker-blue">B</div>
+      <div class="loc-body">
+        <div class="loc-name">S夫山（信夫山）</div>
+        <div class="loc-desc">
+          福島市の中心に聳える山。手記に「七十年後も同じ形をしているはずだ」と記述あり。
+          <span class="loc-hint" title="現在も市民の憩いの場。羽黒神社がある">── 変わらないものの象徴</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="loc-item">
+      <div class="loc-marker marker-green">C</div>
+      <div class="loc-body">
+        <div class="loc-name notable" title="古浦小新が住んでいた地区と一致する">古浦家・推定地区</div>
+        <div class="loc-desc">
+          地図上に「古浦」と薄く書かれた地点。06番の写真の背景の山並みと照合。
+          <span class="loc-hint" title="田園と山が見える福島市郊外">── 現在も農地が広がるエリア</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="loc-item">
+      <div class="loc-marker marker-gold">D</div>
+      <div class="loc-body">
+        <div class="loc-name">M川方面（北西）</div>
+        <div class="loc-desc">
+          地図の端に「M川」と書かれた矢印。事件現場への方向を示す。
+          <span class="loc-hint" title="現在の松川町方面。松川事件記念館がある">── 現在も記録が残る場所</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="loc-item">
+      <div class="loc-marker marker-gray">?</div>
+      <div class="loc-body">
+        <div class="loc-name">██████（判読不能）</div>
+        <div class="loc-desc">
+          地図の中央やや北に、判読不能な印がある。
+          <span class="loc-hint" title="11番・H見山の地図に手がかりがある">── 11番で明らかになる可能性がある</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 暗号パネル -->
+  <div id="cipher">
+    <h3>// CIPHER ── 地図の余白に書かれた数列</h3>
+    <div class="cipher-block">
+      <div class="cipher-label">// 余白・右下（鉛筆書き）</div>
+      <div class="cipher-text">
+        地図の右下余白に、小さな数列が書かれていた。<br>
+        バイナリ変換を試みたが、通常のASCIIとは異なるパターン。
+      </div>
+      <div class="cipher-code">
+        37.7503° N　140.4676° E
+      </div>
+      <div class="cipher-text" style="margin-top:8px;font-size:11px;color:#7a6848;">
+        ── この座標は何を示すのか。<br>
+        <span class="lost">████</span>番のファイルと照合せよ。
+      </div>
+    </div>
+  </div>
+
+  <!-- 注目ポイント -->
+  <div id="notice-block">
+    <h3>// NOTICE ── この地図について</h3>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">
+        地図は1949年当時の福島市の姿を描いているが、現在と比較できる地点が多い。
+        <span class="hint" title="S夫山・福島駅・M川方面——すべて現在も存在する">── 変わったものと変わらないものが見えてくる</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">
+        右下の座標「37.7503° N　140.4676° E」。
+        <span class="hint" title="H見山（花見山）付近の座標と一致する">── 地図上の「?」の印と一致する可能性がある</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">○</span>
+      <span class="notice-text">
+        「古浦」と書かれた地点が地図に存在する。
+        <span class="hint" title="06番の写真と照合すると、古浦家の場所が特定できる">── 06番の写真背景の山並みと一致</span>
+      </span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">11</span>_map.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">H見山ノ地図　座標ト一致ス</span>
+    <div class="frag-hint" title="map_002.htmlへ進んでください">// データ断片 ── 復元不完全</div>
+  </div>
+
+  <div id="nav">
+    <a href="index.html">◄ 00｜侵入口へ戻る</a>
+    <a href="map_002.html">11｜地図② H見山 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設・関係者の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+(function(){
+  const cv = document.getElementById('map-canvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+
+  // 和紙風背景
+  ctx.fillStyle = '#e8dfc0';
+  ctx.fillRect(0,0,W,H);
+  const img = ctx.createImageData(W,H);
+  for(let i=0;i<img.data.length;i+=4){
+    const n=(Math.random()-0.5)*12;
+    img.data[i]  =Math.min(255,Math.max(0,img.data[i]  +n));
+    img.data[i+1]=Math.min(255,Math.max(0,img.data[i+1]+n*0.9));
+    img.data[i+2]=Math.min(255,Math.max(0,img.data[i+2]+n*0.6));
+    img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+
+  // 経年染み
+  for(let s=0;s<5;s++){
+    const sx=Math.random()*W, sy=Math.random()*H, sr=30+Math.random()*80;
+    const g=ctx.createRadialGradient(sx,sy,0,sx,sy,sr);
+    g.addColorStop(0,`rgba(120,100,60,${0.03+Math.random()*0.06})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  }
+
+  function hLine(x1,y1,x2,y2,w=1.2,c='rgba(60,40,20,0.7)'){
+    ctx.beginPath(); ctx.strokeStyle=c; ctx.lineWidth=w; ctx.lineCap='round';
+    const mx=(x1+x2)/2+(Math.random()-0.5)*2;
+    const my=(y1+y2)/2+(Math.random()-0.5)*2;
+    ctx.moveTo(x1+(Math.random()-0.5),y1+(Math.random()-0.5));
+    ctx.quadraticCurveTo(mx,my,x2+(Math.random()-0.5),y2+(Math.random()-0.5));
+    ctx.stroke();
+  }
+  function txt(t,x,y,size=9,c='rgba(50,35,15,0.8)'){
+    ctx.font=`${size}px 'MS Gothic',monospace`;
+    ctx.fillStyle=c; ctx.textAlign='center'; ctx.fillText(t,x,y);
+  }
+
+  // 阿武隈川（縦に流れる）
+  ctx.strokeStyle='rgba(80,120,160,0.3)'; ctx.lineWidth=6; ctx.lineCap='round';
+  ctx.beginPath();
+  ctx.moveTo(130,0); ctx.bezierCurveTo(120,100,140,200,125,300);
+  ctx.bezierCurveTo(110,360,130,390,120,H); ctx.stroke();
+  ctx.strokeStyle='rgba(80,120,160,0.15)'; ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(138,0); ctx.bezierCurveTo(130,100,148,200,133,300);
+  ctx.bezierCurveTo(118,360,138,390,128,H); ctx.stroke();
+  txt('阿武隈川',108,200,8,'rgba(60,100,140,0.5)');
+
+  // 主要道路
+  ctx.strokeStyle='rgba(80,65,40,0.5)'; ctx.lineWidth=2.5;
+  // 国道4号（縦）
+  ctx.beginPath(); ctx.moveTo(250,0); ctx.lineTo(255,H); ctx.stroke();
+  txt('国道四号',255,20,8,'rgba(80,65,40,0.4)');
+
+  // 東西の道
+  hLine(130,160,W-20,165,1.8,'rgba(80,65,40,0.4)');
+  hLine(130,260,W-20,258,1.8,'rgba(80,65,40,0.4)');
+  hLine(130,320,W-20,322,1.5,'rgba(80,65,40,0.35)');
+
+  // 鉄道（東北本線）
+  ctx.strokeStyle='rgba(60,50,30,0.6)'; ctx.lineWidth=2;
+  ctx.setLineDash([8,4]);
+  ctx.beginPath(); ctx.moveTo(200,0); ctx.lineTo(198,H); ctx.stroke();
+  ctx.setLineDash([]);
+  txt('←東北本線',178,30,7,'rgba(60,50,30,0.45)');
+
+  // 福島駅（A）
+  ctx.fillStyle='#c4604a'; ctx.strokeStyle='rgba(180,80,60,0.8)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(210,150,8,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  txt('A',210,153,8,'#f8e8e0');
+  txt('福島駅',210,133,9,'rgba(140,60,40,0.85)');
+
+  // S夫山（B）
+  ctx.fillStyle='#4a6a9a';
+  ctx.beginPath(); ctx.arc(320,120,9,0,Math.PI*2); ctx.fill();
+  txt('B',320,123,8,'#e0e8f4');
+  txt('S夫山',320,103,9,'rgba(40,60,120,0.8)');
+  // 山の形
+  ctx.strokeStyle='rgba(60,80,120,0.25)'; ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(290,140); ctx.lineTo(320,95); ctx.lineTo(350,140); ctx.stroke();
+
+  // 古浦家推定地区（C）
+  ctx.fillStyle='#4a8a5a';
+  ctx.beginPath(); ctx.arc(420,280,8,0,Math.PI*2); ctx.fill();
+  txt('C',420,283,8,'#e0f0e4');
+  txt('古浦（推定）',420,265,8,'rgba(40,100,50,0.7)');
+
+  // M川方面（D）
+  ctx.fillStyle='#a87a2a';
+  ctx.beginPath(); ctx.arc(80,80,8,0,Math.PI*2); ctx.fill();
+  txt('D',80,83,8,'#f8f0d8');
+  // 矢印
+  ctx.strokeStyle='rgba(140,100,30,0.5)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(88,72); ctx.lineTo(100,60); ctx.stroke();
+  txt('M川→',88,55,8,'rgba(140,100,30,0.6)');
+
+  // 不明な印（?）
+  ctx.fillStyle='#8a8878';
+  ctx.beginPath(); ctx.arc(360,200,7,0,Math.PI*2); ctx.fill();
+  txt('?',360,203,8,'#f0f0e8');
+
+  // H見山方向の薄い矢印
+  ctx.strokeStyle='rgba(80,120,80,0.25)'; ctx.lineWidth=1;
+  ctx.setLineDash([3,4]);
+  ctx.beginPath(); ctx.moveTo(360,207); ctx.lineTo(380,250); ctx.stroke();
+  ctx.setLineDash([]);
+  txt('H見山↓',375,265,7,'rgba(60,100,60,0.35)');
+
+  // 座標メモ（右下）
+  ctx.fillStyle='rgba(50,40,20,0.55)';
+  ctx.font="8px 'MS Gothic',monospace";
+  ctx.textAlign='right';
+  ctx.fillText('37.7503°N  140.4676°E',W-12,H-22);
+  ctx.fillText('── この先に、何かある',W-12,H-10);
+
+  // スキャンライン＋ビネット
+  ctx.strokeStyle='rgba(0,0,0,0.018)'; ctx.lineWidth=1;
+  for(let y=0;y<H;y+=3){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.3,W/2,H/2,H*0.85);
+  vig.addColorStop(0,'rgba(0,0,0,0)');
+  vig.addColorStop(1,'rgba(20,12,4,0.14)');
+  ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
