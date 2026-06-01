@@ -1,0 +1,339 @@
+<!--
+  福島地域記録データアーカイブ ── page 14
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="14">
+<title>telegram_002 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+.fh-val.match { color:#3a6a3a; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:75%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 番号の解剖 */
+#number-block {
+  border:2px solid #c4b88a; background:#f8f0dc;
+  padding:20px; margin-bottom:24px; text-align:center;
+}
+#number-display {
+  font-size:48px; color:#3a3020; letter-spacing:0.2em;
+  font-family:'MS Mincho','游明朝',serif;
+  margin-bottom:8px; line-height:1;
+}
+#number-sub {
+  font-size:10px; color:#8a7848; letter-spacing:0.2em;
+}
+
+/* 意味の多層展開 */
+#layers {
+  margin-bottom:24px;
+}
+#layers h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4c0b0; padding-bottom:6px;
+}
+.layer {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  margin-bottom:8px; overflow:hidden;
+}
+.layer-header {
+  display:flex; gap:12px; align-items:center;
+  padding:8px 14px; background:#f0ece0;
+  border-bottom:1px solid #e4e0d4; cursor:pointer;
+  user-select:none;
+}
+.layer-header:hover { background:#e8e4d8; }
+.layer-num {
+  font-size:10px; color:#8a7848; min-width:50px;
+}
+.layer-title {
+  font-size:12px; color:#3a3020;
+  font-family:'MS Mincho','游明朝',serif; flex:1;
+}
+.layer-arrow { font-size:10px; color:#9a9888; }
+.layer-body {
+  padding:12px 14px; display:none;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:12px; color:#3a3020; line-height:2.4;
+  text-align:justify;
+}
+.layer-body.open { display:block; }
+.layer-body p { margin-bottom:0.8em; text-indent:1em; }
+.layer-body p:last-child { margin-bottom:0; }
+.layer-body .notable {
+  border-bottom:1px solid #8a7a5a; padding-bottom:1px;
+}
+.layer-body .it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px;
+}
+.layer-body .lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
+
+/* 小蘭の覚書 */
+#memo {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 18px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#memo h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.memo-text {
+  font-size:13px; color:#3a3020; line-height:2.6;
+  border-left:3px solid #c4a870; padding-left:14px;
+  text-align:justify;
+}
+.memo-text p { margin-bottom:1em; text-indent:1em; }
+.memo-text p:last-child { margin-bottom:0; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+
+/* 解読された本文 */
+#decoded-body {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#decoded-body h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.decoded-text {
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:13px; color:#2a3a2a; line-height:2.6;
+  text-align:justify;
+}
+.decoded-text p { margin-bottom:1em; text-indent:1em; }
+.decoded-text p:last-child { margin-bottom:0; }
+.decoded-text .key { color:#2a5a2a; border-bottom:1px solid #4a8a4a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="telegram_001.html"> telegram_001 /</a>
+    telegram_002
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">telegram_002.dat ── №0314　意味の解読</div>
+    <div class="fh-row">
+      <span>鍵：<span class="fh-val match">0314 ── 照合完了</span></span>
+      <span>解読率：<span class="fh-val">75%</span></span>
+      <span>残余：<span class="fh-val warn">25%は15番で解読</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 鍵「0314」によりデータの75%が解読可能になった</div>
+
+  <!-- 番号の表示 -->
+  <div id="number-block">
+    <div id="number-display">№ 0314</div>
+    <div id="number-sub">── この番号は、いくつもの意味を持つ</div>
+  </div>
+
+  <!-- 意味の多層展開 -->
+  <div id="layers">
+    <h3>// MEANING LAYERS ── №0314の意味（タップして展開）</h3>
+
+    <div class="layer">
+      <div class="layer-header" onclick="toggleLayer(this)">
+        <span class="layer-num">第一層</span>
+        <span class="layer-title">古浦 小新の命日</span>
+        <span class="layer-arrow">▶</span>
+      </div>
+      <div class="layer-body">
+        <p>猫塚清治が記録から消されたのは昭和二十四年八月十七日——夏の夜だ。三月十四日ではない。</p>
+        <p>では、なぜ0314なのか。</p>
+        <p>清治さんには、夏の暗闇ではなく、花の中に存在していてほしかった。帰れない日々の中で、帰れると信じられる季節が必要だった。</p>
+        <p>公式の記録には残らない日付を、<span class="notable">小蘭が決めた</span>。記録されなかった人間の、記録されなかった日付。</p>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-header" onclick="toggleLayer(this)">
+        <span class="layer-num">第二層</span>
+        <span class="layer-title">帰れると信じた季節</span>
+        <span class="layer-arrow">▶</span>
+      </div>
+      <div class="layer-body">
+        <p>手記に書いてあった。「三月になれば桃が咲く。そうしたら帰れると思っていた。」</p>
+        <p>0314は三月十四日。桃の花が満開になる頃。小蘭が毎年「今年こそ帰れる」と思い続けた日付だ。</p>
+        <p>結局、小蘭は帰れなかった。でもその日付をタコッペのタグに刻んだ。<span class="notable">帰れなかった日を、永遠に持ち歩くために。</span></p>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-header" onclick="toggleLayer(this)">
+        <span class="layer-num">第三層</span>
+        <span class="layer-title">アーカイブへの鍵</span>
+        <span class="layer-arrow">▶</span>
+      </div>
+      <div class="layer-body">
+        <p>00番の侵入口で、あなたは「fukushima-0314」を入力した。</p>
+        <p>このアーカイブへの鍵は、最初から「0314」だった。古浦小新の架空の命日。帰れなかった日。</p>
+        <p>小蘭が過去から送ったデータに、<span class="notable">鍵として自分の悲しみを使った</span>。誰かが解読するとき、必ずその意味に辿り着くように。</p>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-header" onclick="toggleLayer(this)">
+        <span class="layer-num">第四層</span>
+        <span class="layer-title">相馬港と蛸川という苗字</span>
+        <span class="layer-arrow">▶</span>
+      </div>
+      <div class="layer-body">
+        <p>相馬港は、タコが多く獲れる漁港だ。蛸川という苗字は、そこから小蘭がとっさに名乗った言葉だった。</p>
+        <p>その苗字が子孫に伝わり、現代の小蘭の苗字になった。</p>
+        <p>0314というタグを首に下げたタコのぬいぐるみ——<span class="notable">蛸川という苗字と、タコへの愛着は、小蘭自身が作り出したものだ。</span></p>
+        <p>小蘭はなぜタコが好きなのかを知らなかった。でもその答えは、ずっと首元にあった。</p>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <!-- 小蘭の覚書 -->
+  <div id="memo">
+    <h3>// 付記 ── タコッペのタグ裏面（拡大スキャン）</h3>
+    <div class="memo-text">
+      <p>表：№0314</p>
+      <p>裏：<span class="strike">帰る日</span>　<span class="rewrite">覚えている日</span></p>
+    </div>
+  </div>
+
+  <!-- 解読された本文 -->
+  <div id="decoded-body">
+    <h3>// DECODED ── 電文本文（0314で解読）</h3>
+    <div class="decoded-text">
+      <p>過去の頃の私へ。</p>
+      <p>あなたは今、1949年にいる。小新さんを救えなかったことを、責めているかもしれない。でも、<span class="key">記録することを、やめないでほしい</span>。</p>
+      <p>あなたが残した記録が、私をここに連れてきた。私があなたに送ったデータが、あなたをそこに連れていった。どちらが先かは、もう分からない。</p>
+      <p>ただ、一つだけ確かなことがある。</p>
+              <p><span class="key">猫塚清治は、存在した。あなたが記録したから。私が読んだから。</span></p>
+      <p>タコのぬいぐるみを、手放さないでほしい。相馬のタコの味を、忘れないで。</p>
+      <p style="text-align:right;font-size:11px;color:#5a7a5a;margin-top:8px;">── 蛸川小蘭より、蛸川小蘭へ</p>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">15</span>_telegram.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">タコッペノ来歴　残リ25%ヲ解読セヨ</span>
+    <div class="frag-hint" title="telegram_003.htmlへ進んでください">// データ断片 ── 復元不完全</div>
+  </div>
+
+  <div id="nav">
+    <a href="telegram_001.html">◄ 13｜電文①へ戻る</a>
+    <a href="telegram_003.html">15｜電文③ タコッペ ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設・関係者の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+function toggleLayer(header){
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.layer-arrow');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.textContent = isOpen ? '▶' : '▼';
+}
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
