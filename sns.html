@@ -1,0 +1,296 @@
+<!--
+  福島地域記録データアーカイブ ── page 20
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="20">
+<title>sns ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:88%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+/* 対比テーブル */
+.compare-table {
+  width:100%; border-collapse:collapse; margin-bottom:12px;
+  font-size:11px;
+}
+.compare-table th {
+  background:#e8e4d8; color:#5a5848; font-weight:normal;
+  padding:8px 10px; border:1px solid #d4d0c4;
+  font-size:10px; letter-spacing:0.1em; text-align:center;
+}
+.compare-table td {
+  padding:8px 10px; border:1px solid #d4d0c4;
+  vertical-align:top; line-height:1.9;
+  font-family:'MS Mincho','游明朝',serif; font-size:12px;
+}
+.compare-table td.label {
+  background:#f4f0e4; color:#6a6050; font-size:10px;
+  font-family:'MS Gothic',monospace; white-space:nowrap;
+  width:90px;
+}
+.compare-table td.past { background:#f8f0e4; color:#4a3820; }
+.compare-table td.now { background:#e8f0f8; color:#2a3a4a; }
+.compare-table td .good { color:#3a6a3a; }
+.compare-table td .bad { color:#8a3a2a; }
+
+/* 小蘭のメモ */
+.soran-memo {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 18px; margin-bottom:16px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.soran-memo h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.memo-text {
+  font-size:13px; color:#3a3020; line-height:2.6;
+  border-left:3px solid #c4a870; padding-left:14px;
+}
+.memo-text p { margin-bottom:0.8em; text-indent:1em; }
+.memo-text p:last-child { margin-bottom:0; }
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px;
+}
+.notable { border-bottom:1px solid #8a7a5a; padding-bottom:1px; }
+
+/* 問いかけブロック */
+.question-block {
+  border:2px solid #c4b88a; background:#f8f4e0;
+  padding:18px 20px; margin-bottom:16px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  text-align:center;
+}
+.question-text {
+  font-size:14px; color:#3a3020; line-height:2.8;
+}
+.question-text .key {
+  color:#3a5a2a; border-bottom:2px solid #6a9a5a;
+  padding-bottom:2px;
+}
+
+/* 注釈 */
+.annotation-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+}
+.annotation-block h4 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.annotation-text { color:#3a4a3a; line-height:2; }
+.annotation-text .notable-g { color:#2a5a2a; border-bottom:1px solid #4a8a4a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> sns
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">sns.dat ── 世論と現代・声の速さと重さ</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">比較考察・現代への問い</span></span>
+      <span>復元率：<span class="fh-val">88%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：88%</div>
+
+  <!-- 対比テーブル -->
+  <div class="section">
+    <h3>// 昭和と現代 ── 声の伝わり方の変化</h3>
+    <table class="compare-table">
+      <tr>
+        <th>項目</th>
+        <th>昭和24〜38年</th>
+        <th>現代</th>
+      </tr>
+      <tr>
+        <td class="label">主な媒体</td>
+        <td class="past">新聞・ラジオ・ガリ版ビラ・葉書</td>
+        <td class="now">SNS・動画・ネット掲示板</td>
+      </tr>
+      <tr>
+        <td class="label">声の速さ</td>
+        <td class="past"><span class="bad">遅い。一通の葉書が届くまで数日。</span></td>
+        <td class="now"><span class="good">速い。数秒で世界中に届く。</span></td>
+      </tr>
+      <tr>
+        <td class="label">声の寿命</td>
+        <td class="past"><span class="good">長い。紙に書かれた記録は残る。</span><br>福島大学に今も保管。</td>
+        <td class="now"><span class="bad">短い。流れれば消える。<br>アカウント削除で消滅。</span></td>
+      </tr>
+      <tr>
+        <td class="label">情報の検証</td>
+        <td class="past">遅いが、誤りは紙面に残る。</td>
+        <td class="now">速いが、訂正より拡散が先に来る。</td>
+      </tr>
+      <tr>
+        <td class="label">参加の敷居</td>
+        <td class="past">高い。ビラを刷り、集会に出る必要がある。</td>
+        <td class="now">低い。ボタン一つでリポスト・拡散できる。</td>
+      </tr>
+      <tr>
+        <td class="label">継続性</td>
+        <td class="past"><span class="good">強い。守る会は14年間活動した。</span></td>
+        <td class="now"><span class="bad">弱い。話題は数日で移り変わる。</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 小蘭のメモ -->
+  <div class="soran-memo">
+    <h3>// 付記 ── 小蘭の手記（後期・高子沼にて）</h3>
+    <div class="memo-text">
+      <p>ここに来て、五十年以上が経つ。</p>
+      <p>私はITエンジニアだった。情報の流れを設計することが仕事だった。<span class="it-term">データは速く、正確に、遠くまで届けられる</span>べきだと信じていた。</p>
+      <p>でも、この時代に生きてみて、分かったことがある。</p>
+      <p>速さは、重さではない。</p>
+      <p>一通の葉書が被告の手に届いたとき、その重さはどれほどのものだったか。差出人の名前、折り目、滲んだインク。それが「ここに、あなたを信じている人間がいる」という証拠だった。</p>
+      <p><span class="notable">声の速さが変わっても、記録する意志がなければ、真実は埋もれる。</span></p>
+      <p>私がバイナリで書き残したデータが、七十年後にネットに浮上する。それはこの時代の葉書と、同じものだと思う。</p>
+      <p>届いてほしい人間に、届けばいい。それだけだ。</p>
+    </div>
+  </div>
+
+  <!-- 問いかけ -->
+  <div class="question-block">
+    <div class="question-text">
+      あなたは今、このアーカイブを読んでいる。<br><br>
+      SNSで流れる情報を見るように、<br>
+      数秒で次へ進むこともできる。<br><br>
+      でも、ここまで読んだということは——<br><br>
+      <span class="key">あなたは、記録した。</span><br><br>
+      猫塚清治は、存在した。<br>
+      あなたが読んだから。
+    </div>
+  </div>
+
+  <!-- 注釈 -->
+  <div class="annotation-block">
+    <h4>// 現在の福島市とM川事件</h4>
+    <div class="annotation-text">
+      松川事件から70年以上が経った現在も、福島市には事件の記憶が残っている。<br><br>
+      松川運動記念館（福島市松川町）では、事件の経緯と市民運動の記録を展示している。福島大学松川事件資料室には約15,000点の一次資料が保管されている。<br><br>
+      <span class="notable-g">記録は残った。人々が残し続けたから。</span><br><br>
+      あなたがこのアーカイブを見つけたように、誰かがいつか松川の記録を見つける。記録されたものは、消えない。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// スポーク完了 ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">21</span>_loop.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">ループノ伏線回収</span>
+    <div class="frag-hint" title="loop.htmlへ進んでください">// → 21番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="voices.html">◄ 19｜冤罪を覆した声へ戻る</a>
+    <a href="loop.html">21｜ループの伏線回収 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。実在の事件・地名の記述は史実に基づいており、特定の個人・団体を中傷する意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
