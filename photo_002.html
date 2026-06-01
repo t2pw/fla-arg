@@ -1,0 +1,228 @@
+<!--
+  福島地域記録データアーカイブ ── page 05
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="05">
+<title>photo_002 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc; color:#3a3830;
+  font-family:'MS Gothic',monospace; font-size:13px; line-height:2;
+  padding:48px 20px; min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+#breadcrumb { font-size:10px; color:#9a9888; margin-bottom:28px; letter-spacing:0.1em; }
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+.fh-val.now { color:#4a6a7a; }
+#restore-bar { height:3px; background:#d8d4c8; margin-bottom:6px; position:relative; overflow:hidden; }
+#restore-bar::after { content:''; position:absolute; left:0; top:0; height:100%; width:90%; background:#6a8a6a; }
+#restore-label { font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right; }
+.photo-block { position:relative; margin-bottom:4px; border:1px solid #b8b0a0; overflow:hidden; }
+.photo-block img { display:block; width:100%; height:auto; }
+.photo-block img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:160px;
+  align-items:center; justify-content:center;
+  background:#c8c4b0; color:#8a8878; font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.year-label {
+  position:absolute; top:10px; left:10px;
+  background:rgba(240,232,210,0.88); color:#3a3020;
+  font-size:10px; padding:3px 8px; border:1px solid rgba(180,165,130,0.6);
+}
+.year-label.now { background:rgba(220,230,240,0.88); color:#2a3a4a; border-color:rgba(140,160,180,0.6); }
+.divider {
+  text-align:center; font-size:10px; color:#9a9888; padding:4px 0; letter-spacing:0.2em;
+  background:#e4e0d4; border-left:1px solid #b8b0a0; border-right:1px solid #b8b0a0;
+}
+.photo-caption {
+  font-size:10px; color:#7a7060; text-align:center; padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4; font-family:'MS Mincho','游明朝',serif; letter-spacing:0.1em;
+}
+.pair-caption {
+  font-size:11px; color:#6a6050; text-align:center; margin:10px 0 20px;
+  font-family:'MS Mincho','游明朝',serif; line-height:2;
+}
+#notice-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 16px; margin-bottom:24px; font-size:11px; color:#6a5830;
+}
+#notice-block h3 {
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em; border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.notice-row { display:flex; gap:10px; padding:5px 0; border-bottom:1px solid #e8dfc8; font-size:11px; line-height:1.8; }
+.notice-row:last-child { border-bottom:none; }
+.notice-icon { color:#8a7848; min-width:16px; }
+.notice-text { color:#5a4828; flex:1; }
+.hint { color:#4a7a5a; font-size:10px; cursor:default; border-bottom:1px dashed #8aba8a; }
+#meta-compare {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#meta-compare h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em; border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.compare-row {
+  display:grid; grid-template-columns:120px 1fr 1fr;
+  gap:8px; padding:5px 0; border-bottom:1px solid #e8e4d8; font-size:10px;
+}
+.compare-row:last-child { border-bottom:none; }
+.compare-key { color:#9a9888; }
+.compare-val { color:#4a4838; }
+.compare-val.changed { color:#7a5030; }
+.compare-val.same { color:#3a6a4a; }
+.compare-header { font-size:9px; color:#7a9a7a; letter-spacing:0.1em; }
+#question-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:16px 18px; margin-bottom:28px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#question-block h3 {
+  font-family:'MS Gothic',monospace; font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em; border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.question-text { font-size:13px; color:#3a4a3a; line-height:2.6; text-align:justify; }
+.question-text p { margin-bottom:1em; text-indent:1em; }
+.q-underline { border-bottom:1px solid #5a8a5a; }
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px; color:#4a6a4a;
+  border:1px solid #b8c4b0; background:#e8f0e0; padding:14px 16px; margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title { color:#3a5a3a; margin-bottom:8px; font-size:10px; letter-spacing:0.15em; }
+#fragment .frag-hint { color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default; }
+#nav {
+  font-size:11px; color:#9a9888; display:flex; justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#disclaimer { margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8; }
+.glitch { animation:g 12s infinite; }
+@keyframes g { 0%,96%,100%{opacity:1;transform:none} 97%{opacity:.6;transform:translateX(2px)} 98%{opacity:1;transform:translateX(-1px)} }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="photo_001.html"> photo_001 /</a>
+    photo_002
+  </div>
+  <div id="file-header">
+    <div class="filename glitch">photo_002_compare.dat ── 同一地点・異なる時代の記録</div>
+    <div class="fh-row">
+      <span>記録A：<span class="fh-val warn">昭和二十四年八月（推定）</span></span>
+      <span>記録B：<span class="fh-val now">現代（撮影者不明）</span></span>
+      <span>復元率：<span class="fh-val">90%</span></span>
+    </div>
+  </div>
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 二つのファイルが同一地点の記録と判明 ── 自動照合済</div>
+
+  <div class="photo-block" style="margin-bottom:0;">
+    <img src="photo_mkawa_1949.jpg" alt="M川付近の駅・昭和二十四年" onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">［画像：M川付近の駅・昭和二十四年八月・夜］<br>※ photo_mkawa_1949.jpg を配置してください</div>
+    <div class="year-label">昭和二十四年（1949）　深夜</div>
+  </div>
+  <div class="divider">── 時 間 ──</div>
+  <div class="photo-block">
+    <img src="photo_mkawa_now.jpg" alt="M川付近の駅跡・現在" onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">［画像：M川付近の駅跡・現在］<br>※ photo_mkawa_now.jpg を配置してください</div>
+    <div class="year-label now">現在</div>
+  </div>
+  <div class="photo-caption" style="margin-bottom:8px;">M川付近 ── 同一地点・70年以上の隔たり</div>
+  <div class="pair-caption">同じランタン。同じ電柱。同じ線路の消失点。<br>変わったのは、光の色と、草の丈だけだ。</div>
+
+  <div id="notice-block">
+    <h3>// NOTICE ── この二枚について</h3>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">同一のランタンが両方の写真に写っている。
+        <span class="hint" title="70年以上、誰かがここに置き続けた">── なぜ同じランタンが存在するのか</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">1949年の写真は深夜に撮影されている。
+        <span class="hint" title="M川事件が起きたのは1949年8月17日未明">── この夜、線路の上で何かが起きた</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">○</span>
+      <span class="notice-text">現在の写真の撮影者は不明。
+        <span class="hint" title="蛸川小蘭が現代に戻る前後に撮影した可能性がある">── 誰がいつ追加したのか、記録がない</span>
+      </span>
+    </div>
+  </div>
+
+  <div id="meta-compare">
+    <h3>// METADATA COMPARE ///////////</h3>
+    <div class="compare-row">
+      <span class="compare-key"></span>
+      <span class="compare-header">記録A（昭和二十四年）</span>
+      <span class="compare-header">記録B（現在）</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-key">撮影時刻</span>
+      <span class="compare-val changed">深夜（推定）</span>
+      <span class="compare-val">昼間・曇り</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-key">ランタン</span>
+      <span class="compare-val same">点灯・電柱に吊るされている</span>
+      <span class="compare-val same">消灯・同位置に存在</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-key">線路状態</span>
+      <span class="compare-val">使用中</span>
+      <span class="compare-val changed">錆・雑草・部分的に損壊</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-key">撮影者</span>
+      <span class="compare-val changed">蛸川氏（推定）</span>
+      <span class="compare-val changed">不明</span>
+    </div>
+  </div>
+
+  <div id="question-block">
+    <h3>// NOTE ── アーカイブ管理者より</h3>
+    <div class="question-text">
+      <p>この二枚の写真は、別々のルートでこのアーカイブに収録された。</p>
+      <p>記録Aは蛸川氏の遺品と思われる帳面に挟まれていた。記録Bは、アーカイブの<span class="q-underline">最終更新日の直前</span>に追加されている。</p>
+      <p>同じ場所を、70年以上の時間を隔てて、二人が撮った。</p>
+      <p>あるいは——<span class="q-underline">一人が撮った</span>。</p>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">06</span>_photo.dat ──
+    <span style="color:#4a6a5a;">猫塚家ノ記録　現存ス</span>
+    <div class="frag-hint">// → photo_003.html</div>
+  </div>
+
+  <div id="nav">
+    <a href="photo_001.html">◄ 04｜古い写真①へ戻る</a>
+    <a href="photo_003.html">06｜写真③ 猫塚家 ►</a>
+  </div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
