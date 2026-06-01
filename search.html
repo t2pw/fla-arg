@@ -1,0 +1,697 @@
+<!--
+  福島地域記録データアーカイブ ── データ復元システム
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データ復元システム ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background:#2a2a20;
+  color:#e8e4d0;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:15px;
+  line-height:1.9;
+  min-height:100vh;
+  padding:32px 20px 64px;
+}
+
+#container {
+  max-width:700px;
+  margin:0 auto;
+}
+
+/* ========== ヘッダー ========== */
+#system-header {
+  border:1px solid #5a5a40;
+  background:#1e1e16;
+  padding:18px 22px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+#system-header::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:2px;
+  background:linear-gradient(90deg, #5a8a5a, #aada8a, #5a8a5a);
+  background-size:700px 2px;
+  animation:scan 3s linear infinite;
+}
+@keyframes scan {
+  0%  { background-position:0 0 }
+  100%{ background-position:700px 0 }
+}
+
+.sys-title {
+  font-size:14px;
+  color:#aada8a;
+  letter-spacing:0.2em;
+  margin-bottom:6px;
+}
+.sys-sub {
+  font-size:12px;
+  color:#8a8a68;
+  letter-spacing:0.1em;
+}
+.sys-status {
+  font-size:12px;
+  margin-top:10px;
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.status-item { color:#7a9a68; }
+.status-item span { color:#aada8a; font-size:13px; }
+
+/* ========== 進捗バー ========== */
+#progress-section {
+  border:1px solid #5a5a40;
+  background:#1e1e16;
+  padding:14px 22px;
+  margin-bottom:18px;
+}
+.prog-label {
+  font-size:11px;
+  color:#7a7a58;
+  margin-bottom:10px;
+  letter-spacing:0.15em;
+}
+#progress-bar-wrap {
+  background:#3a3a28;
+  height:8px;
+  margin-bottom:10px;
+  position:relative;
+  overflow:hidden;
+  border-radius:2px;
+}
+#progress-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg, #5a8a5a, #aada8a);
+  width:0%;
+  transition:width 0.8s ease;
+  border-radius:2px;
+}
+#progress-bar-wrap::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; bottom:0;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(0,0,0,0.2) 10px,
+    rgba(0,0,0,0.2) 11px
+  );
+}
+#progress-text {
+  font-size:13px;
+  color:#9aba88;
+  text-align:right;
+  letter-spacing:0.1em;
+}
+
+/* ========== 検索パネル ========== */
+#search-panel {
+  border:1px solid #5a5a40;
+  background:#1e1e16;
+  padding:20px 22px;
+  margin-bottom:18px;
+}
+.panel-title {
+  font-size:12px;
+  color:#9aba88;
+  letter-spacing:0.15em;
+  margin-bottom:16px;
+  padding-bottom:10px;
+  border-bottom:1px solid #3a3a28;
+}
+
+#search-wrap {
+  display:flex;
+  gap:10px;
+  margin-bottom:16px;
+  align-items:stretch;
+}
+#search-input {
+  flex:1;
+  background:#2a2a1e;
+  border:1px solid #6a6a4a;
+  color:#e8e4d0;
+  font-family:'MS Gothic',monospace;
+  font-size:15px;
+  padding:12px 16px;
+  outline:none;
+  transition:border-color 0.2s;
+  caret-color:#aada8a;
+}
+#search-input::placeholder {
+  color:#5a5a40;
+  font-size:13px;
+}
+#search-input:focus {
+  border-color:#8aaa6a;
+  background:#2e2e22;
+}
+#search-btn {
+  background:#2a3e2a;
+  border:1px solid #5a8a5a;
+  color:#aada8a;
+  font-family:'MS Gothic',monospace;
+  font-size:13px;
+  padding:0 22px;
+  cursor:pointer;
+  letter-spacing:0.1em;
+  transition:background 0.2s;
+  white-space:nowrap;
+}
+#search-btn:hover {
+  background:#3a4e3a;
+  border-color:#8aaa7a;
+}
+
+/* 検索結果 */
+#search-result {
+  min-height:56px;
+  padding:12px 16px;
+  background:#181812;
+  border:1px solid #3a3a28;
+  font-size:14px;
+  line-height:1.9;
+  transition:all 0.3s;
+}
+#search-result.idle {
+  color:#4a4a38;
+}
+#search-result.hit {
+  border-color:#5a8a5a;
+  background:#121a12;
+}
+#search-result.miss {
+  border-color:#7a4a3a;
+  background:#1a1010;
+}
+#search-result.already {
+  border-color:#6a6a3a;
+  background:#181808;
+}
+
+.result-label {
+  font-size:11px;
+  letter-spacing:0.2em;
+  margin-bottom:6px;
+}
+.result-label.hit-label   { color:#8aba8a; }
+.result-label.miss-label  { color:#ca6a5a; }
+.result-label.already-label { color:#aaaa6a; }
+
+.result-file {
+  display:block;
+  color:#aada8a;
+  text-decoration:none;
+  font-size:14px;
+  padding:8px 12px;
+  border:1px solid #4a7a4a;
+  background:#0e180e;
+  margin-top:8px;
+  letter-spacing:0.05em;
+  transition:background 0.2s;
+}
+.result-file:hover {
+  background:#162016;
+  border-color:#7aaa7a;
+  color:#caeaca;
+}
+.result-file .file-arrow { color:#7aaa7a; margin-right:8px; }
+.result-file .file-rate {
+  font-size:11px;
+  color:#5a8a5a;
+  margin-left:10px;
+}
+
+.miss-text { color:#ca7a6a; }
+.miss-glitch {
+  display:inline-block;
+  animation:glitch 0.4s steps(2) 1;
+}
+@keyframes glitch {
+  0%  { transform:translateX(0);   opacity:1; }
+  25% { transform:translateX(3px); opacity:0.6; }
+  50% { transform:translateX(-2px);opacity:0.8; }
+  75% { transform:translateX(1px); opacity:0.6; }
+  100%{ transform:translateX(0);   opacity:1; }
+}
+
+.already-text { color:#caca8a; }
+
+/* ========== 復元済みファイル一覧 ========== */
+#restored-section {
+  border:1px solid #5a5a40;
+  background:#1e1e16;
+  padding:16px 22px;
+  margin-bottom:18px;
+}
+
+.file-list { list-style:none; }
+.file-item {
+  display:flex;
+  gap:12px;
+  align-items:baseline;
+  padding:7px 0;
+  border-bottom:1px solid #2a2a1e;
+  font-size:13px;
+}
+.file-item:last-child { border-bottom:none; }
+
+.file-icon {
+  font-size:12px;
+  min-width:18px;
+  flex-shrink:0;
+}
+.file-icon.done   { color:#8aba8a; }
+.file-icon.locked { color:#3a3a28; }
+
+.file-name {
+  flex:1;
+  color:#aada8a;
+  text-decoration:none;
+  letter-spacing:0.05em;
+  transition:color 0.2s;
+}
+.file-name:hover { color:#caeaca; }
+.file-name.locked-name {
+  color:#3a3a28;
+  cursor:default;
+  pointer-events:none;
+}
+
+.file-desc {
+  font-size:11px;
+  color:#5a5a40;
+  white-space:nowrap;
+}
+.file-desc.done-desc { color:#6a8a5a; }
+
+/* ========== ヒント ========== */
+#hint-section {
+  border:1px solid #4a4a32;
+  background:#181812;
+  padding:14px 20px;
+  margin-bottom:20px;
+  font-size:13px;
+  color:#7a7a5a;
+  line-height:2;
+}
+#hint-section .hint-title {
+  color:#8a9a6a;
+  margin-bottom:6px;
+  letter-spacing:0.15em;
+  font-size:12px;
+}
+
+/* ========== フッター ========== */
+#footer {
+  font-size:11px;
+  color:#4a4a32;
+  text-align:center;
+  margin-top:32px;
+  line-height:2;
+}
+
+/* ========== カーソル点滅 ========== */
+.cursor {
+  display:inline-block;
+  width:9px; height:14px;
+  background:#aada8a;
+  vertical-align:middle;
+  animation:blink 1s step-end infinite;
+  margin-left:3px;
+}
+@keyframes blink {
+  0%,100%{opacity:1} 50%{opacity:0}
+}
+
+/* ========== レスポンシブ ========== */
+@media(max-width:480px){
+  body { padding:16px 12px 48px; font-size:14px; }
+  #search-wrap { flex-direction:column; }
+  #search-btn { padding:12px; }
+  .sys-status { gap:14px; }
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <!-- システムヘッダー -->
+  <div id="system-header">
+    <div class="sys-title">// FUKUSHIMA LOCAL RECORDS ARCHIVE</div>
+    <div class="sys-sub">データ復元システム　rev.0.3 ── 磁気テープ断片　解析中</div>
+    <div class="sys-status">
+      <span class="status-item">状態：<span id="sys-state">起動中</span></span>
+      <span class="status-item">復元済：<span id="sys-count">0</span> / <span id="sys-total">16</span> ファイル</span>
+      <span class="status-item">損傷率：<span id="sys-damage">██.█%</span></span>
+    </div>
+  </div>
+
+  <!-- 進捗バー -->
+  <div id="progress-section">
+    <div class="prog-label">// 復元進捗 ─────────────────────────────────</div>
+    <div id="progress-bar-wrap">
+      <div id="progress-bar-fill"></div>
+    </div>
+    <div id="progress-text">0 / 16 ファイル復元済<span class="cursor"></span></div>
+  </div>
+
+  <!-- 検索パネル -->
+  <div id="search-panel">
+    <div class="panel-title">// キーワード検索 ── 断片データの照合</div>
+    <div id="search-wrap">
+      <input type="text" id="search-input"
+             placeholder="キーワードを入力して照合してください"
+             autocomplete="off" spellcheck="false"
+             maxlength="40"/>
+      <button id="search-btn" onclick="doSearch()">照合する</button>
+    </div>
+    <div id="search-result" class="idle">
+      <span style="color:#4a4a38;">// 入力待機中 ── キーワードを入力してください</span>
+    </div>
+  </div>
+
+  <!-- 復元済みファイル一覧 -->
+  <div id="restored-section">
+    <div class="panel-title">// 復元済みファイル一覧 ──────────────────────</div>
+    <ul class="file-list" id="file-list">
+      <!-- JSで生成 -->
+    </ul>
+  </div>
+
+  <!-- ヒント -->
+  <div id="hint-section">
+    <div class="hint-title">// SYSTEM NOTE</div>
+    各ファイルに残された記録の中に、次のキーワードが隠されています。<br>
+    記録をよく読み、照合してください。<br>
+    <span style="color:#4a4a2e;">── 正確な語句でなければ、データは照合されません。</span>
+  </div>
+
+  <div id="footer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。<br>
+    実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  正解語句の設定
+//  keyword : 正解の語句（ここだけ変更すればOK）
+//  url     : リンク先ページ
+//  title   : 表示用タイトル
+//  desc    : 一覧に表示する説明
+//  rate    : 復元率（演出用）
+// ============================================================
+const FILES = [
+  {
+    keyword: "小蘭",
+    url:     "kiroku_001.html",
+    title:   "kiroku_001.txt",
+    desc:    "手記①  ── タイムスリップの記録",
+    rate:    "63%"
+  },
+  {
+    keyword: "土湯温泉",
+    url:     "kiroku_002.html",
+    title:   "kiroku_002.txt",
+    desc:    "手記②  ── T湯の記録",
+    rate:    "81%"
+  },
+  {
+    keyword: "蛸川",
+    url:     "kiroku_003.html",
+    title:   "kiroku_003.txt",
+    desc:    "手記③  ── T湯の湯宿",
+    rate:    "88%"
+  },
+  {
+    keyword: "猫塚清治",
+    url:     "photo_001.html",
+    title:   "photo_001",
+    desc:    "古い写真① ── 記録されなかった人物",
+    rate:    "72%"
+  },
+  {
+    keyword: "松川駅",
+    url:     "photo_002.html",
+    title:   "photo_002",
+    desc:    "古い写真② ── 同一地点・異なる時代",
+    rate:    "90%"
+  },
+  {
+    keyword: "菜園",
+    url:     "photo_003.html",
+    title:   "photo_003",
+    desc:    "古い写真③ ── 猫塚家の外観",
+    rate:    "85%"
+  },
+  {
+    keyword: "二十一人",
+    url:     "bbs_001.html",
+    title:   "bbs_001",
+    desc:    "掲示板①  ── 新聞投書欄の記録",
+    rate:    "68%"
+  },
+  {
+    keyword: "守る会",
+    url:     "bbs_002.html",
+    title:   "bbs_002",
+    desc:    "掲示板②  ── M川事件を守る会",
+    rate:    "74%"
+  },
+  {
+    keyword: "無罪",
+    url:     "bbs_003.html",
+    title:   "bbs_003",
+    desc:    "掲示板③  ── 新聞切り抜き集",
+    rate:    "82%"
+  },
+  {
+    keyword: "信夫山",
+    url:     "map_001.html",
+    title:   "map_001",
+    desc:    "地図①   ── 福島市中心部",
+    rate:    "78%"
+  },
+  {
+    keyword: "花見山",
+    url:     "map_002.html",
+    title:   "map_002",
+    desc:    "地図②   ── H見山の記録",
+    rate:    "86%"
+  },
+  {
+    keyword: "高子沼",
+    url:     "map_003.html",
+    title:   "map_003",
+    desc:    "地図③   ── T沼施設跡",
+    rate:    "91%"
+  },
+  {
+    keyword: "0314",
+    url:     "telegram_001.html",
+    title:   "telegram_001",
+    desc:    "電文①   ── 暗号データ",
+    rate:    "60%"
+  },
+  {
+    keyword: "桃",
+    url:     "telegram_002.html",
+    title:   "telegram_002",
+    desc:    "電文②   ── №0314の意味",
+    rate:    "75%"
+  },
+  {
+    keyword: "タコッペ",
+    url:     "telegram_003.html",
+    title:   "telegram_003",
+    desc:    "電文③   ── ぬいぐるみの来歴",
+    rate:    "100%"
+  },
+  {
+    keyword: "記録",
+    url:     "hub_002.html",
+    title:   "hub_002",
+    desc:    "第二層   ── 記録保存会の核心",
+    rate:    "──"
+  },
+];
+
+// ============================================================
+//  localStorage キー
+// ============================================================
+const STORAGE_KEY = 'fla_restored_files';
+
+let restoredSet = new Set();
+
+// ============================================================
+//  初期化
+// ============================================================
+function init() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) restoredSet = new Set(JSON.parse(saved));
+  } catch(e) {}
+
+  markFromReferrer();
+  updateSystemStatus();
+  renderFileList();
+}
+
+// ============================================================
+//  システム状態の更新
+// ============================================================
+function updateSystemStatus() {
+  const count  = restoredSet.size;
+  const total  = FILES.length;
+  const pct    = Math.round(count / total * 100);
+  const damage = Math.max(0, 100 - pct);
+
+  document.getElementById('sys-count').textContent  = count;
+  document.getElementById('sys-total').textContent  = total;
+  document.getElementById('sys-state').textContent  =
+    count === 0 ? '起動中' : count === total ? '復元完了' : '復元中';
+  document.getElementById('sys-damage').textContent =
+    damage === 0 ? '0.0%' : String(damage).padStart(2,'0') + '.█%';
+
+  document.getElementById('progress-bar-fill').style.width = pct + '%';
+  document.getElementById('progress-text').innerHTML =
+    count + ' / ' + total + ' ファイル復元済<span class="cursor"></span>';
+}
+
+// ============================================================
+//  ファイル一覧の描画
+// ============================================================
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  list.innerHTML = '';
+
+  FILES.forEach(f => {
+    const done = restoredSet.has(f.url);
+    const li   = document.createElement('li');
+    li.className = 'file-item';
+
+    if (done) {
+      li.innerHTML =
+        '<span class="file-icon done">✓</span>' +
+        '<a href="' + f.url + '" class="file-name">' + f.title + '</a>' +
+        '<span class="file-desc done-desc">── ' + f.desc + '</span>';
+    } else {
+      li.innerHTML =
+        '<span class="file-icon locked">░</span>' +
+        '<span class="file-name locked-name">???</span>' +
+        '<span class="file-desc">── 未復元</span>';
+    }
+    list.appendChild(li);
+  });
+}
+
+// ============================================================
+//  検索処理
+// ============================================================
+function doSearch() {
+  const input   = document.getElementById('search-input');
+  const keyword = input.value.trim();
+  const resultEl = document.getElementById('search-result');
+
+  if (!keyword) {
+    resultEl.className = 'idle';
+    resultEl.innerHTML = '<span style="color:#4a4a38;">// 入力待機中 ── キーワードを入力してください</span>';
+    return;
+  }
+
+  const match = FILES.find(f => f.keyword === keyword);
+
+  if (!match) {
+    // 不正解
+    resultEl.className = 'miss';
+    resultEl.innerHTML =
+      '<div class="result-label miss-label">// 照合結果 ── 該当データなし</div>' +
+      '<span class="miss-text"><span class="miss-glitch">該当するデータは見つかりません。</span>' +
+      '　キーワードを確認してください。</span>';
+    const g = resultEl.querySelector('.miss-glitch');
+    if (g) { g.style.animation='none'; void g.offsetWidth; g.style.animation=''; }
+
+  } else if (restoredSet.has(match.url)) {
+    // 既読
+    resultEl.className = 'already';
+    resultEl.innerHTML =
+      '<div class="result-label already-label">// 照合結果 ── 復元済み</div>' +
+      '<span class="already-text">このファイルはすでに復元されています。</span>' +
+      '<a href="' + match.url + '" class="result-file">' +
+        '<span class="file-arrow">▶</span>' + match.title +
+        '&nbsp;<span class="file-rate">復元率：' + match.rate + '</span>' +
+      '</a>';
+
+  } else {
+    // 正解・新規
+    restoredSet.add(match.url);
+    saveRestored();
+    updateSystemStatus();
+    renderFileList();
+
+    resultEl.className = 'hit';
+    resultEl.innerHTML =
+      '<div class="result-label hit-label">// 照合結果 ── 該当ファイルを検出しました</div>' +
+      '<a href="' + match.url + '" class="result-file">' +
+        '<span class="file-arrow">▶</span>' + match.title +
+        '&nbsp;<span class="file-rate">復元率：' + match.rate + '</span>' +
+        '<br><span style="font-size:12px;color:#6a9a6a;margin-left:22px;">' +
+          match.desc +
+        '</span>' +
+      '</a>';
+  }
+
+  input.value = '';
+  input.focus();
+}
+
+// ============================================================
+//  Enterキー対応
+// ============================================================
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ============================================================
+//  localStorageへの保存
+// ============================================================
+function saveRestored() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...restoredSet]));
+  } catch(e) {}
+}
+
+// ============================================================
+//  他ページから戻ってきたとき自動マーク
+// ============================================================
+function markFromReferrer() {
+  try {
+    const ref     = document.referrer;
+    if (!ref) return;
+    const refFile = new URL(ref).pathname.split('/').pop();
+    const match   = FILES.find(f => f.url === refFile);
+    if (match && !restoredSet.has(match.url)) {
+      restoredSet.add(match.url);
+      saveRestored();
+    }
+  } catch(e) {}
+}
+
+init();
+</script>
+</body>
+</html>
