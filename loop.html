@@ -1,0 +1,476 @@
+<!--
+  福島地域記録データアーカイブ ── page 21
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="21">
+<title>loop ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:76%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 伏線回収パネル */
+#callback-block {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:20px;
+}
+#callback-block h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.callback-item {
+  display:flex; gap:14px; margin-bottom:14px;
+  padding-bottom:14px; border-bottom:1px dashed #d4d0c4;
+  align-items:flex-start;
+}
+.callback-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.cb-page {
+  font-size:10px; color:#8a9a8a; min-width:44px;
+  font-family:'MS Gothic',monospace; padding-top:2px;
+  flex-shrink:0;
+}
+.cb-body { flex:1; }
+.cb-quote {
+  font-size:12px; color:#5a5040;
+  font-family:'MS Mincho','游明朝',serif;
+  border-left:2px solid #c4c0b0; padding-left:10px;
+  line-height:2.2; margin-bottom:6px; font-style:italic;
+}
+.cb-reveal {
+  font-size:11px; color:#3a6a3a; line-height:1.9;
+  padding-left:12px;
+}
+.cb-reveal::before { content:'→ '; color:#6a9a6a; }
+
+/* 家系図 */
+#keizu-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 16px; margin-bottom:20px;
+}
+#keizu-block h3 {
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.keizu-photo {
+  position:relative; margin-bottom:12px;
+  border:1px solid #b8b0a0; overflow:hidden;
+}
+.keizu-photo img {
+  display:block; width:100%; height:auto;
+}
+.keizu-photo img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:200px;
+  align-items:center; justify-content:center;
+  background:#d8d0b8; color:#8a7858;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.keizu-caption {
+  font-size:10px; color:#7a7060;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em; margin-bottom:8px;
+}
+.keizu-note {
+  font-size:11px; color:#6a5830; line-height:2;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.keizu-note .notable { border-bottom:1px solid #8a7a5a; }
+
+/* ループ図 */
+#loop-diagram {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:20px;
+}
+#loop-diagram h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+#loop-canvas { display:block; width:100%; max-width:480px; margin:0 auto; }
+
+/* 核心テキスト */
+#core-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:20px 22px; margin-bottom:20px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#core-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.core-text {
+  font-size:13px; color:#3a3020; line-height:2.8;
+  text-align:justify;
+}
+.core-text p { margin-bottom:1em; text-indent:1em; }
+.core-text p:last-child { margin-bottom:0; }
+.core-text .notable { border-bottom:1px solid #8a7a5a; }
+.core-text .lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
+
+/* 問い */
+.question-block {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:20px;
+  font-size:11px; color:#5a5848; line-height:2.2;
+  font-family:'MS Mincho','游明朝',serif;
+  text-align:center;
+}
+.question-block .q {
+  font-size:13px; color:#3a3020;
+  display:block; margin-bottom:6px;
+}
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> loop
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">loop.dat ── ループの伏線回収</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val warn">構造解析・照合記録</span></span>
+      <span>復元率：<span class="fh-val">76%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：76% ── 各ファイルの断片を照合・統合</div>
+
+  <!-- 伏線回収 -->
+  <div id="callback-block">
+    <h3>// CALLBACK ── 各ページに残されていた伏線の照合</h3>
+
+    <div class="callback-item">
+      <div class="cb-page">03番</div>
+      <div class="cb-body">
+        <div class="cb-quote">
+          「後で宿の帳面を見た。その子の苗字が書いてあった。蛸川、とあった。私と同じ苗字だった。偶然だと思った。そのときは。」
+        </div>
+        <div class="cb-reveal">
+          その子の苗字が「蛸川」だったのは偶然ではない。小蘭がT湯で「蛸川」と名乗ったことで、その苗字は宿に伝わり、子孫に受け継がれた。その子孫が、現代の蛸川小蘭だ。
+        </div>
+      </div>
+    </div>
+
+    <div class="callback-item">
+      <div class="cb-page">03番</div>
+      <div class="cb-body">
+        <div class="cb-quote">
+          「相馬の海のタコは特別だ。祖母がよくそう言っていた気がする。でも祖母の顔が、うまく思い出せない。」
+        </div>
+        <div class="cb-reveal">
+          「祖母」は蛸川小蘭自身だ。小蘭が1949年の相馬の干しタコを食べた記憶が、子孫への文化として伝わり、現代の小蘭の「記憶」になった。顔が思い出せないのは、存在しない記憶だから。
+        </div>
+      </div>
+    </div>
+
+    <div class="callback-item">
+      <div class="cb-page">00番</div>
+      <div class="cb-body">
+        <div class="cb-quote">
+          「Comment: te-ki-no-ko-ro-no-wa-ta-si-e」
+        </div>
+        <div class="cb-reveal">
+          「過去の頃の私へ」——このデータを送ったのは未来の小蘭だ。過去にいる小蘭が、現代の自分に向けてデータを残した。受け取った小蘭がタイムスリップし、データを残した。どちらが先かは、もう分からない。
+        </div>
+      </div>
+    </div>
+
+    <div class="callback-item">
+      <div class="cb-page">02番</div>
+      <div class="cb-body">
+        <div class="cb-quote">
+          「00番・02番と同一パターン。小蘭の最後の印。」（穿孔パターン）
+        </div>
+        <div class="cb-reveal">
+          T湯の帳面・障子・高子沼の観覧車支柱——三か所に同じ印が刻まれていた。小蘭は70年以上かけて、同じ印を残し続けた。プレイヤーが読んだとき、初めてその印が「繋がった」。
+        </div>
+      </div>
+    </div>
+
+    <div class="callback-item">
+      <div class="cb-page">05番</div>
+      <div class="cb-body">
+        <div class="cb-quote">
+          「現在の写真の撮影者は不明。このアーカイブに誰がいつ追加したのか、記録がない。」
+        </div>
+        <div class="cb-reveal">
+          現在のM川駅跡の写真を撮ったのは小蘭だ。廃墟から抜け出せなかった小蘭が、最後にたどり着いた場所で撮った。アーカイブに追加したのも小蘭——バイナリデータとして残したものが、ネット上に浮上した。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 家系図 -->
+  <div id="keizu-block">
+    <h3>// 付記データ ── 蛸川家戸籍謄本（原本・部分開示）</h3>
+    <div class="keizu-photo">
+      <div style="position:relative;display:inline-block;width:100%;">
+        <img src="photo_koseki.jpg" alt="蛸川家の戸籍謄本"
+             onerror="this.classList.add('broken')" style="display:block;width:100%;height:auto;"/>
+        <!-- 「一川」の「一」部分を黒塗りオーバーレイ -->
+        <!-- 苗字欄は画像右端・上から約30〜55%の位置 -->
+        <div style="
+          position:absolute;
+          right:4%; top:28%;
+          width:9%; height:18%;
+          background:#0a0a0a;
+          border-radius:1px;
+        "></div>
+        <!-- 朱印にかかっている苗字上部も追加黒塗り -->
+        <div style="
+          position:absolute;
+          right:3%; top:18%;
+          width:11%; height:11%;
+          background:#0a0a0a;
+          border-radius:1px;
+          opacity:0.92;
+        "></div>
+      </div>
+      <div class="photo-fallback">
+        ［画像：蛸川家の戸籍謄本（原本・黒塗り開示版）］<br>
+        ※ photo_koseki.jpg を配置してください
+      </div>
+    </div>
+    <div class="keizu-caption">
+      蛸川家戸籍謄本（部分開示）── 苗字欄・個人情報は黒塗り処理済<br>
+      前戸主欄：不詳　生籍地欄：不詳
+    </div>
+    <div class="keizu-note">
+      開示された謄本の「前戸主」欄と「生籍地」欄が<span class="notable">不詳</span>となっている。<br>
+      欠損ではなく、届出時点から記録が存在しない。<br>
+      蛸川という苗字には、起源がない。<br>
+      ——なぜなら、起源は小蘭自身だから。
+    </div>
+  </div>
+
+  <!-- ループ図 -->
+  <div id="loop-diagram">
+    <h3>// LOOP STRUCTURE ── 蛸川小蘭の存在の構造</h3>
+    <canvas id="loop-canvas" width="480" height="300"></canvas>
+  </div>
+
+  <!-- 核心テキスト -->
+  <div id="core-block">
+    <h3>// 核心 ── 小蘭とは何者か</h3>
+    <div class="core-text">
+      <p>蛸川小蘭は、1949年にタイムスリップした。</p>
+      <p>T湯の宿で「蛸川」と名乗った。その苗字が宿の孫娘に伝わり、子孫に受け継がれた。その子孫が、現代の蛸川小蘭だ。</p>
+      <p>つまり小蘭は、自分自身の祖先だ。</p>
+      <p>「蛸川」という苗字には外部からの起源がない。タコのぬいぐるみへのこだわりも、相馬のタコへの記憶も、すべて小蘭が作り出したものだ。</p>
+      <p><span class="notable">小蘭は、どの時代の人間でもない。ループの中にしか存在しない。</span></p>
+      <p>だから、猫塚清治の記録が届かなければ、小蘭は存在しなかった。</p>
+      <p>そして、あなたがこれを読んでいるということは——<span class="lost">████</span>記録は届いた。</p>
+    </div>
+  </div>
+
+  <!-- 問い -->
+  <div class="question-block">
+    <span class="q">では、あのオーパーツのデータは誰が作ったのか。</span>
+    過去にいる小蘭が残したデータが、ネット上に浮上した。<br>
+    そのデータを現代の小蘭が発見し、タイムスリップした。<br>
+    タイムスリップした小蘭がデータを残した。<br><br>
+    <span class="q">どちらが先か——答えはない。</span>
+    起源のないループが、蛸川小蘭を存在させている。
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">22</span>_takosanuma.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">T沼廃墟ノ記憶　小蘭ノ最後ノ場所</span>
+    <div class="frag-hint" title="takosanuma.htmlへ進んでください">// → 22番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="loop.html">◄ 20｜世論と現代SNSへ戻る</a>
+    <a href="takosanuma.html">22｜T沼・廃墟の記憶 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+(function(){
+  const cv = document.getElementById('loop-canvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+
+  ctx.fillStyle = '#e8f0e0';
+  ctx.fillRect(0,0,W,H);
+
+  // ノード定義
+  const nodes = [
+    { x:240, y:40,  label:'現代の蛸川小蘭', sub:'（30代・ITエンジニア）', color:'#4a8a5a' },
+    { x:420, y:140, label:'タイムスリップ', sub:'1949年8月', color:'#7a5a9a' },
+    { x:380, y:240, label:'T湯で「蛸川」と名乗る', sub:'宿の孫娘に苗字が伝わる', color:'#6a5a4a' },
+    { x:200, y:260, label:'子孫に受け継がれる', sub:'「蛸川」姓・タコへの愛着', color:'#6a5a4a' },
+    { x:60,  y:160, label:'データを残す', sub:'過去から未来へ', color:'#4a6a9a' },
+  ];
+
+  // 矢印を描く
+  function arrow(x1,y1,x2,y2,color='rgba(80,100,70,0.5)'){
+    const dx=x2-x1, dy=y2-y1;
+    const len=Math.sqrt(dx*dx+dy*dy);
+    const ux=dx/len, uy=dy/len;
+    const r=28;
+    const sx=x1+ux*r, sy=y1+uy*r;
+    const ex=x2-ux*r, ey=y2-uy*r;
+    ctx.beginPath();
+    ctx.strokeStyle=color; ctx.lineWidth=1.5;
+    ctx.setLineDash([5,4]);
+    ctx.moveTo(sx,sy); ctx.lineTo(ex,ey); ctx.stroke();
+    ctx.setLineDash([]);
+    // 矢印先端
+    const angle=Math.atan2(ey-sy,ex-sx);
+    ctx.beginPath();
+    ctx.fillStyle=color;
+    ctx.moveTo(ex,ey);
+    ctx.lineTo(ex-8*Math.cos(angle-0.4),ey-8*Math.sin(angle-0.4));
+    ctx.lineTo(ex-8*Math.cos(angle+0.4),ey-8*Math.sin(angle+0.4));
+    ctx.closePath(); ctx.fill();
+  }
+
+  // エッジ
+  arrow(nodes[0].x,nodes[0].y, nodes[1].x,nodes[1].y);
+  arrow(nodes[1].x,nodes[1].y, nodes[2].x,nodes[2].y);
+  arrow(nodes[2].x,nodes[2].y, nodes[3].x,nodes[3].y);
+  arrow(nodes[3].x,nodes[3].y, nodes[4].x,nodes[4].y);
+  arrow(nodes[4].x,nodes[4].y, nodes[0].x,nodes[0].y,'rgba(100,70,140,0.5)');
+
+  // ノード描画
+  nodes.forEach(n=>{
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,26,0,Math.PI*2);
+    ctx.fillStyle=n.color+'22';
+    ctx.fill();
+    ctx.strokeStyle=n.color;
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    ctx.font="bold 10px 'MS Gothic',monospace";
+    ctx.fillStyle='#2a3020';
+    ctx.textAlign='center';
+    const lines=n.label.split('');
+    // 短いラベルはそのまま
+    if(n.label.length<=8){
+      ctx.fillText(n.label,n.x,n.y+4);
+    } else {
+      // 折り返し
+      const mid=Math.ceil(n.label.length/2);
+      ctx.fillText(n.label.slice(0,mid),n.x,n.y-2);
+      ctx.fillText(n.label.slice(mid),n.x,n.y+10);
+    }
+
+    if(n.sub){
+      ctx.font="9px 'MS Gothic',monospace";
+      ctx.fillStyle='#6a7a6a';
+      // ノードの下か上にサブテキスト
+      const below = n.y < H/2;
+      ctx.fillText(n.sub,n.x, below ? n.y+42 : n.y-32);
+    }
+  });
+
+  // 中央の「ループ」ラベル
+  ctx.font="11px 'MS Mincho','游明朝',serif";
+  ctx.fillStyle='rgba(80,100,70,0.5)';
+  ctx.textAlign='center';
+  ctx.fillText('起源なき',240,150);
+  ctx.fillText('ループ',240,165);
+
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
