@@ -1,41 +1,256 @@
-archive / hub_002 / hidden
-hidden.dat ── ループの真実　最終解読
-条件：17〜26番すべて発見
-状態：アンロック済
-// 最終記録 ── 蛸川小蘭より
-このデータを読んでいるということは、あなたはすべての断片を集めた。
+<!--
+  福島地域記録データアーカイブ ── page 27
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="27">
+<title>hidden ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
 
-私が1949年の帳面に書いたバイナリ。障子に穿った穿孔パターン。掲示板に残したID。地図の余白に刻んだ座標。電文に仕込んだ鍵。
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
 
-それらはすべて、あなたのために残した。
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.match { color:#3a6a3a; }
 
-正確には——私のために残した。あなたが私だから。
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:100%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
 
-このアーカイブのURLを、現代の蛸川小蘭が発見した。それが私をここに送り込んだ。私がここで記録を残した。その記録がアーカイブになった。あなたがそれを読んだ。
+/* アンロック演出 */
+#unlock-block {
+  border:2px solid #8aaa8a; background:#e4f0e4;
+  padding:16px 18px; margin-bottom:28px;
+  text-align:center; font-size:11px;
+}
+#unlock-block .unlock-title {
+  font-size:14px; color:#2a5a2a; margin-bottom:8px;
+  letter-spacing:0.1em;
+}
+#unlock-block .unlock-text {
+  color:#4a6a4a; line-height:2;
+}
 
-どちらが先か、答えはない。
+/* メッセージブロック */
+#message-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:20px 22px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  position:relative;
+}
+#message-block::before {
+  content:'';
+  position:absolute; left:42px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+#message-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.message-text {
+  font-size:13px; color:#3a3020;
+  line-height:2.8; text-align:justify;
+  padding-left:20px;
+}
+.message-text p { margin-bottom:1em; text-indent:1em; }
+.message-text p:last-child { margin-bottom:0; }
+.notable { border-bottom:1px solid #8a7a5a; }
+.lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
 
-ただ、一つだけ確かなことがある。
+/* データ構造パネル */
+#data-structure {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#data-structure h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.data-row {
+  display:flex; gap:10px; padding:5px 0;
+  border-bottom:1px solid #d8e4d0; font-size:11px; line-height:1.9;
+}
+.data-row:last-child { border-bottom:none; }
+.data-key { color:#5a8a6a; min-width:110px; font-size:10px; flex-shrink:0; }
+.data-val { color:#3a4a3a; flex:1; }
+.data-val.key { color:#2a5a2a; }
+.data-val.empty {
+  color:#b8b4a8; font-style:italic;
+  border:1px dashed #c4c0b0; padding:1px 8px;
+  border-radius:2px; display:inline-block;
+}
 
-猫塚清治は、存在した。記録されたから。あなたが読んだから。
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
 
-そして——私も、存在した。████あなたが読んでいる、今この瞬間に。
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
 
-// このアーカイブのデータ構造
-送信者：蛸川小蘭（過去・高子沼廃墟より）
-受信者：蛸川小蘭（現代）＝あなた
-送信方法：帳面のバイナリ→写真メタデータ→掲示板→電文→このアーカイブ
-内容：猫塚清治の記録、蛸川家の記録、ループの構造
-鍵：№0314（タコのぬいぐるみのタグ）
-未解決：タコのぬいぐるみの名前
-記録は届いた。
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
 
-最後に、一つだけ残っている。
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> hidden
+  </div>
 
-名前のないものに、名前を与えること。
-// 次へ ── 桃の手記
-28_momo_kiroku.dat ── 小蘭ノ最後ノ言葉
-// → 28番へ
-◄ 26｜ITと記録の現在
-28｜桃の手記 ►
-*このアーカイブに登場する人物・事件・団体はすべて架空です。
+  <div id="file-header">
+    <div class="filename glitch">hidden.dat ── ループの真実　最終解読</div>
+    <div class="fh-row">
+      <span>条件：<span class="fh-val match">17〜26番すべて発見</span></span>
+      <span>状態：<span class="fh-val match">アンロック済</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：100% ── すべての断片が揃った</div>
+
+  <!-- アンロック演出 -->
+  <div id="unlock-block">
+    <div class="unlock-title">// アクセス承認 ── 全断片確認</div>
+    <div class="unlock-text">
+      すべての記録が、一つに繋がった。<br>
+      ループの真実が、開く。
+    </div>
+  </div>
+
+  <!-- 最終記録 -->
+  <div id="message-block">
+    <h3>// 最終記録 ── 蛸川小蘭より</h3>
+    <div class="message-text">
+      <p>このデータを読んでいるということは、あなたはすべての断片を集めた。</p>
+      <p>私が1949年の帳面に書いたバイナリ。障子に穿った穿孔パターン。掲示板に残したID。地図の余白に刻んだ座標。電文に仕込んだ鍵。</p>
+      <p>それらはすべて、あなたのために残した。</p>
+      <p>正確には——私のために残した。あなたが私だから。</p>
+      <p>このアーカイブのURLを、現代の蛸川小蘭が発見した。それが私をここに送り込んだ。私がここで記録を残した。その記録がアーカイブになった。あなたがそれを読んだ。</p>
+      <p>どちらが先か、答えはない。</p>
+      <p>ただ、一つだけ確かなことがある。</p>
+      <p><span class="notable">猫塚清治は、存在した。記録されたから。あなたが読んだから。</span></p>
+      <p>そして——私も、存在した。<span class="lost">████</span>あなたが読んでいる、今この瞬間に。</p>
+      <p>最後に、一つだけ残っている。</p>
+      <p>名前のないものに、名前を与えること。</p>
+    </div>
+  </div>
+
+  <!-- データ構造パネル -->
+  <div id="data-structure">
+    <h3>// このアーカイブのデータ構造</h3>
+    <div class="data-row">
+      <span class="data-key">送信者</span>
+      <span class="data-val">蛸川小蘭（過去・高子沼廃墟より）</span>
+    </div>
+    <div class="data-row">
+      <span class="data-key">受信者</span>
+      <span class="data-val">蛸川小蘭（現代）＝あなた</span>
+    </div>
+    <div class="data-row">
+      <span class="data-key">送信方法</span>
+      <span class="data-val">帳面のバイナリ → 写真メタデータ → 掲示板 → 電文 → このアーカイブ</span>
+    </div>
+    <div class="data-row">
+      <span class="data-key">内容</span>
+      <span class="data-val">猫塚清治の記録、蛸川家の記録、ループの構造</span>
+    </div>
+    <div class="data-row">
+      <span class="data-key">鍵</span>
+      <span class="data-val key">№0314（タコのぬいぐるみのタグ）</span>
+    </div>
+    <div class="data-row">
+      <span class="data-key">未解決</span>
+      <span class="data-val">
+        <span class="data-val empty">タコのぬいぐるみの名前</span>
+      </span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次へ ── 桃の手記</div>
+    <span style="color:#4a7a4a;">28</span>_momo_kiroku.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">小蘭ノ最後ノ言葉</span>
+    <div class="frag-hint" title="momo_kiroku.htmlへ進んでください">// → 28番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="it_kiroku.html">◄ 26｜ITと記録の現在へ戻る</a>
+    <a href="momo_kiroku.html">28｜桃の手記 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
