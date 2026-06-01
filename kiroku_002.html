@@ -1,0 +1,302 @@
+<!--
+  福島地域記録データアーカイブ ── page 02
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="02">
+<title>kiroku_002.txt ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc; color:#3a3830;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:13px; line-height:2; padding:48px 20px; min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+#breadcrumb {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a9888; margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-family:'MS Gothic',monospace; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px; position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0; height:100%; width:81%; background:#6a8a6a;
+}
+#restore-label {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+#location-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 20px; margin-bottom:28px;
+  font-family:'MS Gothic',monospace; font-size:11px; color:#7a6848; line-height:2;
+}
+#location-block .loc-title {
+  color:#5a4828; font-size:10px; letter-spacing:0.15em;
+  margin-bottom:8px; border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.loc-item { display:flex; gap:12px; padding:3px 0; }
+.loc-key { color:#9a8868; min-width:80px; font-size:10px; }
+.loc-val { color:#5a4828; font-size:10px; }
+.loc-val.notable { color:#3a6a3a; }
+#diary {
+  position:relative; padding:32px 28px 32px 52px;
+  background:#f8f4e8; border:1px solid #c4c0b0; margin-bottom:28px;
+}
+#diary::before {
+  content:''; position:absolute; left:44px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+.entry { margin-bottom:36px; padding-bottom:36px; border-bottom:1px dashed #d4d0c0; }
+.entry:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.entry-date {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#9a8a68; margin-bottom:14px; letter-spacing:0.1em;
+}
+.entry-body { font-size:13px; color:#3a3830; line-height:2.5; text-align:justify; }
+.entry-body p { margin-bottom:1.2em; text-indent:1em; }
+.entry-body p:last-child { margin-bottom:0; }
+.underline { border-bottom:1px solid #8a7a5a; padding-bottom:1px; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+.lost { color:#c4c0b0; background:#ede9dd; border-radius:2px; padding:0 2px; }
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0; padding:0 4px; border-radius:2px; border:1px solid #c4d4c0;
+}
+.handnote {
+  font-size:12px; color:#7a6848; border-left:3px solid #c4a870;
+  padding:8px 14px; margin:12px 0; background:#f4ecd8; font-style:italic; line-height:2.2;
+}
+#punch-wall {
+  border:1px solid #b8c4b0; background:#e8f0e0; padding:16px; margin-bottom:28px;
+  font-family:'MS Gothic',monospace;
+}
+#punch-wall h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal; margin-bottom:10px;
+  letter-spacing:0.15em; border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+#shoji-wrap { margin-bottom:14px; border:1px solid #c4b89a; overflow:hidden; max-width:420px; }
+#shoji-canvas { display:block; width:100%; }
+.punch-grid {
+  display:grid; grid-template-columns:repeat(8,22px); gap:4px; margin-bottom:12px;
+}
+.punch-cell {
+  width:22px; height:22px; border-radius:50%; border:1px solid #a8c4b8;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; color:#6a9a8a; background:#dcecd8;
+}
+.punch-cell.filled { background:#b8d4c8; border-color:#4a8a78; color:#2a5a4a; }
+.punch-note { font-size:11px; color:#4a6a5a; margin-top:8px; line-height:1.9; font-style:italic; }
+.punch-note .match-hint {
+  color:#3a7a5a; border-bottom:1px dashed #8aba9a; cursor:default;
+}
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title { color:#3a5a3a; margin-bottom:8px; font-size:10px; letter-spacing:0.15em; }
+#fragment .frag-hint { color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default; }
+#nav {
+  font-family:'MS Gothic',monospace; font-size:11px; color:#9a9888;
+  display:flex; justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+#disclaimer { margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8; }
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="kiroku_001.html"> kiroku_001 /</a>
+    kiroku_002.txt
+  </div>
+  <div id="file-header">
+    <div class="filename glitch">kiroku_002.txt</div>
+    <div class="fh-row">
+      <span>作成：<span class="fh-val warn">昭和██年　秋頃（推定）</span></span>
+      <span>文字コード：<span class="fh-val">不明</span></span>
+      <span>復元率：<span class="fh-val">81%</span></span>
+    </div>
+  </div>
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：81% ── 前ファイルより状態良好</div>
+
+  <div id="location-block">
+    <div class="loc-title">// LOCATION DATA ── 推定記述地点</div>
+    <div class="loc-item"><span class="loc-key">地点</span><span class="loc-val">T湯温泉　某湯宿（名称██）</span></div>
+    <div class="loc-item"><span class="loc-key">位置</span><span class="loc-val">福島市北西部　山間部</span></div>
+    <div class="loc-item"><span class="loc-key">時期</span><span class="loc-val warn">昭和二十四年　秋（M川事件判決前後）</span></div>
+    <div class="loc-item"><span class="loc-key">状態</span><span class="loc-val notable">比較的安定　身元を隠して滞在中</span></div>
+  </div>
+
+  <div id="diary">
+    <div class="entry">
+      <div class="entry-date">── 昭和二十四年　秋　T湯にて</div>
+      <div class="entry-body">
+        <p>T湯温泉に来て、三週間が経つ。</p>
+        <p>山の中の小さな温泉街だ。硫黄の匂いがする。川が近い。宿の主人は無口な老人で、私の素性をあまり聞いてこない。それがありがたかった。</p>
+        <p>ここでの私の名前は「蛸川」だ。主人に苗字を聞かれたとき、とっさに出た言葉だった。なぜ蛸川と名乗ったのか、自分でもよく分からない。ただ、タコが好きだったから。それだけだ。</p>
+        <p>お湯は、いい。毎晩入っている。<span class="it-term">バッファ</span>のようなものだと思う。一日の終わりに、余分なものを流す場所。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 同年　晩秋</div>
+      <div class="entry-body">
+        <p>主人が相馬から届いた干しタコをくれた。</p>
+        <p>久しぶりに、美味しいと思った。相馬港のタコは、身が締まっていて、甘い。なぜ自分がタコを好きなのか、ここへ来てから考えたことがなかった。幼い頃から好きだった。祖母がよく「相馬の海のタコは特別だ」と言っていた気がする。でも祖母の顔が、うまく思い出せない。</p>
+        <p>主人が言った。「相馬はいい漁港だ。タコだけじゃなく、何でも獲れる」。私は頷いた。<span class="lost">████████████████</span>。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 同年　某日</div>
+      <div class="entry-body">
+        <p>M川事件の裁判が始まった、と宿の主人が言っていた。二十人が被告になったという。</p>
+        <p>私は何も言えなかった。</p>
+        <p>二十人、と彼は言った。でも私は知っている。本当は<span class="underline">二十一人いた</span>。一人だけ、記録から消された人間がいた。猫塚 清治。私の曾祖父。K鉄の保線作業員。事件の夜、現場付近にいたのに、被告リストにも証人リストにも名前がない。</p>
+        <div class="handnote">
+          「なぜ消されたのか、まだわからない。<br>
+          当局に都合が悪かったのか。<br>
+          それとも、誰かが意図的に——<br>
+          清治さんは今も生きている。でも、記録の上では存在しない。」
+        </div>
+        <p><span class="lost">██████████████████████████████████</span></p>
+        <p>記録することしかできない。今の私には、それだけしかできない。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 同年　冬の入り口</div>
+      <div class="entry-body">
+        <p>帳面が一冊、埋まった。宿の主人にもう一冊もらった。</p>
+        <p>S夫山が、宿の窓から見える。福島の街を見下ろす山だ。あの山は、七十年後も同じ形をしているはずだ。私が生まれた頃も、あの形だった。</p>
+        <p>変わらないものがある、ということが、今の私には少しだけ救いになっている。</p>
+        <p>タコのぬいぐるみを膝の上に置いて、これを書いている。首元のタグに触れる。<span class="underline">№0314</span>。三月十四日。清治さんのために決めた日付。私が帰れると信じた季節。</p>
+        <p><span class="strike">私が来たことで何かが変わると思っていた</span>　<span class="rewrite">何も変わらなかった。でも、記録は残せる。</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="punch-wall">
+    <h3>// 付記データ ── 宿の壁に刻まれた痕跡（スキャン）</h3>
+    <div id="shoji-wrap"><canvas id="shoji-canvas" width="420" height="260"></canvas></div>
+    <div class="punch-grid" id="punch-grid"></div>
+    <div class="punch-note">
+      帳面の余白と同じパターンが、宿の柱に刻まれていた。<br>
+      <span class="match-hint" title="00番の穿孔パターンと照合してみてください">// 別ファイルに同一パターンの記録あり</span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 末尾データ</div>
+    <span style="color:#4a7a4a;">03</span>_kiroku.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">T湯ノ湯宿ニ残シタルモノ</span>
+    <div class="frag-hint">// データ断片 ── 復元不完全</div>
+  </div>
+
+  <div id="nav">
+    <a href="kiroku_001.html">◄ 01｜手記①へ戻る</a>
+    <a href="kiroku_003.html">03｜手記③ T湯の湯宿 ►</a>
+  </div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+</div>
+<script>
+(function(){
+  const rows=[[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1]];
+  const grid=document.getElementById('punch-grid');
+  rows.forEach(row=>{
+    row.forEach(v=>{
+      const c=document.createElement('div');
+      c.className='punch-cell'+(v?' filled':'');
+      c.textContent=v?'●':'○';
+      grid.appendChild(c);
+    });
+  });
+  // 障子Canvas
+  const cv=document.getElementById('shoji-canvas');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.fillStyle='#e8dfc0'; ctx.fillRect(0,0,W,H);
+  const img=ctx.createImageData(W,H);
+  for(let i=0;i<img.data.length;i+=4){
+    const n=(Math.random()-0.5)*18;
+    img.data[i]=Math.min(255,Math.max(0,232+n));
+    img.data[i+1]=Math.min(255,Math.max(0,223+n*0.9));
+    img.data[i+2]=Math.min(255,Math.max(0,192+n*0.6));
+    img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  const gW=52,gH=62,oX=14,oY=16;
+  ctx.strokeStyle='rgba(90,70,40,0.75)'; ctx.lineWidth=5; ctx.lineCap='square';
+  for(let x=oX;x<W+gW;x+=gW){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=oY;y<H+gH;y+=gH){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const pattern=[[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1]];
+  const sC=1,sR=1;
+  pattern.forEach((row,ri)=>{
+    row.forEach((val,ci)=>{
+      const cx=oX+(sC+ci)*gW+gW/2-2.5;
+      const cy=oY+(sR+ri)*gH+gH/2-2.5;
+      if(val===1){
+        const r=5+Math.random()*2;
+        ctx.beginPath();ctx.arc(cx+1.5,cy+1.5,r+1,0,Math.PI*2);
+        ctx.fillStyle='rgba(40,25,10,0.55)';ctx.fill();
+        ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+        ctx.fillStyle='#1a1208';ctx.fill();
+        ctx.beginPath();ctx.arc(cx,cy,r+1.5,0,Math.PI*2);
+        ctx.strokeStyle='rgba(160,130,80,0.6)';ctx.lineWidth=1.5;ctx.stroke();
+        for(let f=0;f<5;f++){
+          const a=Math.random()*Math.PI*2,l=2+Math.random()*4;
+          ctx.beginPath();
+          ctx.moveTo(cx+Math.cos(a)*(r+1),cy+Math.sin(a)*(r+1));
+          ctx.lineTo(cx+Math.cos(a)*(r+l),cy+Math.sin(a)*(r+l));
+          ctx.strokeStyle=`rgba(${140+Math.random()*40},${110+Math.random()*30},${60+Math.random()*20},0.5)`;
+          ctx.lineWidth=0.8;ctx.stroke();
+        }
+      } else {
+        ctx.beginPath();ctx.arc(cx,cy,3.5,0,Math.PI*2);
+        ctx.strokeStyle='rgba(80,60,30,0.22)';ctx.lineWidth=0.8;ctx.stroke();
+      }
+    });
+  });
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.82);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(20,12,4,0.13)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
