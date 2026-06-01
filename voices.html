@@ -1,0 +1,372 @@
+<!--
+  福島地域記録データアーカイブ ── page 19
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="19">
+<title>voices ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:85%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-block:last-child { margin-bottom:0; }
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:4px;
+  letter-spacing:0.15em;
+}
+.fact-text {
+  font-size:12px; color:#3a3020; line-height:2.2;
+}
+.fact-text .notable { border-bottom:1px solid #8a7a5a; }
+.fact-text .fiction {
+  color:#6a8a6a; font-size:11px;
+  border-left:2px solid #a8c4a0; padding-left:8px;
+  margin-top:6px; display:block; font-style:italic;
+}
+
+/* 人物カード群 */
+.voice-cards { margin-bottom:0; }
+.voice-card {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  margin-bottom:8px; overflow:hidden;
+}
+.voice-card-header {
+  display:flex; gap:12px; align-items:center;
+  padding:8px 14px; background:#f0ece0;
+  border-bottom:1px solid #e4e0d4;
+}
+.voice-icon {
+  width:32px; height:32px; border-radius:50%;
+  background:#8a8878; color:#f0f0e8;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; flex-shrink:0;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.voice-icon.writer { background:#4a6a9a; }
+.voice-icon.citizen { background:#4a8a5a; }
+.voice-icon.family { background:#9a6a4a; }
+.voice-icon.worker { background:#6a5a9a; }
+.voice-name {
+  font-size:12px; color:#3a3020;
+  font-family:'MS Mincho','游明朝',serif; flex:1;
+}
+.voice-role { font-size:10px; color:#8a8878; }
+.voice-body {
+  padding:10px 14px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:12px; color:#3a3020; line-height:2.3;
+}
+.voice-body .notable { border-bottom:1px solid #8a7a5a; }
+.voice-body .fiction {
+  color:#6a8a6a; font-size:10px;
+  border-left:2px solid #a8c4a0; padding-left:8px;
+  margin-top:6px; display:block; font-style:italic;
+}
+.voice-quote {
+  border-left:3px solid #c4a870; padding-left:12px;
+  margin:8px 0; color:#4a3820; font-style:italic;
+}
+
+/* 数字で見る運動 */
+.stats-block {
+  background:#f0ece0; border:1px solid #d4d0c4;
+  padding:14px; margin-bottom:12px;
+}
+.stats-block h4 {
+  font-size:10px; color:#5a5848; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.1em;
+}
+.stats-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.stat-item {
+  background:#f8f4e8; border:1px solid #e0dcd4;
+  padding:10px 12px; text-align:center;
+}
+.stat-num {
+  font-size:20px; color:#3a6a3a;
+  font-family:'MS Mincho','游明朝',serif;
+  display:block; line-height:1.2;
+}
+.stat-label {
+  font-size:10px; color:#7a7060; margin-top:4px;
+  line-height:1.6;
+}
+
+/* 注釈 */
+.annotation-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+}
+.annotation-block h4 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.annotation-text { color:#3a4a3a; line-height:2; }
+.annotation-text .notable { color:#2a5a2a; border-bottom:1px solid #4a8a4a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> voices
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">voices.dat ── 冤罪を覆した声の記録</div>
+    <div class="fh-row">
+      <span>対象期間：<span class="fh-val">昭和24年〜38年（14年間）</span></span>
+      <span>復元率：<span class="fh-val">85%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：85%</div>
+
+  <!-- 数字で見る運動 -->
+  <div class="section">
+    <h3>// 数字で見るM川事件支援運動</h3>
+    <div class="stats-block">
+      <h4>// 記録に残る数字</h4>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-num">14年</span>
+          <span class="stat-label">事件発生から<br>無罪確定までの年月</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">5回</span>
+          <span class="stat-label">繰り返された<br>裁判の回数</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">約10,000点</span>
+          <span class="stat-label">福島大学に保存された<br>葉書の数</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">約5,000点</span>
+          <span class="stat-label">同じく保存された<br>封書の数</span>
+        </div>
+      </div>
+    </div>
+    <div class="fact-block">
+      <div class="fact-label">// 葉書と封書が語るもの</div>
+      <div class="fact-text">
+        拘置所の中の被告と、外の支援者が手紙を交わし続けた。<span class="notable">一通の葉書が届くのに数日かかる時代</span>に、それでも声は届き続けた。現在、福島大学松川事件資料室にその記録が保存されている。
+      </div>
+    </div>
+  </div>
+
+  <!-- 声を上げた人々 -->
+  <div class="section">
+    <h3>// 声を上げた人々 ── 史実に基づく記録</h3>
+    <div class="voice-cards">
+
+      <div class="voice-card">
+        <div class="voice-card-header">
+          <div class="voice-icon writer">広</div>
+          <div>
+            <div class="voice-name">広津 和郎（1891〜1968）</div>
+            <div class="voice-role">小説家・文芸評論家</div>
+          </div>
+        </div>
+        <div class="voice-body">
+          <div class="voice-quote">
+            「裁判所は論理を使わなかった。私はただ、論理を使ったに過ぎない。」
+          </div>
+          当初は「思想犯罪」と信じていたが、一審判決後に記録を精読して矛盾に気づく。雑誌『中央公論』などで裁判批判を展開し、当時の最高裁長官から<span class="notable">「雑音」と呼ばれながらも書き続けた。</span>
+          <span class="fiction">→ 07番の投書欄「K鉄の同僚（自称）」が語る「声を上げ続けること」の原型はここにある。</span>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-card-header">
+          <div class="voice-icon family">家</div>
+          <div>
+            <div class="voice-name">被告の家族たち</div>
+            <div class="voice-role">妻・子・親・兄弟</div>
+          </div>
+        </div>
+        <div class="voice-body">
+          死刑判決を受けた夫を持つ妻、父を獄中に持つ子。14年間、「犯人の家族」として生きながら、無実を訴え続けた。<span class="notable">記録に残る葉書の多くは家族から被告へ、被告から家族へのものだ。</span>
+          <span class="fiction">→ 07番「保線作業員の妻」の投書はこうした家族の声をモチーフにしている。</span>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-card-header">
+          <div class="voice-icon citizen">市</div>
+          <div>
+            <div class="voice-name">名もなき市民たち</div>
+            <div class="voice-role">福島市民・全国の支援者</div>
+          </div>
+        </div>
+        <div class="voice-body">
+          思想・職業・年齢を超えた市民が守る会に参加した。ガリ版ビラを刷り、新聞に投書し、集会に出た。<span class="notable">誰に頼まれたわけでもなく、ただ「おかしい」と思ったから動いた。</span>
+          <span class="fiction">→ 08番のビラ、09番のスクラップブックに記録されているのはこうした市民の痕跡だ。</span>
+        </div>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-card-header">
+          <div class="voice-icon worker">被</div>
+          <div>
+            <div class="voice-name">被告たち自身</div>
+            <div class="voice-role">国鉄・東芝の労働組合員20名</div>
+          </div>
+        </div>
+        <div class="voice-body">
+          死刑判決を受けながら、最後まで無実を主張した。拘置所の中から詩を書き、意見を発表した。<span class="notable">記録に残る被告たちの言葉は、絶望ではなく闘志に満ちている。</span>
+          <div class="voice-quote">
+            「私たちが黙れば、次は別の誰かが同じ目に遭う。」
+            <span style="font-size:10px;color:#8a7848;">──（被告の言葉・趣意）</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 声が届いた瞬間 -->
+  <div class="section">
+    <h3>// 声が届いた瞬間 ── 逆転の経緯</h3>
+    <div class="fact-block">
+      <div class="fact-label">// アリバイ証拠の発覚</div>
+      <div class="fact-text">
+        捜査機関が隠していたアリバイ証拠が、差し戻し審で明らかになった。これは弁護団と支援者が粘り強く記録を調査し続けた結果だった。<span class="notable">記録を求め続けたから、隠された記録が出てきた。</span>
+      </div>
+    </div>
+    <div class="fact-block">
+      <div class="fact-label">// 広津批判の影響</div>
+      <div class="fact-text">
+        広津和郎の裁判批判が世論を動かし、最高裁が差し戻しを決断する一因となった。「雑音」と呼ばれた声が、法廷を揺るがした。<span class="notable">声の大きさではなく、声の継続が力になった。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 猫塚清治との対比 -->
+  <div class="annotation-block">
+    <h4>// このアーカイブにおける問い</h4>
+    <div class="annotation-text">
+      二十人は、声を上げ続けた人々によって救われた。<br><br>
+      では、猫塚清治は？<br><br>
+      被告にも証人にもなれなかった人間のために、声を上げた人間はいたか。<span class="notable">記録されなかった人間のために、記録を残した人間がいたか。</span><br><br>
+      いた。蛸川小蘭が、いた。そして今、あなたが読んでいる。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">20</span>_sns.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">世論ト現代　声ノ速サト重サ</span>
+    <div class="frag-hint" title="sns.htmlへ進んでください">// → 20番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="inochi.html">◄ 18｜冤罪の構造へ戻る</a>
+    <a href="sns.html">20｜世論と現代SNS ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。実在の事件・地名の記述は史実に基づいており、特定の個人・団体を中傷する意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
