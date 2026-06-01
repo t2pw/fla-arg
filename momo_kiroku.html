@@ -1,0 +1,167 @@
+<!--
+  福島地域記録データアーカイブ ── page 28
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="28">
+<title>momo_kiroku ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc; color:#3a3830;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:14px; line-height:2.4;
+  padding:48px 20px; min-height:100vh;
+}
+#container { max-width:580px; margin:0 auto; }
+#breadcrumb {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a9888; margin-bottom:32px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+
+/* 手記本体 */
+#diary {
+  background:#f8f4e8; border:1px solid #c4b89a;
+  padding:36px 32px; margin-bottom:32px;
+  position:relative;
+}
+#diary::before {
+  content:''; position:absolute;
+  left:48px; top:0; bottom:0; width:1px; background:#e0ccaa;
+}
+.diary-header {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#8a7848; margin-bottom:20px;
+  letter-spacing:0.1em; padding-left:20px;
+}
+.diary-text {
+  font-size:14px; color:#3a3020; line-height:3;
+  text-align:justify; padding-left:20px;
+}
+.diary-text p { margin-bottom:1.2em; text-indent:1em; }
+.diary-text p:last-child { margin-bottom:0; }
+.notable { border-bottom:1px solid #8a7a5a; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+
+/* 桃の花キャンバス */
+#momo-canvas { display:block; width:100%; max-width:480px; margin:24px auto; }
+
+/* 分岐への誘導 */
+#branch {
+  margin-bottom:32px; text-align:center;
+}
+.branch-text {
+  font-size:13px; color:#4a3820; line-height:2.8; margin-bottom:20px;
+}
+.branch-buttons {
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+}
+.branch-btn {
+  border:1px solid #c4a870; background:none;
+  color:#5a4820; font-family:'MS Mincho','游明朝',serif;
+  font-size:13px; padding:12px 28px; cursor:pointer;
+  letter-spacing:0.15em; text-decoration:none; display:inline-block;
+}
+.branch-btn:hover { background:#f0e4c8; }
+.branch-btn.b { border-color:#8a9a9a; color:#3a5050; }
+.branch-btn.b:hover { background:#e4eeee; }
+
+#nav {
+  font-family:'MS Gothic',monospace;
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+#disclaimer { margin-top:32px; font-size:9px; font-family:'MS Gothic',monospace; color:#c4c0b0; line-height:1.8; }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb">
+    <a href="hidden.html">archive / hidden /</a> momo_kiroku
+  </div>
+
+  <div id="diary">
+    <div class="diary-header">// 桃の手記 ── 蛸川小蘭　最後の記録</div>
+    <div class="diary-text">
+      <p>三月になれば桃が咲く。</p>
+      <p>そうしたら帰れると思っていた。</p>
+      <p>でも私はまだここにいる。来年の桃を、また待つことにした。</p>
+      <p>——そう書いてから、何年経ったのか。数えるのをやめた。</p>
+      <p>桃は、毎年咲いた。帰れなかった。でも桃は咲いた。</p>
+      <p>T湯の宿の窓から。高子沼の廃墟の隙間から。同じ山の同じ斜面に、同じ色の花が咲いた。</p>
+      <p><span class="notable">変わらないものがある、ということが、私の唯一の救いだった。</span></p>
+      <p>猫塚清治は、存在した。私が記録した。</p>
+      <p>私は、存在した。あなたが読んだ。</p>
+      <p>タコのぬいぐるみは、まだ名前がない。</p>
+      <p><span class="strike">帰れなかった</span>　<span class="rewrite">でも、記録は届いた。それで十分だ。</span></p>
+      <p>最後に、あなたに一つだけ頼みたいことがある。</p>
+      <p>このぬいぐるみに、名前をつけてほしい。</p>
+      <p>私が猫塚清治に名前を与えたように。記録されなかったものに、名前を与えてほしい。</p>
+      <p style="text-align:right;font-size:12px;color:#6a5838;margin-top:16px;">
+        ── 蛸川小蘭
+      </p>
+    </div>
+  </div>
+
+  <canvas id="momo-canvas" width="480" height="120"></canvas>
+
+  <div id="branch">
+    <div class="branch-text">
+      記録を、どう終わらせますか。
+    </div>
+    <div class="branch-buttons">
+      <a href="end_a.html" class="branch-btn">記録を残す</a>
+      <a href="end_b.html" class="branch-btn b">記録を消す</a>
+    </div>
+  </div>
+
+  <div id="nav">
+    <a href="hidden.html">◄ 27｜隠しページへ戻る</a>
+    <span style="color:#c4c0b0;">── 選択してください ──</span>
+  </div>
+  <div id="disclaimer">*このアーカイブに登場する人物・事件・団体はすべて架空です。</div>
+</div>
+<script>
+(function(){
+  const cv = document.getElementById('momo-canvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  ctx.fillStyle = '#f0ece0'; ctx.fillRect(0,0,W,H);
+  function branch(x,y,angle,len,depth){
+    if(depth===0||len<3) return;
+    ctx.strokeStyle=`rgba(90,60,30,${0.25+depth*0.07})`;
+    ctx.lineWidth=depth*0.6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x,y);
+    const nx=x+Math.cos(angle)*len, ny=y+Math.sin(angle)*len;
+    ctx.lineTo(nx,ny); ctx.stroke();
+    branch(nx,ny,angle-0.45+(Math.random()-0.5)*0.2,len*0.7,depth-1);
+    branch(nx,ny,angle+0.45+(Math.random()-0.5)*0.2,len*0.65,depth-1);
+    if(depth<=3){
+      for(let i=0;i<4;i++){
+        const pa=Math.random()*Math.PI*2, pr=2+Math.random()*4;
+        ctx.beginPath();
+        ctx.arc(nx+Math.cos(pa)*pr, ny+Math.sin(pa)*pr, 1.5+Math.random()*2.5, 0, Math.PI*2);
+        ctx.fillStyle=Math.random()>0.4?`rgba(240,180,190,0.7)`:`rgba(250,230,235,0.8)`;
+        ctx.fill();
+      }
+    }
+  }
+  [60,150,240,330,420].forEach(x=>{ branch(x,H,-Math.PI/2,28,7); });
+  for(let i=0;i<20;i++){
+    ctx.beginPath();
+    ctx.arc(Math.random()*W, Math.random()*H*0.8, 1+Math.random()*2, 0, Math.PI*2);
+    ctx.fillStyle=`rgba(240,180,190,${0.3+Math.random()*0.4})`; ctx.fill();
+  }
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
