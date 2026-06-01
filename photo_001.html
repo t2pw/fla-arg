@@ -1,0 +1,216 @@
+<!--
+  福島地域記録データアーカイブ ── page 04
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="04">
+<title>photo_001 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc; color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px; line-height:2; padding:48px 20px; min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+#breadcrumb { font-size:10px; color:#9a9888; margin-bottom:28px; letter-spacing:0.1em; }
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+#restore-bar { height:3px; background:#d8d4c8; margin-bottom:6px; position:relative; overflow:hidden; }
+#restore-bar::after { content:''; position:absolute; left:0; top:0; height:100%; width:72%; background:#6a8a6a; }
+#restore-label { font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right; }
+#photo-exhibit { margin-bottom:28px; }
+#photo-exhibit h3 {
+  font-size:10px; color:#5a5848; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4c0b0; padding-bottom:6px;
+}
+#photo-mount {
+  background:#e8e0c8; border:1px solid #c4b8a0;
+  padding:16px; display:inline-block; margin-bottom:16px;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.08); max-width:380px; width:100%; position:relative;
+}
+#photo-mount img { display:block; width:100%; height:auto; }
+#photo-mount img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:200px;
+  align-items:center; justify-content:center;
+  background:#c8c0a8; color:#8a7858; font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.photo-caption {
+  text-align:center; font-size:10px; color:#8a7858; margin-top:10px;
+  font-family:'MS Mincho','游明朝',serif; letter-spacing:0.15em;
+}
+#photo-back {
+  background:#f4edd8; border:1px solid #c8bca0;
+  padding:20px 24px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif; position:relative;
+}
+#photo-back h4 {
+  font-size:10px; color:#8a7858; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em; font-family:'MS Gothic',monospace;
+}
+.back-text { font-size:13px; color:#3a3020; line-height:2.6; text-align:justify; }
+.back-stamp {
+  position:absolute; right:20px; top:20px;
+  width:48px; height:48px; border-radius:50%;
+  border:2px solid rgba(160,80,60,0.35);
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; color:rgba(160,80,60,0.4);
+  text-align:center; line-height:1.4; transform:rotate(-12deg);
+  font-family:'MS Mincho','游明朝',serif;
+}
+#meta-block {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:28px; font-size:11px;
+}
+#meta-block h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.meta-line {
+  display:flex; gap:12px; padding:4px 0;
+  border-bottom:1px solid #e8e4d8; font-size:10px;
+}
+.meta-line:last-child { border-bottom:none; }
+.meta-key { color:#9a9888; min-width:130px; }
+.meta-val { color:#4a4838; }
+.meta-val.notable { color:#3a6a3a; font-weight:bold; }
+.meta-val.warn { color:#7a5030; }
+#analysis {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:28px; font-size:11px;
+}
+#analysis h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.analysis-row {
+  padding:5px 0; border-bottom:1px solid #d8e4d0;
+  font-size:11px; color:#4a5a3a; line-height:1.8;
+}
+.analysis-row:last-child { border-bottom:none; }
+.label { color:#7a9a7a; font-size:10px; margin-right:8px; }
+.hint { color:#4a7a5a; font-size:10px; cursor:default; border-bottom:1px dashed #8aba8a; }
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title { color:#3a5a3a; margin-bottom:8px; font-size:10px; letter-spacing:0.15em; }
+#fragment .frag-hint { color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default; }
+#nav {
+  font-size:11px; color:#9a9888; display:flex; justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+#disclaimer { margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8; }
+.glitch { animation:g 12s infinite; }
+@keyframes g { 0%,96%,100%{opacity:1;transform:none} 97%{opacity:.6;transform:translateX(2px)} 98%{opacity:1;transform:translateX(-1px)} }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="photo_001.html"> photo_001</a>
+  </div>
+  <div id="file-header">
+    <div class="filename glitch">archive_photo_001_scan.dat ── 画像スキャンデータ</div>
+    <div class="fh-row">
+      <span>撮影推定：<span class="fh-val warn">昭和二十四年頃</span></span>
+      <span>状態：<span class="fh-val warn">経年劣化・退色あり</span></span>
+      <span>復元率：<span class="fh-val">72%</span></span>
+    </div>
+  </div>
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：72% ── 退色により細部不鮮明</div>
+
+  <div id="photo-exhibit">
+    <h3>// PHOTO DATA ── 表面スキャン</h3>
+    <div id="photo-mount">
+      <img src="photo_koaru.jpg" alt="猫塚清治の写真" onerror="this.classList.add('broken')"/>
+      <div class="photo-fallback">
+        ［画像：猫塚清治（推定）昭和二十四年 M川付近］<br>
+        ※ 実装時に photo_koaru.jpg を同フォルダに配置してください
+      </div>
+      <div class="photo-caption">昭和二十四年　M川付近（推定）</div>
+    </div>
+
+    <h3 style="margin-top:20px;">// PHOTO DATA ── 裏面スキャン</h3>
+    <div id="photo-back">
+      <div class="back-stamp">検閲<br>済</div>
+      <h4>// 手書き文字（インク）── 復元</h4>
+      <div class="back-text">
+        猫塚　清治<br>
+        昭和二十四年八月　M川付近にて<br><br>
+        ── この人は、ここにいた。<br>
+        　　生きている。消えていない。<br>
+        　　忘れないでください。
+      </div>
+    </div>
+  </div>
+
+  <div id="meta-block">
+    <h3>// IMAGE METADATA ///////////</h3>
+    <div class="meta-line"><span class="meta-key">推定撮影日時</span><span class="meta-val">昭和二十四年八月（M川事件前後）</span></div>
+    <div class="meta-line"><span class="meta-key">撮影場所</span><span class="meta-val">M川付近（詳細不明）</span></div>
+    <div class="meta-line"><span class="meta-key">被写体</span><span class="meta-val notable">猫塚 清治（推定）── 事件当時34歳・生存</span></div>
+    <div class="meta-line"><span class="meta-key">状況</span><span class="meta-val warn">被告リストに名前なし。証人リストにも名前なし。記録上「存在しない」</span></div>
+    <div class="meta-line"><span class="meta-key">撮影者</span><span class="meta-val warn">不明（蛸川氏の所持品より）</span></div>
+    <div class="meta-line"><span class="meta-key">裏面記述者</span><span class="meta-val">蛸川氏（筆跡照合済）</span></div>
+  </div>
+
+  <div id="analysis">
+    <h3>// ANALYSIS ── 画像解析メモ</h3>
+    <div class="analysis-row">
+      <span class="label">[服装]</span>国鉄作業服に近い形状。胸ポケットに何か差し込んでいる。
+    </div>
+    <div class="analysis-row">
+      <span class="label">[背景]</span>線路脇の草地。遠景に山。
+      <span class="hint" title="福島盆地を囲む山並みと一致する">── 福島盆地周辺と一致（推定）</span>
+    </div>
+    <div class="analysis-row">
+      <span class="label">[表情]</span>正面を向いている。姿勢は真っ直ぐだ。
+    </div>
+    <div class="analysis-row">
+      <span class="label">[注記]</span>この写真を撮ったのは誰か。
+      <span class="hint" title="蛸川小蘭が撮影した可能性がある">── 蛸川氏の所持品であったことを考えると……</span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// NEXT ── 関連ファイルへ</div>
+    <span style="color:#4a7a4a;">05</span>_photo.dat ──
+    <span style="color:#4a6a5a;">M川駅跡　過去ト現在</span>
+    <div class="frag-hint">// → photo_002.html</div>
+  </div>
+
+  <div id="nav">
+    <a href="kiroku_003.html">◄ 03｜手記③へ戻る</a>
+    <a href="photo_002.html">05｜写真② M川駅跡 ►</a>
+  </div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
