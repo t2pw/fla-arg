@@ -1,8 +1,194 @@
-<div class="page-block">
-  <div class="page-id">// page 26 ── it_kiroku.html</div>
-  <div class="page-title">26｜ITと記録の現在</div>
-  <meta name="page-id" content="26">
+<!--
+  福島地域記録データアーカイブ ── page 26
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="26">
+<title>it_kiroku ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
 
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:92%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* セクション共通 */
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+/* 対比ブロック */
+.compare-block {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; margin-bottom:12px;
+}
+.compare-item {
+  padding:10px 12px; font-size:11px; line-height:2;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.compare-item .c-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; letter-spacing:0.15em;
+  margin-bottom:6px; color:#9a9888;
+}
+.compare-item.past {
+  background:#f8f0dc; border:1px solid #d4c8a8; color:#5a4828;
+}
+.compare-item.now {
+  background:#e8ecf4; border:1px solid #c0c8d4; color:#2a3a5a;
+}
+
+/* 事実ブロック */
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-block:last-child { margin-bottom:0; }
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:4px;
+  letter-spacing:0.15em;
+}
+.fact-text {
+  font-size:12px; color:#3a3020; line-height:2.2;
+}
+.notable { border-bottom:1px solid #8a7a5a; }
+
+/* 手記引用 */
+.prose-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 18px; margin-bottom:16px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.prose-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.prose {
+  font-size:13px; color:#3a3020;
+  line-height:2.6; text-align:justify;
+  border-left:3px solid #c4a870; padding-left:14px;
+}
+.prose p { margin-bottom:0.9em; text-indent:1em; }
+.prose p:last-child { margin-bottom:0; }
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px; border:1px solid #c4d4c0;
+}
+
+/* 注釈 */
+.annotation {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+  color:#3a4a3a; line-height:2;
+}
+
+/* フラグメント */
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> it_kiroku
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">it_kiroku.dat ── ITと記録の現在</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">デジタル考察・記録の永続性</span></span>
+      <span>復元率：<span class="fh-val">92%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：92%</div>
+
+  <!-- 対比セクション -->
   <div class="section">
     <h3>// デジタルと記録の永続性</h3>
     <div class="compare-block">
@@ -17,45 +203,48 @@
     </div>
     <div class="fact-block">
       <div class="fact-label">// 問い</div>
-      <div style="font-family:'MS Mincho','游明朝',serif;font-size:12px;color:#3a3020;line-height:2.2;">
+      <div class="fact-text">
         小蘭が1949年に書いたバイナリは、帳面という「紙」に残った。それが70年後にデジタル化されてネットに浮上した。<span class="notable">紙がなければ、デジタルもなかった。</span>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <h3>// 小蘭からの問い</h3>
+  <!-- 小蘭からの問い -->
+  <div class="prose-block">
+    <h3>// 付記 ── 小蘭の手記（高子沼にて）</h3>
     <div class="prose">
       <p>私はITエンジニアだった。データは速く、正確に、遠くまで届けられるべきだと信じていた。</p>
       <p>でも、この時代に生きてみて分かったことがある。</p>
-      <p>データは、<span class="notable">誰かが意図して残さなければ消える</span>。速さは永続を保証しない。クラウドに上げれば安全だと思っていた。でもクラウドの会社が潰れたら？サービスが終了したら？</p>
+      <p>データは、<span class="notable">誰かが意図して残さなければ消える</span>。速さは永続を保証しない。<span class="it-term">クラウド</span>に上げれば安全だと思っていた。でもクラウドの会社が潰れたら？サービスが終了したら？</p>
       <p>帳面に書いたバイナリは、紙が残る限り消えない。障子に穿った穿孔パターンは、柱が残る限り消えない。支柱に刻んだ印は、鉄が残る限り消えない。</p>
       <p>記録の形は関係ない。<span class="notable">記録する意志が、記録を残す。</span></p>
       <p style="text-align:right;font-size:11px;color:#6a8a6a;margin-top:8px;">── 蛸川小蘭</p>
     </div>
   </div>
 
+  <!-- 注釈 -->
   <div class="annotation">
     17〜26番をすべて読んだあなたへ。断片が揃った。隠しページへのアクセスが解放される。
   </div>
 
-  <div class="fragment">
-    <span style="color:#4a7a4a;">27</span>_hidden.dat ──
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 隠しページへ</div>
+    <span style="color:#4a7a4a;">27</span>_hidden.dat
+    <span style="color:#b8c4b0;">──</span>
     <span style="color:#4a6a5a;">隠シページ　ループノ真実</span>
-    <div style="font-size:10px;color:#b8c4b0;margin-top:4px;">
-      // 17〜26番すべての発見記録が確認されました
-    </div>
+    <div class="frag-hint" title="17〜26番すべての発見記録が確認されました">// 17〜26番すべての発見記録が確認されました</div>
   </div>
-  <div class="nav-bar">
-    <a href="data_trace.html">◄ 25｜データ痕跡</a>
+
+  <div id="nav">
+    <a href="data_trace.html">◄ 25｜データ痕跡へ戻る</a>
     <a href="hidden.html">27｜隠しページ ►</a>
   </div>
-</div>
 
-<div id="disclaimer">
-  *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
-</div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
 
+</div>
 <script src="discovery.js"></script>
 </body>
 </html>
