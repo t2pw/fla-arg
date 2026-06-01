@@ -1,0 +1,293 @@
+<!--
+  福島地域記録データアーカイブ ── page 11
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="11">
+<title>map_002 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:86%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 写真 */
+.photo-block {
+  position:relative; margin-bottom:8px;
+  border:1px solid #b8b0a0; overflow:hidden;
+}
+.photo-block img {
+  display:block; width:100%; height:auto;
+}
+.photo-block img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:160px;
+  align-items:center; justify-content:center;
+  background:#c8c4b0; color:#8a8878;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.year-label {
+  position:absolute; top:10px; left:10px;
+  background:rgba(240,232,210,0.88); color:#3a3020;
+  font-size:10px; padding:3px 8px;
+  border:1px solid rgba(180,165,130,0.6);
+}
+.photo-caption {
+  font-size:10px; color:#7a7060; text-align:center;
+  padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em;
+}
+
+/* 手記引用 */
+#diary-quote {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 18px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#diary-quote h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.quote-text {
+  font-size:13px; color:#3a3020; line-height:2.6;
+  border-left:3px solid #c4a870; padding-left:14px;
+  text-align:justify;
+}
+.quote-text p { margin-bottom:0.8em; text-indent:1em; }
+.quote-text p:last-child { margin-bottom:0; }
+.quote-source {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#8a7858; margin-top:10px; text-align:right;
+}
+
+/* 座標解析 */
+#coord-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#coord-block h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.coord-row {
+  display:flex; gap:12px; padding:5px 0;
+  border-bottom:1px solid #d8e4d0; font-size:11px;
+}
+.coord-row:last-child { border-bottom:none; }
+.coord-key { color:#7a9a7a; min-width:120px; font-size:10px; }
+.coord-val { color:#3a4a3a; }
+.coord-val.match { color:#3a6a3a; font-weight:bold; }
+.coord-val.hint-text {
+  color:#5a8a5a; font-size:10px; cursor:default;
+  border-bottom:1px dashed #8aba8a;
+}
+.coord-val.hint-text:hover { color:#2a5a3a; }
+
+/* 現在のH見山情報 */
+#now-block {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#now-block h3 {
+  font-size:10px; color:#4a5a6a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.now-text {
+  font-size:11px; color:#4a5060; line-height:2.2;
+}
+.now-text .notable {
+  border-bottom:1px solid #6a8a9a; padding-bottom:1px;
+}
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-code {
+  background:#dcecd8; border:1px solid #b8d4b8;
+  padding:8px 12px; margin:8px 0;
+  font-size:11px; color:#3a6a3a; letter-spacing:0.1em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="map_001.html"> map_001 /</a>
+    map_002
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">map_002.dat ── H見山・記録写真（復元）</div>
+    <div class="fh-row">
+      <span>座標照合：<span class="fh-val match">37.7503°N 140.4676°E ── 一致</span></span>
+      <span>復元率：<span class="fh-val">86%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 10番の座標とH見山の位置が一致 ── 自動照合済</div>
+
+  <!-- 写真：昭和32年 -->
+  <div class="photo-block" style="margin-bottom:4px;">
+    <img src="photo_hmiyama.jpg" alt="H見山・昭和32年春"
+         onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">
+      ［画像：H見山（花見山）・昭和32年春・全景］<br>
+      ※ photo_hmiyama.jpg を配置してください
+    </div>
+    <div class="year-label">昭和三十二年　春</div>
+  </div>
+  <div class="photo-caption" style="margin-bottom:20px;">
+    H見山　全景 ── 昭和三十二年春　桃・梅・桜　満開
+  </div>
+
+  <!-- 手記引用 -->
+  <div id="diary-quote">
+    <h3>// 手記③より ── 昭和二十六年三月　T湯にて</h3>
+    <div class="quote-text">
+      <p>三月になった。</p>
+      <p>T湯から少し下ると、福島の街が見える。盆地に桃の花が咲き始めている。白とピンクの霞が、山の裾まで広がっている。</p>
+      <p>きれいだと思った。素直に、きれいだと思った。</p>
+      <p>三月になれば桃が咲く。そうしたら帰れると思っていた。でも私はまだここにいる。来年の桃を、また待つことにした。</p>
+    </div>
+    <div class="quote-source">── kiroku_003.txt より</div>
+  </div>
+
+  <!-- 座標解析 -->
+  <div id="coord-block">
+    <h3>// COORDINATE ANALYSIS ── 10番の座標との照合</h3>
+    <div class="coord-row">
+      <span class="coord-key">10番の座標</span>
+      <span class="coord-val">37.7503°N　140.4676°E</span>
+    </div>
+    <div class="coord-row">
+      <span class="coord-key">H見山の位置</span>
+      <span class="coord-val match">37.750°N　140.467°E ── 一致</span>
+    </div>
+    <div class="coord-row">
+      <span class="coord-key">写真撮影地点</span>
+      <span class="coord-val">H見山展望台付近（推定）</span>
+    </div>
+    <div class="coord-row">
+      <span class="coord-key">撮影者</span>
+      <span class="coord-val hint-text" title="蛸川小蘭が毎年春にここから福島盆地を眺めていた可能性がある">不明 ── ただし手記の記述と一致</span>
+    </div>
+    <div class="coord-row">
+      <span class="coord-key">次の座標</span>
+      <span class="coord-val hint-text" title="12番・T沼への手がかりが写真の中に隠されている">── 写真の中を注意深く見よ</span>
+    </div>
+  </div>
+
+  <!-- 現在のH見山 -->
+  <div id="now-block">
+    <h3>// 現在のH見山について</h3>
+    <div class="now-text">
+      H見山（花見山）は現在も福島市を代表する<span class="notable">桃の名所</span>として知られる。毎年三月下旬から四月にかけて、桃・梅・桜・レンギョウが一斉に咲き、「桃源郷」とも呼ばれる。<br><br>
+      個人の農家が丹精込めて育てた花木の山を、無償で一般開放していることでも知られる。<span class="notable">記録されない善意が、七十年以上続いている。</span><br><br>
+      蛸川小蘭がT湯から眺めたこの景色は、現在も毎年三月に同じ場所に咲く。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへの手がかり</div>
+    写真右下の農道の先——地図上の未解読地点と一致する座標：
+    <div class="frag-code">
+      37.6891°N　140.5234°E<br>
+      ── T沼██施設跡（推定）
+    </div>
+    <div class="frag-hint" title="map_003.htmlへ進んでください">// → 12番「地図③ T沼へ」へ接続可能</div>
+  </div>
+
+  <div id="nav">
+    <a href="map_001.html">◄ 10｜地図①へ戻る</a>
+    <a href="map_003.html">12｜地図③ T沼へ ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設・関係者の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
