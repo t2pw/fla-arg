@@ -1,0 +1,380 @@
+<!--
+  福島地域記録データアーカイブ ── page 15
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="15">
+<title>telegram_003 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+.fh-val.match { color:#3a6a3a; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:100%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* タコッペ写真 */
+#takkope-section {
+  margin-bottom:24px;
+}
+#takkope-section h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a5848; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4c0b0; padding-bottom:6px;
+}
+#takkope-mount {
+  background:#e8e0c8; border:1px solid #c4b8a0;
+  padding:16px; display:inline-block;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.08);
+  max-width:320px; width:100%; margin-bottom:12px;
+}
+#takkope-mount img {
+  display:block; width:100%; height:auto;
+}
+#takkope-mount img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:200px;
+  align-items:center; justify-content:center;
+  background:#d8d0b8; color:#8a7858;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.takkope-caption {
+  font-size:10px; color:#8a7858; text-align:center;
+  margin-top:10px; font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.15em;
+}
+
+/* 来歴タイムライン */
+#timeline {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:24px;
+}
+#timeline h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.tl-item {
+  display:flex; gap:14px; margin-bottom:14px;
+  align-items:flex-start;
+}
+.tl-item:last-child { margin-bottom:0; }
+.tl-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:#8a8878; flex-shrink:0; margin-top:6px;
+  position:relative;
+}
+.tl-dot::after {
+  content:''; position:absolute;
+  left:50%; top:10px; bottom:-20px;
+  width:1px; background:#d4d0c4;
+  transform:translateX(-50%);
+}
+.tl-item:last-child .tl-dot::after { display:none; }
+.tl-dot.key { background:#4a8a5a; }
+.tl-dot.loop { background:#6a5a9a; }
+.tl-body { flex:1; }
+.tl-date {
+  font-size:10px; color:#8a7848; margin-bottom:2px;
+  font-family:'MS Gothic',monospace; letter-spacing:0.05em;
+}
+.tl-text {
+  font-size:12px; color:#3a3020; line-height:2;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.tl-text .notable { border-bottom:1px solid #8a7a5a; padding-bottom:1px; }
+.tl-text .hint {
+  font-size:10px; color:#5a8a6a; cursor:default;
+  border-bottom:1px dashed #8aba8a; margin-left:4px;
+}
+.tl-text .hint:hover { color:#2a5a3a; }
+
+/* 電文最終解読 */
+#final-decode {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:16px 18px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#final-decode h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.final-text {
+  font-size:13px; color:#2a3a2a; line-height:2.8;
+  text-align:justify;
+}
+.final-text p { margin-bottom:1em; text-indent:1em; }
+.final-text p:last-child { margin-bottom:0; }
+.final-text .key {
+  color:#2a5a2a; border-bottom:1px solid #4a8a4a;
+}
+.final-text .lost {
+  color:#c4c0b0; background:#d8e8d0;
+  border-radius:2px; padding:0 2px;
+}
+
+/* スポークE完了 */
+#spoke-complete {
+  border:2px solid #8aaa8a; background:#e4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; text-align:center;
+}
+#spoke-complete .complete-title {
+  font-size:12px; color:#3a6a3a; margin-bottom:6px;
+  letter-spacing:0.1em;
+}
+#spoke-complete .complete-text {
+  font-size:11px; color:#4a6a4a; line-height:2;
+}
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-code {
+  background:#dcecd8; border:1px solid #b8d4b8;
+  padding:8px 12px; margin:8px 0;
+  font-size:11px; color:#2a5a2a; letter-spacing:0.1em;
+  line-height:2;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="telegram_001.html"> telegram_001 /</a>
+    <a href="telegram_002.html"> telegram_002 /</a>
+    telegram_003
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">telegram_003.dat ── タコッペ来歴・最終解読</div>
+    <div class="fh-row">
+      <span>解読率：<span class="fh-val match">100% ── 全データ解読完了</span></span>
+      <span>スポークE：<span class="fh-val match">完了</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：100% ── 電文スポーク、すべて解読</div>
+
+  <!-- タコッペ写真 -->
+  <div id="takkope-section">
+    <h3>// OBJECT DATA ── タコのぬいぐるみ（現物スキャン）</h3>
+    <div id="takkope-mount">
+      <img src="photo_takkope.jpg" alt="タコのぬいぐるみ"
+           onerror="this.classList.add('broken')"/>
+      <div class="photo-fallback">
+        ［画像：タコのぬいぐるみ（実物）］<br>
+        ※ photo_takkope.jpg を配置してください
+      </div>
+      <div class="takkope-caption">首元のタグ「№0314」確認済 ── 名前：未登録</div>
+    </div>
+  </div>
+
+  <!-- 来歴タイムライン -->
+  <div id="timeline">
+    <h3>// TIMELINE ── タコのぬいぐるみの来歴</h3>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-date">現代（タイムスリップ前）</div>
+        <div class="tl-text">
+          蛸川小蘭が現代のどこかで購入。<span class="notable">なぜ買ったか、理由は分からなかった</span>。ただ、タコが好きだったから。幼い頃から。祖母が「相馬の海のタコは特別だ」とよく言っていた気がした。
+          <span class="hint" title="この祖母の記憶は、ループが作り出したものだ">── 祖母の正体</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot key"></div>
+      <div class="tl-body">
+        <div class="tl-date">1949年8月　タイムスリップ直後</div>
+        <div class="tl-text">
+          気がついたら、手の中にタコのぬいぐるみだけあった。バッグも財布もスマートフォンも、何もない。<span class="notable">なぜそれだけが一緒に来たのか</span>、小蘭にも分からなかった。
+          <span class="hint" title="ぬいぐるみ自体がループの媒介だった可能性がある">── 偶然ではなかったかもしれない</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-date">1949年秋　T湯温泉にて</div>
+        <div class="tl-text">
+          ぬいぐるみの首元に紙タグを付けた。「№0314」と書いた。猫塚清治のために決めた日付。帰れると信じた季節。相馬港のタコへの記憶。すべてをその四桁に込めた。名前は、まだつけなかった。
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-date">1950年代　T湯温泉</div>
+        <div class="tl-text">
+          主人の孫娘がぬいぐるみを触った。しばらく抱いていた。返してもらったとき、タグに小さな指の跡がついていた。その子の苗字が<span class="notable">蛸川</span>だと、後で知った。
+          <span class="hint" title="その子が小蘭の祖先——ループの結節点">── ここで環が閉じ始める</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-date">1973〜1999年　高子沼グリーンランド</div>
+        <div class="tl-text">
+          小蘭はぬいぐるみをずっと持ち続けた。施設で働きながら、毎年三月十四日に、タグを見た。黄ばんでいくタグを。それでも番号は消えなかった。名前は、まだない。
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-body">
+        <div class="tl-date">1999年以降　廃墟にて</div>
+        <div class="tl-text">
+          ぬいぐるみを観覧車の支柱の根元に隠した。記録と一緒に。<span class="notable">「誰かが来たとき、分かるように」</span>と手記にある。名前は、次に来る人間のためにとっておいた。
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot loop"></div>
+      <div class="tl-body">
+        <div class="tl-date">現代　ループの完成</div>
+        <div class="tl-text">
+          蛸川家の子孫（＝小蘭自身）がぬいぐるみの記録をネット上で発見する。首元のタグ「№0314」が、アーカイブへの鍵になる。
+          <span class="notable">ぬいぐるみは、小蘭から小蘭へ渡された。名前は——まだない。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 電文最終解読 -->
+  <div id="final-decode">
+    <h3>// FINAL DECODE ── 電文の残り25%（最終部分）</h3>
+    <div class="final-text">
+      <p>もう一つだけ、伝えておきたいことがある。</p>
+      <p>タコッペを、手放さないでほしい。</p>
+      <p>あなたがそれを持ってここに来たとき、私はようやく分かった。<span class="key">タコッペは私たちを繋ぐ唯一のものだ</span>。時代を超えて、ループを超えて。</p>
+      <p>相馬の海のタコは、特別だ。祖母がよくそう言っていた。<span class="lost">████</span>あなたが言っていたのだと、今は知っている。</p>
+      <p>猫塚清治のことを、記録し続けてほしい。あなたが記録するから、私は存在できる。私が存在するから、あなたはここに来た。</p>
+      <p><span class="key">記録されなかったものは、存在しなかったことになる。</span><br>
+      だから、記録する。何度でも。</p>
+      <p style="text-align:right;font-size:11px;color:#4a7a5a;margin-top:12px;">
+        ── 蛸川小蘭より、蛸川小蘭へ<br>
+        　　そして、これを読んでいるあなたへ
+      </p>
+    </div>
+  </div>
+
+  <!-- スポークE完了 -->
+  <div id="spoke-complete">
+    <div class="complete-title">// スポークE（電文）── 完了</div>
+    <div class="complete-text">
+      五つのスポークがすべて揃ったとき、次の扉が開く。<br>
+      01〜15番のすべてを発見したか、確認してほしい。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 第二層ハブへ</div>
+    五つのスポーク完了後、以下へアクセス可能：
+    <div class="frag-code">
+      hub_002.html ── 16｜記録保存会の核心<br>
+      <span style="color:#7aaa7a;">// 条件：01〜15番すべての発見</span>
+    </div>
+    <div class="frag-hint" title="発見記録パネルで進捗を確認してください">// → 右下の発見記録パネルを確認</div>
+  </div>
+
+  <div id="nav">
+    <a href="telegram_002.html">◄ 14｜電文②へ戻る</a>
+    <a href="hub_002.html">16｜記録保存会の核心 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
