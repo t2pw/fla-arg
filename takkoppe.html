@@ -1,0 +1,399 @@
+<!--
+  福島地域記録データアーカイブ ── page 23
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="23">
+<title>takkope ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:88%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* ぬいぐるみ写真 */
+#object-section {
+  margin-bottom:24px;
+}
+#object-section h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a5848; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4c0b0; padding-bottom:6px;
+}
+#object-mount {
+  background:#e8e0c8; border:1px solid #c4b8a0;
+  padding:16px; display:inline-block;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.08);
+  max-width:280px; width:100%; margin-bottom:10px;
+  position:relative;
+}
+#object-mount img {
+  display:block; width:100%; height:auto;
+}
+#object-mount img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:160px;
+  align-items:center; justify-content:center;
+  background:#d8d0b8; color:#8a7858;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.object-caption {
+  font-size:10px; color:#8a7858;
+  margin-top:8px; text-align:center;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em;
+}
+.object-tag {
+  position:absolute; bottom:24px; right:16px;
+  background:#f4edd8; border:1px solid #c8a96e;
+  padding:4px 8px; font-size:9px;
+  color:#5a3820; transform:rotate(3deg);
+  font-family:'MS Mincho','游明朝',serif;
+  box-shadow:1px 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 物品台帳 */
+#ledger {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:20px; font-size:11px;
+}
+#ledger h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.ledger-row {
+  display:flex; gap:10px; padding:5px 0;
+  border-bottom:1px solid #e8e4d8; font-size:11px;
+}
+.ledger-row:last-child { border-bottom:none; }
+.ledger-key { color:#8a8878; min-width:110px; font-size:10px; }
+.ledger-val { color:#3a3020; flex:1; line-height:1.8; }
+.ledger-val.warn { color:#7a5030; }
+.ledger-val.notable { color:#3a6a3a; }
+.ledger-val.empty {
+  color:#b8b4a8; font-style:italic;
+  border:1px dashed #c4c0b0; padding:2px 8px;
+  border-radius:2px; display:inline-block;
+}
+
+/* 相馬港の記述 */
+#soma-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 18px; margin-bottom:20px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#soma-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.soma-text {
+  font-size:13px; color:#3a3020;
+  line-height:2.6; text-align:justify;
+}
+.soma-text p { margin-bottom:0.9em; text-indent:1em; }
+.soma-text p:last-child { margin-bottom:0; }
+.soma-text .notable { border-bottom:1px solid #8a7a5a; }
+.soma-text .it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px;
+}
+.soma-divider {
+  text-align:center; color:#c4b89a; margin:14px 0;
+  font-size:11px; letter-spacing:0.3em;
+}
+
+/* ループの接続図 */
+#loop-connect {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:20px; font-size:11px;
+}
+#loop-connect h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.connect-row {
+  display:flex; gap:8px; align-items:center;
+  margin-bottom:8px; font-size:11px;
+  font-family:'MS Mincho','游明朝',serif;
+  flex-wrap:wrap;
+}
+.c-box {
+  border:1px solid #b8c4b0; background:#f0f8f0;
+  padding:4px 10px; font-size:11px; color:#2a3a2a;
+}
+.c-arrow { color:#7aaa7a; font-size:14px; }
+.c-note { font-size:10px; color:#5a7a5a; }
+
+/* 名前欄 */
+#name-block {
+  border:2px dashed #c4b88a; background:#f8f4e0;
+  padding:16px 18px; margin-bottom:20px; text-align:center;
+  font-family:'MS Mincho','游明朝',serif;
+}
+#name-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#6a5820; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+}
+.name-display {
+  font-size:15px; color:#4a3820; line-height:2.4;
+}
+.name-display .name-val {
+  font-size:20px; color:#2a4a2a;
+  border-bottom:2px solid #8a9a6a;
+  padding-bottom:2px; margin:0 4px;
+  display:inline-block; min-width:80px;
+  letter-spacing:0.15em;
+}
+.name-display .name-empty {
+  font-size:13px; color:#b8b0a0;
+  border-bottom:1px dashed #c4c0b0;
+  padding-bottom:2px; margin:0 4px;
+  display:inline-block; min-width:80px;
+  font-style:italic;
+}
+.name-hint {
+  font-size:11px; color:#7a6848; margin-top:10px; line-height:2;
+}
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> takkope
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">takkope.dat ── タコのぬいぐるみ来歴・相馬港との接続</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">物品記録・ループ接続</span></span>
+      <span>復元率：<span class="fh-val">88%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：88%</div>
+
+  <!-- ぬいぐるみ写真 -->
+  <div id="object-section">
+    <h3>// OBJECT DATA ── タコのぬいぐるみ（現物）</h3>
+    <div id="object-mount">
+      <img src="photo_takkope.jpg" alt="タコのぬいぐるみ"
+           onerror="this.classList.add('broken')"/>
+      <div class="photo-fallback">
+        ［画像：タコのぬいぐるみ（実物）］<br>
+        ※ photo_takkope.jpg を配置してください
+      </div>
+      <div class="object-tag">№0314</div>
+      <div class="object-caption">首元タグ「№0314」── 名前：未登録</div>
+    </div>
+  </div>
+
+  <!-- 物品台帳 -->
+  <div id="ledger">
+    <h3>// OBJECT RECORD ── 物品記録</h3>
+    <div class="ledger-row">
+      <span class="ledger-key">種別</span>
+      <span class="ledger-val">タコ型ぬいぐるみ（手のひらサイズ）</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">製造・入手</span>
+      <span class="ledger-val warn">不明（現代・日本国内と推定）</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">タグ記載</span>
+      <span class="ledger-val notable">№0314（手書き・インク）</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">タグ裏面</span>
+      <span class="ledger-val">「覚えている日」（上書き）</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">所持者</span>
+      <span class="ledger-val">蛸川小蘭（1949年〜1999年以降）</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">現在地</span>
+      <span class="ledger-val warn">T沼██施設跡・観覧車支柱の根元</span>
+    </div>
+    <div class="ledger-row">
+      <span class="ledger-key">名前</span>
+      <span class="ledger-val">
+        <span class="ledger-val empty">未登録</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- 相馬港との接続 -->
+  <div id="soma-block">
+    <h3>// 相馬港とタコ ── 蛸川という苗字の起源</h3>
+    <div class="soma-text">
+      <p>相馬港は、福島県相馬市にある漁港だ。タコの水揚げで知られる。現在も、相馬のタコは地元で親しまれている。</p>
+      <p>蛸川小蘭は、なぜタコが好きだったのか。本人も理由を知らなかった。ただ、幼い頃から好きだった。「相馬の海のタコは特別だ」という記憶があった。でも、その記憶の出所が分からなかった。</p>
+      <div class="soma-divider">── ── ──</div>
+      <p>1949年の秋、T湯の宿の主人が相馬から届いた干しタコをくれた。小蘭はそれを食べながら、その記憶を思い出そうとした。思い出せなかった。</p>
+      <p>主人に「苗字は何というんだ」と聞かれたとき、とっさに「蛸川」と名乗った。<span class="notable">なぜその苗字を選んだか、小蘭自身も分からなかった。</span>タコが好きだったから。それだけだ。</p>
+      <p>その苗字が子孫に伝わり、現代の蛸川小蘭の苗字になった。「相馬のタコは特別だ」という言葉も、文化として伝わった。小蘭が幼い頃に「祖母から聞いた」と思っていた記憶は——<span class="it-term">自分自身の記憶だった</span>。</p>
+    </div>
+  </div>
+
+  <!-- ループ接続 -->
+  <div id="loop-connect">
+    <h3>// LOOP ── タコのぬいぐるみが繋ぐもの</h3>
+    <div class="connect-row">
+      <div class="c-box">相馬港のタコ</div>
+      <div class="c-arrow">→</div>
+      <div class="c-box">「蛸川」と名乗る</div>
+      <div class="c-arrow">→</div>
+      <div class="c-note">苗字が子孫へ</div>
+    </div>
+    <div class="connect-row">
+      <div class="c-box">タコへの愛着</div>
+      <div class="c-arrow">→</div>
+      <div class="c-box">ぬいぐるみを買う</div>
+      <div class="c-arrow">→</div>
+      <div class="c-note">タイムスリップ時に持参</div>
+    </div>
+    <div class="connect-row">
+      <div class="c-box">№0314のタグ</div>
+      <div class="c-arrow">→</div>
+      <div class="c-box">アーカイブの鍵</div>
+      <div class="c-arrow">→</div>
+      <div class="c-note">あなたがここに来た</div>
+    </div>
+    <div style="font-size:10px;color:#4a7a5a;margin-top:10px;border-top:1px solid #c4d4c0;padding-top:8px;">
+      ── すべてが繋がっている。起点は、相馬港の干しタコだったかもしれない。
+    </div>
+  </div>
+
+  <!-- 名前欄 -->
+  <div id="name-block">
+    <h3>// 名前の欄 ── このぬいぐるみにはまだ名前がない</h3>
+    <div class="name-display">
+      このぬいぐるみの名前：
+      <span id="name-display-val" class="name-empty">未登録</span>
+    </div>
+    <div class="name-hint">
+      小蘭は名前をつけなかった。<br>
+      「名前は、次に記録する人間のためにとっておいた」<br>
+      ── 手記より
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">24</span>_momo.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">福島・桃ノ産地　H見山ノ現在</span>
+    <div class="frag-hint" title="momo.htmlへ進んでください">// → 24番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="takosanuma.html">◄ 22｜T沼・廃墟の記憶へ戻る</a>
+    <a href="momo.html">24｜福島・桃の産地 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+// localStorageから名前を取得して表示
+(function(){
+  try {
+    const name = localStorage.getItem('fla_takkope_name');
+    const el = document.getElementById('name-display-val');
+    if(name && el){
+      el.textContent = name;
+      el.className = 'name-val';
+    }
+  } catch(e){}
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
