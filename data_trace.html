@@ -1,0 +1,229 @@
+<!--
+  福島地域記録データアーカイブ ── page 25
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="25">
+<title>data_trace ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:87%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:8px;
+  letter-spacing:0.15em;
+}
+
+/* データ痕跡テーブル */
+.trace-row {
+  display:flex; gap:10px; padding:6px 0;
+  border-bottom:1px solid #e8dfc8; font-size:11px; line-height:1.9;
+  font-family:'MS Gothic',monospace;
+}
+.trace-row:last-child { border-bottom:none; }
+.trace-key {
+  color:#8a7848; min-width:120px; font-size:10px; flex-shrink:0;
+}
+.trace-val { color:#3a3020; flex:1; }
+.trace-val .notable { border-bottom:1px solid #8a7a5a; }
+
+/* 散文 */
+.prose {
+  font-size:13px; color:#3a3020;
+  line-height:2.6; text-align:justify;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.prose p { margin-bottom:0.9em; text-indent:1em; }
+.prose p:last-child { margin-bottom:0; }
+.notable { border-bottom:1px solid #8a7a5a; }
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px; border:1px solid #c4d4c0;
+}
+
+.annotation {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+  color:#3a4a3a; line-height:2;
+  font-family:'MS Mincho','游明朝',serif;
+}
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> data_trace
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">data_trace.dat ── 小蘭のデータ痕跡・全容</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">データ解析・痕跡記録</span></span>
+      <span>復元率：<span class="fh-val">87%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：87%</div>
+
+  <!-- データ痕跡一覧 -->
+  <div class="section">
+    <h3>// 過去から届いたデータの全容</h3>
+    <div class="fact-block">
+      <div class="fact-label">// 確認されたデータの痕跡</div>
+      <div class="trace-row">
+        <span class="trace-key">帳面のバイナリ</span>
+        <span class="trace-val">「fukushima-0314」── <span class="notable">侵入口の鍵</span></span>
+      </div>
+      <div class="trace-row">
+        <span class="trace-key">写真メタデータ</span>
+        <span class="trace-val">「te-ki-no-ko-ro-no-wa-ta-si-e」── 過去の頃の私へ</span>
+      </div>
+      <div class="trace-row">
+        <span class="trace-key">掲示板の投稿</span>
+        <span class="trace-val">ID: takocawa_0314 ── 昭和三十八年の書き込み</span>
+      </div>
+      <div class="trace-row">
+        <span class="trace-key">地図の座標</span>
+        <span class="trace-val">37.7503°N　140.4676°E ── H見山</span>
+      </div>
+      <div class="trace-row">
+        <span class="trace-key">電文データ</span>
+        <span class="trace-val">「過去の頃の私へ」── <span class="notable">ループの起点</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITエンジニアとしての小蘭 -->
+  <div class="section">
+    <h3>// ITエンジニアとしての小蘭</h3>
+    <div class="prose">
+      <p>小蘭はITエンジニアだった。情報を設計することが仕事だった。</p>
+      <p>1949年に迷い込んだとき、スマートフォンも電気もなかった。でも、小蘭には知識があった。<span class="it-term">0と1で文字を書く方法</span>。<span class="it-term">パターンで記録を残す方法</span>。</p>
+      <p>帳面に書いたバイナリ数列。障子に穿った穿孔パターン。写真のメタデータに埋め込んだローマ字。掲示板のIDに仕込んだ鍵。地図の余白に書いた座標。</p>
+      <p>すべてが、<span class="notable">「現代のITエンジニアだけが読める」形で残された</span>。1949年の人間には意味不明な数字の羅列が、七十年後に解読される——それが小蘭の設計だった。</p>
+      <p>そしてその設計を読んだのは、小蘭自身だった。</p>
+    </div>
+  </div>
+
+  <!-- 注釈 -->
+  <div class="annotation">
+    このアーカイブ自体が、小蘭のデータ痕跡の最終形態だ。バイナリから始まり、写真、掲示板、地図、電文——断片を集めた人間が、今ここにいる。小蘭の設計は、正確に機能した。
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">26</span>_it_kiroku.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">ITと記録の現在</span>
+    <div class="frag-hint" title="it_kiroku.htmlへ進んでください">// → 26番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="momo.html">◄ 24｜桃の産地へ戻る</a>
+    <a href="it_kiroku.html">26｜ITと記録の現在 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
