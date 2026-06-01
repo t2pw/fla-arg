@@ -1,0 +1,322 @@
+<!--
+  福島地域記録データアーカイブ ── page 18
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="18">
+<title>inochi ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:79%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-block:last-child { margin-bottom:0; }
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:4px;
+  letter-spacing:0.15em;
+}
+.fact-text {
+  font-size:12px; color:#3a3020; line-height:2.2;
+}
+.fact-text .notable { border-bottom:1px solid #8a7a5a; }
+.fact-text .fiction {
+  color:#6a8a6a; font-size:11px;
+  border-left:2px solid #a8c4a0; padding-left:8px;
+  margin-top:6px; display:block; font-style:italic;
+}
+
+/* 構造図 */
+.structure-block {
+  background:#f0ece0; border:1px solid #d4d0c4;
+  padding:14px; margin-bottom:12px;
+}
+.structure-block h4 {
+  font-size:10px; color:#5a5848; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.1em;
+}
+.structure-row {
+  display:flex; gap:8px; align-items:center;
+  margin-bottom:8px; font-size:11px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.s-box {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:4px 10px; font-size:11px; color:#3a3020;
+  white-space:nowrap;
+}
+.s-box.red { border-color:#c4604a; background:#f8ece8; color:#7a3020; }
+.s-box.green { border-color:#4a8a5a; background:#e8f4ec; color:#2a5a3a; }
+.s-arrow { color:#9a9888; font-size:12px; }
+.s-note { font-size:10px; color:#7a7060; flex:1; }
+
+/* 手記引用 */
+.diary-quote {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 18px; margin-bottom:16px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.diary-quote h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.quote-text {
+  font-size:13px; color:#3a3020; line-height:2.6;
+  border-left:3px solid #c4a870; padding-left:14px;
+}
+.quote-text p { margin-bottom:0.8em; text-indent:1em; }
+.quote-text p:last-child { margin-bottom:0; }
+.quote-source {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#8a7858; margin-top:8px; text-align:right;
+}
+
+/* 注釈 */
+.annotation-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+}
+.annotation-block h4 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.annotation-text { color:#3a4a3a; line-height:2; }
+.annotation-text .notable { color:#2a5a2a; border-bottom:1px solid #4a8a4a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> inochi
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">inochi.dat ── 冤罪の構造・命日と桃の季節</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">事件分析・記録</span></span>
+      <span>復元率：<span class="fh-val">79%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：79%</div>
+
+  <!-- 冤罪の構造 -->
+  <div class="section">
+    <h3>// 冤罪はなぜ生まれたか ── M川事件の構造</h3>
+
+    <div class="fact-block">
+      <div class="fact-label">// 自白の強要</div>
+      <div class="fact-text">
+        最初の逮捕者は別件で拘束された少年だった。取り調べの中で「自白」させられ、その自白をもとに二十名が芋づる式に逮捕された。<span class="notable">全員が公判で犯行を否認した</span>が、裁判所は自白を重視して有罪とした。
+      </div>
+    </div>
+
+    <div class="fact-block">
+      <div class="fact-label">// 証拠の隠蔽</div>
+      <div class="fact-text">
+        被告たちの無実を示すアリバイ証拠が、捜査機関によって隠されていた。差し戻し審でこれが発覚し、逆転無罪の決め手となった。<span class="notable">証拠を隠すことも、記録を消すことと同じだ。</span>
+        <span class="fiction">→ 猫塚清治が記録から消されたのも、同じ構造の中にある。</span>
+      </div>
+    </div>
+
+    <div class="fact-block">
+      <div class="fact-label">// メディアと世論の初期反応</div>
+      <div class="fact-text">
+        事件直後、政府は「思想的底流」を問題にし、新聞・ラジオも当局の発表を追った。多くの国民が「労組員による犯行」と信じた。<span class="notable">情報の非対称が、冤罪を成立させた。</span>
+      </div>
+    </div>
+
+    <!-- 構造図 -->
+    <div class="structure-block">
+      <h4>// 冤罪成立の構造（簡略図）</h4>
+      <div class="structure-row">
+        <div class="s-box red">別件逮捕</div>
+        <div class="s-arrow">→</div>
+        <div class="s-box red">自白強要</div>
+        <div class="s-arrow">→</div>
+        <div class="s-box red">芋づる逮捕</div>
+      </div>
+      <div class="structure-row">
+        <div class="s-box red">証拠隠蔽</div>
+        <div class="s-arrow">→</div>
+        <div class="s-box red">有罪判決</div>
+        <div class="s-arrow">→</div>
+        <div class="s-note">←ここに14年かかった</div>
+      </div>
+      <div class="structure-row" style="margin-top:4px;">
+        <div class="s-box green">証拠発覚</div>
+        <div class="s-arrow">→</div>
+        <div class="s-box green">差し戻し</div>
+        <div class="s-arrow">→</div>
+        <div class="s-box green">全員無罪</div>
+      </div>
+      <div style="font-size:10px;color:#7a6848;margin-top:8px;">
+        ── 世論・支援運動・文学者の批判がなければ、差し戻しは起きなかった
+      </div>
+    </div>
+
+  </div>
+
+  <!-- なぜ14年かかったか -->
+  <div class="section">
+    <h3>// なぜ14年かかったのか</h3>
+    <div class="fact-block">
+      <div class="fact-label">// 司法の壁</div>
+      <div class="fact-text">
+        一審・二審は有罪を維持した。裁判所が自白と捜査当局の主張を信じ続けたからだ。証拠の再評価が行われるまでに、二度の上訴と最高裁の差し戻しが必要だった。
+      </div>
+    </div>
+    <div class="fact-block">
+      <div class="fact-label">// 転機：広津和郎の裁判批判</div>
+      <div class="fact-text">
+        作家・広津和郎が雑誌で裁判の矛盾を論証し始めたのは1953年。最高裁長官は広津の活動を「雑音」と呼んだ。しかしその声が、眠っていた世論を揺り起こした。<span class="notable">文学者の言葉が、法廷を動かした。</span>
+        <span class="fiction">→ 07番の投書欄はこの「雑音」の一つを描いている。</span>
+      </div>
+    </div>
+    <div class="fact-block">
+      <div class="fact-label">// 守る会の力</div>
+      <div class="fact-text">
+        全国に広がった支援運動「M川事件対策協議会」は、思想・階層を超えた市民が参加した。被告と家族・支援者の間では葉書・封書が飛び交い、<span class="notable">福島大学には現在も葉書約一万点が保存されている。</span>
+        <span class="fiction">→ 08番のビラ、09番のスクラップブックはこの運動の記録をモチーフにしている。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 命日と桃 -->
+  <div class="diary-quote">
+    <h3>// 手記③より ── 小蘭が「0314」に込めた意味</h3>
+    <div class="quote-text">
+      <p>小新さんが死んだのは八月だ。桃の季節ではない。でも私がタグに書いた日付は三月十四日——桃の頃だ。なぜそうしたのか、今ならわかる。</p>
+      <p>帰れない日々の中で、帰れると信じられる季節が必要だったのだ。</p>
+      <p>そして小新さんには、夏の暗闇ではなく、花の中で眠っていてほしかった。</p>
+    </div>
+    <div class="quote-source">── kiroku_003.txt より</div>
+  </div>
+
+  <!-- 注釈 -->
+  <div class="annotation-block">
+    <h4>// このページが伝えたいこと</h4>
+    <div class="annotation-text">
+      M川事件の冤罪は、一つの「悪意」だけで生まれたわけではない。自白を疑わなかった裁判官、当局の発表を追ったメディア、沈黙した市民——それぞれの「記録しなかった」選択が積み重なって、二十人の人生を奪いかけた。<br><br>
+      そして今、SNSの時代に同じことが起きていないか。<span class="notable">声の速さが変わっても、記録する意志がなければ真実は埋もれる。</span><br><br>
+      猫塚清治という架空の人物は、「記録されなかった可能性」そのものだ。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">19</span>_voices.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">冤罪ヲ覆シタ声ノ記録</span>
+    <div class="frag-hint" title="voices.htmlへ進んでください">// → 19番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="koaru_record.html">◄ 17｜古浦小新の記録へ戻る</a>
+    <a href="voices.html">19｜冤罪を覆した声 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。実在の事件・地名の記述は史実に基づいており、特定の個人・団体を中傷する意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
