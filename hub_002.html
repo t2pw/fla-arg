@@ -1,0 +1,268 @@
+<!--
+  福島地域記録データアーカイブ ── page 16
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="16">
+<title>hub_002 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.match { color:#3a6a3a; }
+
+/* アンロック演出 */
+#unlock-block {
+  border:2px solid #8aaa8a; background:#e4f0e4;
+  padding:16px 18px; margin-bottom:28px;
+  text-align:center; font-size:11px;
+}
+#unlock-block .unlock-title {
+  font-size:14px; color:#2a5a2a; margin-bottom:8px;
+  letter-spacing:0.1em;
+}
+#unlock-block .unlock-text {
+  color:#4a6a4a; line-height:2;
+}
+
+/* メッセージ */
+#message-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:20px 22px; margin-bottom:24px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+#message-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.message-text {
+  font-size:13px; color:#3a3020;
+  line-height:2.8; text-align:justify;
+}
+.message-text p { margin-bottom:1em; text-indent:1em; }
+.message-text p:last-child { margin-bottom:0; }
+.message-text .notable { border-bottom:1px solid #8a7a5a; }
+
+/* 第2層ナビゲーション */
+#second-layer {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:24px;
+}
+#second-layer h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.nav-group { margin-bottom:16px; }
+.nav-group-title {
+  font-size:10px; color:#7a9a7a; margin-bottom:8px;
+  letter-spacing:0.1em; padding-bottom:4px;
+  border-bottom:1px dashed #d4d0c4;
+}
+.nav-item {
+  display:flex; gap:10px; padding:6px 0;
+  border-bottom:1px solid #eee8e0; align-items:baseline;
+}
+.nav-item:last-child { border-bottom:none; }
+.nav-num {
+  font-size:10px; color:#8a9a8a; min-width:28px;
+}
+.nav-link {
+  color:#4a6a4a; text-decoration:none; font-size:12px;
+  font-family:'MS Mincho','游明朝',serif; flex:1;
+}
+.nav-link:hover { color:#2a4a2a; text-decoration:underline; }
+.nav-desc { font-size:10px; color:#8a8878; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a> hub_002
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">hub_002.dat ── 記録保存会の核心　第二層アクセス承認</div>
+    <div class="fh-row">
+      <span>条件：<span class="fh-val match">スポークA〜E（01〜15番）すべて発見</span></span>
+      <span>状態：<span class="fh-val match">アンロック済</span></span>
+    </div>
+  </div>
+
+  <!-- アンロック演出 -->
+  <div id="unlock-block">
+    <div class="unlock-title">// アクセス承認</div>
+    <div class="unlock-text">
+      五つのスポークが揃った。<br>
+      断片が、一つの記録になった。<br>
+      第二層への扉が開く。
+    </div>
+  </div>
+
+  <!-- メッセージ -->
+  <div id="message-block">
+    <h3>// アーカイブより ── この先について</h3>
+    <div class="message-text">
+      <p>あなたは、断片を集めた。</p>
+      <p>小蘭の手記、古い写真、新聞の声、地図の印、暗号のデータ——それぞれが別の場所に隠されていた。でも、あなたはすべてを見つけた。</p>
+      <p>ここから先は、断片ではなく<span class="notable">核心</span>だ。</p>
+      <p>猫塚清治とは何者か。冤罪はなぜ生まれ、なぜ覆ったか。蛸川小蘭とはどこから来た存在か。そして、このアーカイブはなぜ存在するのか。</p>
+      <p>読む順番は、あなたが決めていい。ただ、最後に辿り着く場所は一つだ。</p>
+    </div>
+  </div>
+
+  <!-- 第2層ナビ -->
+  <div id="second-layer">
+    <h3>// SECOND LAYER ── 第二層ファイル一覧</h3>
+
+    <div class="nav-group">
+      <div class="nav-group-title">// 事件の記録</div>
+      <div class="nav-item">
+        <span class="nav-num">17</span>
+        <a href="koaru_record.html" class="nav-link">古浦→猫塚清治の記録 ／ M川事件の全体像</a>
+        <span class="nav-desc">史実と架空の接点</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">18</span>
+        <a href="inochi.html" class="nav-link">冤罪の構造 ／ 命日と桃の季節</a>
+        <span class="nav-desc">なぜ14年かかったのか</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">19</span>
+        <a href="voices.html" class="nav-link">冤罪を覆した声</a>
+        <span class="nav-desc">広津和郎・守る会・市民</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">20</span>
+        <a href="sns.html" class="nav-link">世論と現代SNS</a>
+        <span class="nav-desc">声の速さと重さ</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">// ループの記録</div>
+      <div class="nav-item">
+        <span class="nav-num">21</span>
+        <a href="loop.html" class="nav-link">ループの伏線回収</a>
+        <span class="nav-desc">蛸川小蘭とは何者か</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">22</span>
+        <a href="takosanuma.html" class="nav-link">T沼・廃墟の記憶</a>
+        <span class="nav-desc">小蘭の最後の場所</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">23</span>
+        <a href="takkope.html" class="nav-link">タコのぬいぐるみの来歴</a>
+        <span class="nav-desc">相馬港・蛸川という苗字</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">24</span>
+        <a href="momo.html" class="nav-link">福島・桃の産地</a>
+        <span class="nav-desc">H見山と現在の福島市</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">// データの記録</div>
+      <div class="nav-item">
+        <span class="nav-num">25</span>
+        <a href="data_trace.html" class="nav-link">小蘭のデータ痕跡</a>
+        <span class="nav-desc">過去から送られたデータの全容</span>
+      </div>
+      <div class="nav-item">
+        <span class="nav-num">26</span>
+        <a href="it_kiroku.html" class="nav-link">ITと記録の現在</a>
+        <span class="nav-desc">デジタルと記録の永続性</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 17〜26番をすべて発見すると ──</div>
+    <span style="color:#4a7a4a;">27</span>_hidden.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">隠シページ　ループノ真実</span>
+    <div class="frag-hint">// 17〜26番の発見記録パネルを確認してください</div>
+  </div>
+
+  <div id="nav">
+    <a href="telegram_003.html">◄ 15｜電文③へ戻る</a>
+    <a href="koaru_record.html">17｜猫塚清治の記録 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
