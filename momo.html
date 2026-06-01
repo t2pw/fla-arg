@@ -1,29 +1,213 @@
-<div class="page-block">
-  <div class="page-id">// page 24 ── momo.html</div>
-  <div class="page-title">24｜福島・桃の産地　H見山の現在</div>
-  <meta name="page-id" content="24">
+<!--
+  福島地域記録データアーカイブ ── page 24
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="24">
+<title>momo ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
 
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:90%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* セクション */
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+/* 事実ブロック */
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-block:last-child { margin-bottom:0; }
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:4px;
+  letter-spacing:0.15em;
+}
+.fact-text {
+  font-size:12px; color:#3a3020; line-height:2.2;
+}
+.notable { border-bottom:1px solid #8a7a5a; }
+.fiction {
+  color:#6a8a6a; font-size:11px;
+  border-left:2px solid #a8c4a0; padding-left:8px;
+  margin-top:6px; display:block; font-style:italic;
+}
+
+/* 写真 */
+.photo-block {
+  position:relative; margin-bottom:4px;
+  border:1px solid #b8b0a0; overflow:hidden;
+}
+.photo-block img { display:block; width:100%; height:auto; }
+.photo-block img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:160px;
+  align-items:center; justify-content:center;
+  background:#c8c4b0; color:#8a8878;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.photo-caption {
+  font-size:10px; color:#7a7060; text-align:center;
+  padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em; margin-bottom:16px;
+}
+
+/* 散文ブロック */
+.prose {
+  font-size:13px; color:#3a3020;
+  line-height:2.6; text-align:justify;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.prose p { margin-bottom:0.9em; text-indent:1em; }
+.prose p:last-child { margin-bottom:0; }
+
+/* 注釈 */
+.annotation {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+  color:#3a4a3a; line-height:2;
+  font-family:'MS Mincho','游明朝',serif;
+}
+
+/* フラグメント */
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> momo
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">momo.dat ── 福島・桃の産地　H見山の現在</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">現在の福島市・地域記録</span></span>
+      <span>復元率：<span class="fh-val">90%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：90%</div>
+
+  <!-- H見山セクション -->
   <div class="section">
     <h3>// H見山（花見山）── 現在も続く場所</h3>
     <div class="fact-block">
       <div class="fact-label">// 史実</div>
-      福島市のH見山（花見山）は、個人の農家が丹精込めて育てた花木の山を毎年春に一般開放している場所だ。桃・梅・桜・レンギョウが一斉に咲く。「桃源郷」とも呼ばれ、全国から観光客が訪れる。<span class="notable">誰かに頼まれたわけでもなく、ただ「見てほしい」という気持ちで開放し続けている。</span>
-      <span class="fiction">→ 小蘭が「三月になれば桃が咲く。そうしたら帰れると思っていた」と書いたのはこの景色だ。</span>
+      <div class="fact-text">
+        福島市のH見山（花見山）は、個人の農家が丹精込めて育てた花木の山を毎年春に一般開放している場所だ。桃・梅・桜・レンギョウが一斉に咲く。「桃源郷」とも呼ばれ、全国から観光客が訪れる。<span class="notable">誰かに頼まれたわけでもなく、ただ「見てほしい」という気持ちで開放し続けている。</span>
+        <span class="fiction">→ 小蘭が「三月になれば桃が咲く。そうしたら帰れると思っていた」と書いたのはこの景色だ。</span>
+      </div>
     </div>
     <div class="fact-block">
       <div class="fact-label">// 現在の福島市と桃</div>
-      福島市は全国有数の桃の産地だ。福島の桃は「あかつき」「川中島白桃」などの品種で知られ、市の花にも制定されている。毎年夏、盆地の農園に桃が実る。
+      <div class="fact-text">
+        福島市は全国有数の桃の産地だ。「あかつき」「川中島白桃」などの品種で知られ、市の花にも制定されている。毎年夏、盆地の農園に桃が実る。記録されなかった景色ではない——何万人もの人が、毎年この花を見に来る。
+      </div>
     </div>
   </div>
 
   <!-- H見山写真 -->
   <div class="photo-block">
     <img src="photo_hmiyama.jpg" alt="H見山・昭和32年春"
-         onerror="this.style.opacity='0.3'"/>
+         onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">
+      ［画像：H見山（花見山）全景 ── 桃・梅・桜　満開］<br>
+      ※ photo_hmiyama.jpg を配置してください
+    </div>
   </div>
   <div class="photo-caption">H見山 全景 ── 昭和三十二年春　桃・梅・桜　満開</div>
 
-  <div class="section" style="margin-top:14px;">
+  <!-- 小蘭が見た景色 -->
+  <div class="section">
     <h3>// 小蘭が見た景色・あなたが見る景色</h3>
     <div class="prose">
       <p>小蘭がT湯の宿の窓から眺めた桃の花は、今年も同じ場所に咲いた。</p>
@@ -33,16 +217,29 @@
     </div>
   </div>
 
+  <!-- 注釈 -->
   <div class="annotation">
     現在の福島市では毎年三月下旬〜四月にH見山が一般開放される。入場無料。駐車場から徒歩数分。福島駅からシャトルバスが運行される期間もある。小蘭が「帰れると思っていた」季節は、今も誰でも訪れることができる。
   </div>
 
-  <div class="fragment">
-    <span style="color:#4a7a4a;">25</span>_data_trace.dat ──
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">25</span>_data_trace.dat
+    <span style="color:#b8c4b0;">──</span>
     <span style="color:#4a6a5a;">小蘭のデータ痕跡</span>
+    <div class="frag-hint" title="data_trace.htmlへ進んでください">// → 25番へ</div>
   </div>
-  <div class="nav-bar">
-    <a href="takkope.html">◄ 23｜ぬいぐるみの来歴</a>
+
+  <div id="nav">
+    <a href="takkope.html">◄ 23｜ぬいぐるみの来歴へ戻る</a>
     <a href="data_trace.html">25｜小蘭のデータ痕跡 ►</a>
   </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
 </div>
+<script src="discovery.js"></script>
+</body>
+</html>
