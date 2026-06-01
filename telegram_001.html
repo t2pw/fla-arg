@@ -1,0 +1,429 @@
+<!--
+  福島地域記録データアーカイブ ── page 13
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="13">
+<title>telegram_001 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:60%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 電文ブロック */
+#telegram-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px; margin-bottom:24px;
+  font-family:'MS Gothic',monospace;
+}
+#telegram-block h3 {
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.telegram-meta {
+  font-size:10px; color:#8a7848; margin-bottom:12px;
+  display:flex; gap:16px; flex-wrap:wrap;
+  border-bottom:1px dashed #d4c8a8; padding-bottom:8px;
+}
+.telegram-raw {
+  background:#f0e8d0; border:1px solid #d4c4a0;
+  padding:12px; margin-bottom:12px;
+  font-size:11px; color:#4a3820;
+  line-height:2.2; word-break:break-all;
+  letter-spacing:0.05em;
+}
+.telegram-note {
+  font-size:10px; color:#8a7848; font-style:italic; line-height:1.9;
+}
+
+/* 解読ステップ */
+#decode-steps {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#decode-steps h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.step {
+  margin-bottom:16px; padding-bottom:16px;
+  border-bottom:1px dashed #d8d4c8;
+}
+.step:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.step-header {
+  display:flex; gap:10px; align-items:baseline;
+  margin-bottom:8px;
+}
+.step-num {
+  background:#4a6a4a; color:#e8f0e4;
+  font-size:10px; padding:1px 7px; border-radius:2px;
+  min-width:24px; text-align:center; flex-shrink:0;
+}
+.step-title { font-size:11px; color:#3a5a3a; }
+.step-body {
+  font-size:11px; color:#4a4838; line-height:2;
+  padding-left:34px;
+}
+.step-code {
+  font-family:'MS Gothic',monospace;
+  background:#e8f0e0; border:1px solid #c4d4c0;
+  padding:8px 12px; margin:6px 0;
+  font-size:11px; color:#3a6a3a;
+  letter-spacing:0.1em; word-break:break-all; line-height:2;
+}
+.step-arrow {
+  text-align:center; color:#8aaa8a; font-size:14px;
+  margin:4px 0; padding-left:34px;
+}
+.step-result {
+  font-family:'MS Gothic',monospace;
+  background:#dcecd8; border:1px solid #b8d4b8;
+  padding:8px 12px; margin:6px 0;
+  font-size:12px; color:#2a5a2a;
+  letter-spacing:0.15em;
+}
+.lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
+
+/* インタラクティブ解読 */
+#interactive {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#interactive h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+#interactive p {
+  font-size:11px; color:#4a5a4a; margin-bottom:10px; line-height:1.9;
+}
+.binary-display {
+  background:#f4f8f0; border:1px solid #c4d4c0;
+  padding:10px 12px; margin-bottom:12px;
+  font-size:11px; color:#3a5a3a;
+  line-height:2.2; word-break:break-all; letter-spacing:0.06em;
+  cursor:pointer; user-select:all;
+}
+.binary-display:hover { background:#eaf2e6; }
+.decode-input-wrap { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+#decode-input {
+  background:#f4f0e4; border:1px solid #b8b4a4;
+  color:#2a2820; font-family:inherit; font-size:12px;
+  padding:7px 12px; flex:1; min-width:0; outline:none;
+}
+#decode-input:focus { border-color:#4a6a4a; }
+#decode-btn {
+  background:none; border:1px solid #8aaa8a;
+  color:#4a6a4a; font-family:inherit; font-size:11px;
+  padding:7px 16px; cursor:pointer; white-space:nowrap;
+}
+#decode-btn:hover { background:#d8e8d8; }
+#decode-result {
+  margin-top:10px; font-size:11px; min-height:20px;
+  font-family:'MS Gothic',monospace;
+}
+#decode-result.success { color:#3a6a3a; }
+#decode-result.error { color:#8a4a3a; }
+#decode-result.hint { color:#6a8a6a; }
+
+/* 注目ポイント */
+#notice-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#notice-block h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.notice-row {
+  display:flex; gap:10px; padding:5px 0;
+  border-bottom:1px solid #d8e4d0; font-size:11px; line-height:1.8;
+}
+.notice-row:last-child { border-bottom:none; }
+.notice-icon { color:#8a9a8a; min-width:14px; }
+.notice-text { color:#3a4a3a; flex:1; }
+.hint {
+  color:#4a7a5a; font-size:10px; cursor:default;
+  border-bottom:1px dashed #8aba8a;
+}
+.hint:hover { color:#2a5a3a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+.blink { animation:b 2.4s step-end infinite; }
+@keyframes b { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a> telegram_001.txt
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">telegram_001.dat ── 不明データパッケージ（復元）</div>
+    <div class="fh-row">
+      <span>発見：<span class="fh-val warn">ネット上の匿名サーバー（経路不明）</span></span>
+      <span>送信者：<span class="fh-val warn">不明</span></span>
+      <span>復元率：<span class="fh-val warn">60% ── 大部分が暗号化</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：60% ── 暗号化レイヤーが複数存在する</div>
+
+  <!-- 電文 -->
+  <div id="telegram-block">
+    <h3>// RAW DATA ── 受信データ（未解読）</h3>
+    <div class="telegram-meta">
+      <span>受信日時：<span style="color:#5a4828;">20██年██月██日　██:██:██</span></span>
+      <span>サイズ：<span style="color:#5a4828;">██.█ KB</span></span>
+      <span>ヘッダ：<span style="color:#5a4828;">takocawa_0314</span></span>
+    </div>
+    <div class="telegram-raw">
+      01110100 01100101 00101101 01101011 01101001 00101101
+      01101110 01101111 00101101 01101011 01101111 00101101
+      01110010 01101111 00101101 01101110 01101111 00101101
+      01110111 01100001 00101101 01110100 01100001 00101101
+      01110011 01101001 00101101 01100101<br><br>
+      <span style="color:#9a8868;">// 以下██████バイト：解読不能（暗号化）</span><br>
+      <span style="color:#c4b8a0;">████████ ████████ ████████ ████████ ████████ ████████<br>
+      ████████ ████████ ████████ ████████ ████████ ████████</span>
+    </div>
+    <div class="telegram-note">
+      ヘッダの識別子「takocawa_0314」は、このアーカイブの侵入口で使用したキーと一致する。<br>
+      先頭の可読部分のみ、バイナリ変換を試みた。
+    </div>
+  </div>
+
+  <!-- 解読ステップ -->
+  <div id="decode-steps">
+    <h3>// DECODE PROCESS ── 解読手順</h3>
+
+    <div class="step">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <span class="step-title">バイナリ列をASCIIに変換する</span>
+      </div>
+      <div class="step-body">
+        先頭28バイトを8ビット単位で区切り、ASCIIコードとして変換する。
+        <div class="step-code">
+          01110100 → 116 → t<br>
+          01100101 → 101 → e<br>
+          00101101 →  45 → -<br>
+          01101011 → 107 → k<br>
+          01101001 → 105 → i<br>
+          ･･････（以下同様）
+        </div>
+        <div class="step-arrow">↓</div>
+        <div class="step-result">te-ki-no-ko-ro-no-wa-ta-si-e</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <span class="step-title">ローマ字列を日本語に変換する</span>
+      </div>
+      <div class="step-body">
+        ハイフン区切りのローマ字を日本語読みに変換する。
+        <div class="step-code">te-ki-no-ko-ro-no-wa-ta-si-e</div>
+        <div class="step-arrow">↓</div>
+        <div class="step-result">過去の頃の私へ</div>
+        <div style="font-size:10px;color:#6a8a6a;margin-top:6px;">
+          ── 00番の写真メタデータ「Comment」フィールドに埋め込まれていた文字列と完全に一致する
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <span class="step-num">3</span>
+        <span class="step-title">送信者の特定</span>
+      </div>
+      <div class="step-body">
+        「過去の頃の私へ」——この文章を書いたのは誰か。<br><br>
+        ヘッダの識別子：<span style="color:#3a6a3a;">takocawa_0314</span><br>
+        メタデータの文字列：<span style="color:#3a6a3a;">te-ki-no-ko-ro-no-wa-ta-si-e</span><br><br>
+        送信者は<span style="border-bottom:1px solid #6a8a6a;">未来の蛸川小蘭が、過去の自分自身に向けて送った</span>データである可能性が高い。<br>
+        しかし——過去にいる小蘭が、どうやってネット上にデータを送れたのか。
+        <div style="margin-top:10px;font-size:10px;color:#7a6848;font-style:italic;">
+          ── この矛盾は、14番「№0314の意味」で部分的に解消される
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- インタラクティブ解読 -->
+  <div id="interactive">
+    <h3>// INTERACTIVE ── 残りの暗号を解読せよ <span class="blink">_</span></h3>
+    <p>
+      データの末尾に、さらに暗号化されたブロックが存在する。<br>
+      以下のバイナリ列をASCIIに変換せよ。<br>
+      ヒント：<span style="color:#3a6a3a;">変換表はどこにでもある。</span>
+    </p>
+    <div class="binary-display" title="クリックで全選択">
+      00110000 00110011 00110001 00110100
+    </div>
+    <div class="decode-input-wrap">
+      <input type="text" id="decode-input"
+             placeholder="解読した文字列を入力..." autocomplete="off" spellcheck="false"/>
+      <button id="decode-btn" onclick="checkDecode()">解読</button>
+    </div>
+    <div id="decode-result"></div>
+  </div>
+
+  <!-- 注目ポイント -->
+  <div id="notice-block">
+    <h3>// NOTICE ── このファイルについて</h3>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">
+        「過去の頃の私へ」という宛先。
+        <span class="hint" title="未来の小蘭が過去の自分へ送った——しかし過去の小蘭がデータを送ったのなら、誰が先なのか">── 送り手と受け手が同一人物である矛盾</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">
+        00番のメタデータと同じ文字列が出現した。
+        <span class="hint" title="00番は入口であり、この電文と繋がっていた">── 最初から、このデータは繋がっていた</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">○</span>
+      <span class="notice-text">
+        残りのデータは暗号化されたまま。
+        <span class="hint" title="14番で鍵が明かされる">── 14番「№0314の意味」に鍵がある</span>
+      </span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">14</span>_telegram.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">№0314ノ意味　解読カギアリ</span>
+    <div class="frag-hint" title="telegram_002.htmlへ進んでください">// データ断片 ── 復元不完全</div>
+  </div>
+
+  <div id="nav">
+    <a href="index.html">◄ 00｜侵入口へ戻る</a>
+    <a href="telegram_002.html">14｜電文② №0314 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設・関係者の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+function checkDecode(){
+  const v = document.getElementById('decode-input').value.trim().toLowerCase().replace(/[\s\-]/g,'');
+  const res = document.getElementById('decode-result');
+
+  const answers = ['0314','№0314'];
+
+  if(answers.some(a => v === a) || v === '0314'){
+    res.className = 'success';
+    res.innerHTML =
+      '// 解読成功。<br>' +
+      '// 00110000 00110011 00110001 00110100 → <strong>0314</strong><br><br>' +
+      'この番号の意味は、14番で明かされる。<br><br>' +
+      '<a href="telegram_002.html" style="color:#3a6a3a;">► 14番「№0314の意味」へ進む</a>';
+  } else if(v.length > 0){
+    res.className = 'error';
+    res.innerHTML = '// 一致するパターンが見つかりません。バイナリ変換表を確認してください。';
+  } else {
+    res.className = ''; res.innerHTML = '';
+  }
+}
+document.getElementById('decode-input').addEventListener('keydown', e=>{
+  if(e.key==='Enter') checkDecode();
+});
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
