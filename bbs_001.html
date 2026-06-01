@@ -1,0 +1,225 @@
+<!--
+  福島地域記録データアーカイブ ── page 07
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="07">
+<title>bbs_001 ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc; color:#3a3830;
+  font-family:'MS Gothic',monospace; font-size:13px; line-height:2;
+  padding:48px 20px; min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+#breadcrumb { font-size:10px; color:#9a9888; margin-bottom:28px; letter-spacing:0.1em; }
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+#restore-bar { height:3px; background:#d8d4c8; margin-bottom:6px; position:relative; overflow:hidden; }
+#restore-bar::after { content:''; position:absolute; left:0; top:0; height:100%; width:68%; background:#6a8a6a; }
+#restore-label { font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right; }
+/* 新聞スキャン */
+#newspaper-wrap { position:relative; margin-bottom:20px; border:1px solid #b8b0a0; overflow:hidden; }
+#newspaper-wrap img { display:block; width:100%; height:auto; }
+#newspaper-wrap img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:200px; align-items:center; justify-content:center;
+  background:#d8d4c4; color:#8a8878; font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.newspaper-caption {
+  font-size:10px; color:#7a7060; text-align:center; padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4; font-family:'MS Mincho','游明朝',serif; letter-spacing:0.1em;
+}
+/* 解読テキストパネル */
+#decoded {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#decoded h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em; border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+.decode-note {
+  font-size:11px; color:#6a6858; line-height:2; margin-bottom:12px;
+  font-style:italic; border-left:2px solid #c4c0b0; padding-left:10px;
+}
+.letter-entry {
+  border-left:2px solid #c4b88a; padding:10px 14px; margin-bottom:10px;
+  background:#f0ece0; font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+}
+.letter-entry:last-child { margin-bottom:0; }
+.letter-meta {
+  font-family:'MS Gothic',monospace; font-size:10px; color:#7a6848;
+  margin-bottom:6px; display:flex; gap:16px; flex-wrap:wrap;
+}
+.redacted { color:#c4b8a0; background:#d8d0b8; padding:0 4px; border-radius:1px; }
+.letter-body { font-size:12px; color:#3a3020; line-height:2.4; }
+.letter-highlight { border-left-color:#7a9a6a; background:#eef4e8; }
+.letter-final { border-left-color:#4a7a5a; background:#e8f4ea; }
+.redacted-inline {
+  display:inline-block; background:#2a2820; color:#2a2820;
+  min-width:60px; height:1em; vertical-align:middle; margin:0 2px;
+  border-radius:1px; user-select:none;
+}
+.lost { color:#c4c0b0; background:#ede9dd; border-radius:2px; padding:0 2px; }
+/* 注目ポイント */
+#notice-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:24px; font-size:11px;
+}
+#notice-block h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em; border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.notice-row { display:flex; gap:10px; padding:5px 0; border-bottom:1px solid #d8e4d0; font-size:11px; line-height:1.8; }
+.notice-row:last-child { border-bottom:none; }
+.notice-icon { color:#8a9a8a; min-width:14px; }
+.notice-text { color:#3a4a3a; flex:1; }
+.hint { color:#4a7a5a; font-size:10px; cursor:default; border-bottom:1px dashed #8aba8a; }
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px; color:#4a6a4a;
+  border:1px solid #b8c4b0; background:#e8f0e0; padding:14px 16px; margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title { color:#3a5a3a; margin-bottom:8px; font-size:10px; letter-spacing:0.15em; }
+#fragment .frag-hint { color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default; }
+#nav {
+  font-size:11px; color:#9a9888; display:flex; justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#disclaimer { margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8; }
+.glitch { animation:g 12s infinite; }
+@keyframes g { 0%,96%,100%{opacity:1;transform:none} 97%{opacity:.6;transform:translateX(2px)} 98%{opacity:1;transform:translateX(-1px)} }
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb"><a href="index.html">archive /</a> bbs_001.txt</div>
+  <div id="file-header">
+    <div class="filename glitch">bbs_001_shinbun.dat ── 新聞投書欄スキャン（復元）</div>
+    <div class="fh-row">
+      <span>掲載紙：<span class="fh-val warn">福島██新聞　読者投書欄</span></span>
+      <span>期間：<span class="fh-val">昭和二十五年〜三十八年</span></span>
+      <span>復元率：<span class="fh-val warn">68% ── 検閲・黒塗り多数</span></span>
+    </div>
+  </div>
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：68% ── 黒塗り部分は復元不能</div>
+
+  <div id="newspaper-wrap">
+    <img src="photo_newspaper.jpg" alt="福島██新聞 読者投書欄スキャン" onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">［画像：福島██新聞　読者投書欄スキャン］<br>※ photo_newspaper.jpg を配置してください</div>
+    <div class="newspaper-caption">福島██新聞　読者投書欄「私たちの聲」── 昭和二十八年十一月十五日付（復元スキャン）</div>
+  </div>
+
+  <div id="decoded">
+    <h3>// TEXT DECODE ── 判読可能部分の復元テキスト</h3>
+    <div class="decode-note">黒塗り・経年劣化により一部判読不能。以下は復元できた投書のみを掲載。</div>
+
+    <div class="letter-entry">
+      <div class="letter-meta">
+        <span>昭和二十五年　某月掲載</span>
+        <span>投稿者：<span class="redacted">██████</span>（福島市在住）</span>
+      </div>
+      <div class="letter-body">
+        M川事件の判決を読んで、どうしても黙っていられなかった。二十人が有罪とされた。しかし、私はK鉄に知人がいる。あの夜のことを、少しだけ聞いた。<br><br>
+        <span class="redacted-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>という人間のことが、記録から消えていると言う。なぜ消えているのか、誰も教えてくれない。<br><br>
+        裁判とは、記録されたことしか裁かない。記録されなかったことは、なかったことになる。それでいいのか。
+      </div>
+    </div>
+
+    <div class="letter-entry letter-highlight">
+      <div class="letter-meta">
+        <span>昭和二十九年　某月掲載</span>
+        <span>投稿者：保線作業員の妻（匿名）</span>
+      </div>
+      <div class="letter-body">
+        夫は生きています。でも、仕事に戻れません。五年が経ちました。<br><br>
+        夫の名前は、どこにも残っていません。被告にもなれなかった。証人にもなれなかった。ただ、消えた。生きているのに、消えた。<br><br>
+        それでも私は、夫がここにいることを知っています。菜園の茄子を、丁寧に育てていた人でした。<br><br>
+        記録してくださる方がいれば、と思い、筆を取りました。
+      </div>
+    </div>
+
+    <div class="letter-entry">
+      <div class="letter-meta">
+        <span>昭和三十八年　某月掲載</span>
+        <span>投稿者：名無し</span>
+      </div>
+      <div class="letter-body">
+        無罪が確定した。二十人全員。<br>
+        でも二十一人目は、どうなるんだ。<br>
+        <span style="color:#7a6848;">生きているのに、記録されなかった人間は——無罪にもなれない。</span>
+      </div>
+    </div>
+
+    <div class="letter-entry letter-final">
+      <div class="letter-meta">
+        <span>昭和三十八年　九月　無罪確定直後</span>
+        <span>投稿者：蛸川（苗字のみ）</span>
+      </div>
+      <div class="letter-body">
+        二十人の無罪が確定した。<br><br>
+        しかし、二十一人目の名前は、今日も判決文に存在しない。<br><br>
+        猫塚 清治。彼は生きている。ただ、記録の上に存在しない。無罪にも、有罪にも、名前がない。<br><br>
+        私は記録する。彼がここにいたことを。
+        <div style="font-size:11px;color:#4a6a4a;margin-top:8px;">── この投書は掲載されませんでした。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notice-block">
+    <h3>// NOTICE ── このファイルについて</h3>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">最後の投書の差出人が「蛸川（苗字のみ）」。掲載されなかった。
+        <span class="hint" title="蛸川小蘭が昭和38年にこの投書を書いた">── いつ、誰が書いたのか</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">「保線作業員の妻」の投書に「菜園の茄子を育てていた」という記述がある。
+        <span class="hint" title="06番・猫塚家の写真の解析メモと一致する">── 06番の写真解析と一致</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">○</span>
+      <span class="notice-text">黒塗りされた投書が複数存在する。
+        <span class="hint" title="08番のビラに、検閲される前の記述が残っているかもしれない">── 08番に削除前の記録がある</span>
+      </span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
+    <span style="color:#4a7a4a;">08</span>_leaflet.dat ──
+    <span style="color:#4a6a5a;">守ル会ノビラ　一部現存</span>
+    <div class="frag-hint">// → bbs_002.html</div>
+  </div>
+
+  <div id="nav">
+    <a href="index.html">◄ 00｜侵入口へ戻る</a>
+    <a href="bbs_002.html">08｜守る会のビラ ►</a>
+  </div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
