@@ -1,0 +1,513 @@
+<!--
+  福島地域記録データアーカイブ ── page 00
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background:#e8e4d8;
+  color:#3a3830;
+  font-family:'Share Tech Mono','MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:1.9;
+  padding:40px 20px;
+  min-height:100vh;
+}
+
+#container { max-width:680px; margin:0 auto; }
+
+#header {
+  border-bottom:1px solid #b8b4a4;
+  padding-bottom:16px;
+  margin-bottom:24px;
+}
+#header h1 {
+  font-size:14px;
+  color:#2a2820;
+  font-weight:normal;
+  letter-spacing:0.1em;
+  margin-bottom:4px;
+}
+#header .sub { font-size:11px; color:#8a8878; }
+
+.meta-row {
+  display:flex;
+  gap:24px;
+  margin-bottom:24px;
+  font-size:11px;
+  color:#8a8878;
+}
+.meta-row span { color:#6a6858; }
+
+.notice {
+  border:1px solid #c8c4b4;
+  background:#f0ece0;
+  padding:12px 16px;
+  margin-bottom:28px;
+  font-size:11px;
+  color:#6a6858;
+  line-height:2;
+}
+.notice .highlight { color:#3a3830; }
+
+#filelist { margin-bottom:32px; }
+#filelist h2 {
+  font-size:11px;
+  color:#8a8878;
+  font-weight:normal;
+  border-bottom:1px solid #c8c4b4;
+  padding-bottom:6px;
+  margin-bottom:12px;
+  letter-spacing:0.15em;
+}
+
+.file-row {
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  padding:5px 0;
+  border-bottom:1px solid #dedad0;
+  font-size:12px;
+}
+.file-type { color:#aaa898; font-size:10px; min-width:30px; }
+.file-name { color:#5a5848; flex:1; }
+.file-dots { color:#c8c4b4; flex:2; overflow:hidden; white-space:nowrap; }
+.file-status { font-size:10px; color:#aaa898; }
+.file-status.broken { color:#b89888; }
+.file-status.available {
+  color:#4a6a4a;
+  cursor:pointer;
+  text-decoration:underline;
+  text-decoration-color:#8aaa8a;
+}
+.file-status.available:hover { color:#2a4a2a; }
+
+#photo-section {
+  display:none;
+  margin-top:24px;
+  border:1px solid #b8c4b0;
+  background:#e0e8d8;
+  padding:16px;
+}
+#photo-section h3 {
+  font-size:11px;
+  color:#4a6a4a;
+  font-weight:normal;
+  margin-bottom:12px;
+  letter-spacing:0.1em;
+}
+#photo-canvas {
+  display:block;
+  width:100%;
+  max-width:420px;
+  height:200px;
+  background:#c8c4b0;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+#photo-canvas canvas { width:100%; height:100%; }
+
+.meta-section { font-size:11px; color:#6a6858; margin-top:12px; }
+.meta-section h4 {
+  color:#4a6a4a;
+  font-weight:normal;
+  margin-bottom:6px;
+  font-size:10px;
+  letter-spacing:0.15em;
+}
+.meta-line {
+  padding:3px 0;
+  border-bottom:1px solid #c8c4b4;
+  display:flex;
+  gap:12px;
+}
+.meta-key { color:#aaa898; min-width:120px; font-size:10px; }
+.meta-val { color:#5a5848; font-size:10px; }
+.meta-val.notable { color:#4a6a4a; font-weight:bold; }
+
+#notebook-section {
+  display:none;
+  margin-top:20px;
+  border:1px solid #c4bc9a;
+  background:#f0e8d0;
+  padding:16px;
+}
+#notebook-section h3 {
+  font-size:11px;
+  color:#6a5a2a;
+  font-weight:normal;
+  margin-bottom:12px;
+  letter-spacing:0.1em;
+}
+
+.notebook-text {
+  font-size:12px;
+  color:#5a5030;
+  line-height:2.2;
+  border-left:2px solid #c4a870;
+  padding-left:14px;
+  margin-bottom:16px;
+  font-style:italic;
+}
+
+.binary-block {
+  background:#e8e0c8;
+  border:1px solid #c4bc9a;
+  padding:12px;
+  font-size:11px;
+  color:#4a5a3a;
+  letter-spacing:0.08em;
+  line-height:2;
+  margin-bottom:12px;
+  word-break:break-all;
+}
+
+.notebook-note {
+  font-size:11px;
+  color:#7a6a48;
+  font-style:italic;
+}
+
+#punch-section {
+  margin-top:16px;
+  border:1px solid #b8c4b0;
+  background:#e4ecd8;
+  padding:16px;
+}
+#punch-section h3 {
+  font-size:11px;
+  color:#3a6a5a;
+  font-weight:normal;
+  margin-bottom:12px;
+}
+
+.punch-grid {
+  display:grid;
+  grid-template-columns:repeat(8, 22px);
+  gap:4px;
+  margin-bottom:12px;
+}
+.punch-cell {
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:1px solid #a8c4b8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  color:#6a9a8a;
+  background:#dcecd8;
+}
+.punch-cell.filled {
+  background:#b8d4c8;
+  border-color:#4a8a78;
+  color:#2a5a4a;
+}
+.punch-note {
+  font-size:11px;
+  color:#4a6a5a;
+  font-style:italic;
+  margin-top:8px;
+  line-height:1.9;
+}
+
+#decoder {
+  margin-top:32px;
+  border-top:1px solid #b8b4a4;
+  padding-top:20px;
+}
+#decoder h2 {
+  font-size:11px;
+  color:#6a6858;
+  font-weight:normal;
+  margin-bottom:12px;
+  letter-spacing:0.15em;
+}
+#decoder-input {
+  background:#f4f0e4;
+  border:1px solid #b8b4a4;
+  color:#2a2820;
+  font-family:inherit;
+  font-size:12px;
+  padding:8px 12px;
+  width:100%;
+  max-width:360px;
+  outline:none;
+}
+#decoder-input:focus { border-color:#4a6a4a; }
+#decoder-input::placeholder { color:#b8b4a4; }
+
+#decoder-btn {
+  margin-top:8px;
+  background:none;
+  border:1px solid #8aaa8a;
+  color:#4a6a4a;
+  font-family:inherit;
+  font-size:11px;
+  padding:6px 16px;
+  cursor:pointer;
+  letter-spacing:0.1em;
+}
+#decoder-btn:hover { background:#d8e8d8; border-color:#4a6a4a; }
+
+#decoder-result {
+  margin-top:12px;
+  font-size:11px;
+  color:#8a8878;
+  min-height:20px;
+}
+#decoder-result.success { color:#3a6a3a; }
+#decoder-result.error { color:#8a4a3a; }
+
+.glitch { animation: glitch 8s infinite; }
+@keyframes glitch {
+  0%,94%,100%{opacity:1;transform:none}
+  95%{opacity:.7;transform:translateX(2px)}
+  96%{opacity:1;transform:translateX(-1px)}
+  97%{opacity:.85}
+  98%{opacity:1;transform:none}
+}
+.blink { animation:blink 2.4s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+#footer {
+  margin-top:48px;
+  padding-top:16px;
+  border-top:1px solid #c8c4b4;
+  font-size:10px;
+  color:#9a9888;
+  line-height:2;
+}
+
+.spoiler-hint {
+  font-size:10px;
+  color:#c8c4b4;
+  margin-top:8px;
+  cursor:default;
+  user-select:none;
+}
+.spoiler-hint:hover { color:#8a8878; }
+
+#disclaimer {
+  margin-top:24px;
+  font-size:9px;
+  color:#c8c4b4;
+  line-height:1.8;
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="header">
+    <h1 class="glitch">福島地域記録データアーカイブ<br>
+    <span style="font-size:11px;color:#8a8878;">Fukushima Local Records Archive</span></h1>
+    <div class="sub">// 管理者：<span style="color:#b8b4a4">──────</span>　｜　ミラー番号：不明</div>
+  </div>
+
+  <div class="meta-row">
+    <span>最終更新：<span style="color:#b8b4a4">20██年██月██日</span></span>
+    <span>容量：<span style="color:#b8b4a4">██.█ MB</span></span>
+    <span>状態：<span style="color:#4a6a4a">部分的に復元済</span></span>
+  </div>
+
+  <div class="notice">
+    <span class="highlight">ようこそ。</span><br>
+    このアーカイブは、記録されなかったものを記録するために存在します。<br><br>
+    ※ 現在、ファイルの大部分にアクセスできません。<br>
+    ※ 一部のファイルは復元途中です。<br>
+    ※ このサイトの管理者に連絡する方法は<span style="color:#8a8878">存在しません</span>。
+  </div>
+
+  <div id="filelist">
+    <h2>// FILE LIST ///////////</h2>
+    <div class="file-row">
+      <span class="file-type">[doc]</span>
+      <span class="file-name">kiroku_001.txt</span>
+      <span class="file-dots">····················</span>
+      <span class="file-status broken">[リンク切れ]</span>
+    </div>
+    <div class="file-row">
+      <span class="file-type">[doc]</span>
+      <span class="file-name">kiroku_002.txt</span>
+      <span class="file-dots">····················</span>
+      <span class="file-status broken">[リンク切れ]</span>
+    </div>
+    <div class="file-row">
+      <span class="file-type">[img]</span>
+      <span class="file-name">archive_photo_001.jpg</span>
+      <span class="file-dots">···············</span>
+      <span class="file-status available" onclick="showPhoto()">[表示する]</span>
+    </div>
+    <div class="file-row">
+      <span class="file-type">[doc]</span>
+      <span class="file-name">kiroku_003.txt</span>
+      <span class="file-dots">····················</span>
+      <span class="file-status broken">[リンク切れ]</span>
+    </div>
+    <div class="file-row">
+      <span class="file-type">[doc]</span>
+      <span class="file-name">kiroku_004.txt</span>
+      <span class="file-dots">····················</span>
+      <span class="file-status broken">[リンク切れ]</span>
+    </div>
+    <div class="file-row">
+      <span class="file-type">[dat]</span>
+      <span class="file-name">notebook_scan.dat</span>
+      <span class="file-dots">················</span>
+      <span class="file-status available" onclick="showNotebook()">[表示する]</span>
+    </div>
+  </div>
+
+  <div id="photo-section">
+    <h3>// archive_photo_001.jpg ── 復元率：74%</h3>
+    <div id="photo-canvas">
+      <div class="stain-blur signboard-stain"></div>
+      <div class="stain-1 signboard-stain"></div>
+      <div class="stain-2 signboard-stain"></div>
+      <img id="photo-img" src="photo_tsuchiyu.jpg" alt="T湯温泉の古写真"
+           onerror="this.classList.add('broken')"/>
+      <div class="photo-fallback">
+        ［画像：T湯温泉の古写真（昭和██年）］<br>
+        ※ 実装時に photo_tsuchiyu.jpg を同フォルダに配置してください
+      </div>
+    </div>
+    <div class="photo-caption">T湯　昭和██年　── 看板部分は経年劣化により判読不能</div>
+    <div class="meta-section">
+      <h4>// EXIF METADATA ///////////</h4>
+      <div class="meta-line">
+        <span class="meta-key">FileName</span>
+        <span class="meta-val">archive_photo_001.jpg</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">DateTimeOriginal</span>
+        <span class="meta-val">昭和██年██月██日</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">GPSLatitude</span>
+        <span class="meta-val">37.██°N（福島市北西部）</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">GPSLongitude</span>
+        <span class="meta-val">140.██°E</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">Make</span>
+        <span class="meta-val">──────</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">Comment</span>
+        <span class="meta-val notable">te-ki-no-ko-ro-no-wa-ta-si-e</span>
+      </div>
+      <div class="meta-line">
+        <span class="meta-key">UserComment</span>
+        <span class="meta-val notable">notebook_scan.datを見てください</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="notebook-section">
+    <h3>// notebook_scan.dat ── 手書きメモのスキャン</h3>
+    <div class="notebook-text">
+      「暇つぶしに数字を書いています。<br>
+      0と1だけで文字が書けることを、<br>
+      この時代の人は知らないのです。<br><br>
+      変換表はどこにでもあります。<br>
+      あなたには分かるはずです。」
+    </div>
+    <div class="binary-block">
+      01100110 01110101 01101011 01110101<br>
+      01110011 01101000 01101001 01101101<br>
+      01100001 00101101 00110000 00110011<br>
+      00110001 00110100
+    </div>
+    <div class="notebook-note">── 余白に、小さな穿孔パターンが描かれている。</div>
+    <div id="punch-section">
+      <h3>// 穿孔パターン（手描き）</h3>
+      <div class="punch-grid" id="punch-grid"></div>
+      <div class="punch-note">
+        「これはIBMの機械が読む紙と同じ仕組みです。<br>
+        ●を1、○を0として読んでください。<br>
+        私はここにいました。」
+      </div>
+    </div>
+  </div>
+
+  <div id="decoder">
+    <h2>// 解読した文字列を入力してください <span class="blink">_</span></h2>
+    <input type="text" id="decoder-input" placeholder="ここに入力..." autocomplete="off" spellcheck="false"/>
+    <br>
+    <button id="decoder-btn" onclick="checkAnswer()">送信</button>
+    <div id="decoder-result"></div>
+  </div>
+
+  <div id="footer">
+    // このアーカイブに関する問い合わせ先は存在しません。<br>
+    // 記録されなかったものは、存在しなかったことになる。<br>
+    // ── 本当にそれでいいのか。
+  </div>
+
+  <div class="spoiler-hint" title="ヒント：0と1を文字に変換してみてください">？</div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+function showPhoto() {
+  const s = document.getElementById('photo-section');
+  s.style.display = 'block';
+  s.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showNotebook() {
+  const s = document.getElementById('notebook-section');
+  s.style.display = 'block';
+  drawPunch();
+  s.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function drawPunch() {
+  const grid = document.getElementById('punch-grid');
+  grid.innerHTML='';
+  const rows=[[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1]];
+  rows.forEach(row=>{
+    row.forEach(v=>{
+      const cell=document.createElement('div');
+      cell.className='punch-cell'+(v?' filled':'');
+      cell.textContent=v?'●':'○';
+      grid.appendChild(cell);
+    });
+  });
+}
+function checkAnswer() {
+  const val=document.getElementById('decoder-input').value.trim().toLowerCase().replace(/\s/g,'');
+  const res=document.getElementById('decoder-result');
+  if (val==='fukushima-0314'||val==='fukushima0314') {
+    res.className='success';
+    res.innerHTML='// 解読成功。<br>// 次のアーカイブへのアクセスが承認されました。<br><br>'+
+      '<span style="font-size:11px;">► <a href="#" style="color:#3a6a3a;text-decoration:none;" onclick="alert(\'ページ01へ続く（実装予定）\');return false;">archive-fukushima / takocawa / 0314 /</a></span>';
+  } else if (val.length>0) {
+    res.className='error';
+    res.innerHTML='// 一致するレコードが見つかりません。';
+  } else {
+    res.className='';res.innerHTML='';
+  }
+}
+document.getElementById('decoder-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter') checkAnswer();
+});
+drawPunch();
+</script>
+</body>
+</html>
