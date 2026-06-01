@@ -675,22 +675,6 @@ function saveRestored() {
   } catch(e) {}
 }
 
-// ============================================================
-//  他ページから戻ってきたとき自動マーク
-// ============================================================
-function markFromReferrer() {
-  try {
-    const ref     = document.referrer;
-    if (!ref) return;
-    const refFile = new URL(ref).pathname.split('/').pop();
-    const match   = FILES.find(f => f.url === refFile);
-    if (match && !restoredSet.has(match.url)) {
-      restoredSet.add(match.url);
-      saveRestored();
-    }
-  } catch(e) {}
-}
-
 init();
 </script>
 </body>
