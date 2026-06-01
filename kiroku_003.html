@@ -1,0 +1,487 @@
+<!--
+  福島地域記録データアーカイブ ── page 03
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="03">
+<title>kiroku_003.txt ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-family:'MS Gothic',monospace; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:88%; background:#6a8a6a;
+}
+#restore-label {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+#location-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 20px; margin-bottom:28px;
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#7a6848; line-height:2;
+}
+#location-block .loc-title {
+  color:#5a4828; font-size:10px; letter-spacing:0.15em;
+  margin-bottom:8px; border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.loc-item { display:flex; gap:12px; padding:3px 0; }
+.loc-key { color:#9a8868; min-width:80px; font-size:10px; }
+.loc-val { color:#5a4828; font-size:10px; }
+.loc-val.notable { color:#3a6a3a; }
+.loc-val.warn { color:#7a5030; }
+
+#diary {
+  position:relative;
+  padding:32px 28px 32px 52px;
+  background:#f8f4e8; border:1px solid #c4c0b0;
+  margin-bottom:28px;
+}
+#diary::before {
+  content:''; position:absolute;
+  left:44px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+
+.entry {
+  margin-bottom:36px; padding-bottom:36px;
+  border-bottom:1px dashed #d4d0c0;
+}
+.entry:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+.entry-date {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#9a8a68; margin-bottom:14px; letter-spacing:0.1em;
+}
+
+.entry-body {
+  font-size:13px; color:#3a3830;
+  line-height:2.5; text-align:justify;
+}
+.entry-body p { margin-bottom:1.2em; text-indent:1em; }
+.entry-body p:last-child { margin-bottom:0; }
+
+.underline { border-bottom:1px solid #8a7a5a; padding-bottom:1px; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+.lost {
+  color:#c4c0b0; letter-spacing:0.05em;
+  background:#ede9dd; border-radius:2px; padding:0 2px;
+}
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px; border:1px solid #c4d4c0;
+}
+.handnote {
+  font-size:12px; color:#7a6848;
+  border-left:3px solid #c4a870;
+  padding:8px 14px; margin:12px 0;
+  background:#f4ecd8; font-style:italic; line-height:2.2;
+}
+
+/* 宿の見取り図風キャンバス */
+#floorplan-wrap {
+  border:1px solid #c4b89a; background:#f0e8d4;
+  padding:14px; margin-bottom:28px;
+}
+#floorplan-wrap h3 {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#6a5828; font-weight:normal; margin-bottom:10px;
+  letter-spacing:0.15em; border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+#floorplan-canvas { display:block; width:100%; max-width:420px; }
+.fp-note {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#8a7848; margin-top:10px; line-height:1.9; font-style:italic;
+}
+
+/* 残留物リスト */
+#items-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 16px; margin-bottom:28px;
+  font-family:'MS Gothic',monospace;
+}
+#items-block h3 {
+  font-size:10px; color:#5a4828; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.item-row {
+  display:flex; gap:12px; padding:5px 0;
+  border-bottom:1px solid #e8dfc8; font-size:11px;
+}
+.item-row:last-child { border-bottom:none; }
+.item-num { color:#9a8868; min-width:24px; }
+.item-name { color:#4a3820; flex:1; }
+.item-note { color:#9a8868; font-size:10px; }
+.item-name.key { color:#3a5a3a; border-bottom:1px dashed #8aaa8a; cursor:default; }
+.item-name.key:hover { color:#1a3a1a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-code {
+  color:#3a6a3a; background:#dcecd8;
+  padding:8px 12px; margin:8px 0;
+  font-size:11px; letter-spacing:0.1em;
+  border:1px solid #b8d4b8; line-height:2;
+  word-break:break-all;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#9a9888; display:flex; justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a>
+    <a href="kiroku_001.html"> kiroku_001 /</a>
+    <a href="kiroku_002.html"> kiroku_002 /</a>
+     kiroku_003.txt
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">kiroku_003.txt</div>
+    <div class="fh-row">
+      <span>作成：<span class="fh-val warn">昭和二十五〜二十六年頃（推定）</span></span>
+      <span>復元率：<span class="fh-val">88%</span></span>
+      <span>備考：<span class="fh-val warn">複数の帳面より統合</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：88% ── このファイルが最も状態良好</div>
+
+  <div id="location-block">
+    <div class="loc-title">// LOCATION DATA ── 推定記述地点</div>
+    <div class="loc-item">
+      <span class="loc-key">地点</span>
+      <span class="loc-val">T湯温泉　██旅館（長期滞在）</span>
+    </div>
+    <div class="loc-item">
+      <span class="loc-key">滞在期間</span>
+      <span class="loc-val warn">昭和二十四年秋〜昭和二十六年春（推定）</span>
+    </div>
+    <div class="loc-item">
+      <span class="loc-key">状態</span>
+      <span class="loc-val notable">安定。宿の手伝いをしながら滞在継続</span>
+    </div>
+    <div class="loc-item">
+      <span class="loc-key">備考</span>
+      <span class="loc-val">宿の主人・妻・孫娘との交流記録あり</span>
+    </div>
+  </div>
+
+  <div id="diary">
+
+    <div class="entry">
+      <div class="entry-date">── 昭和二十五年　春</div>
+      <div class="entry-body">
+        <p>T湯に来て、半年が過ぎた。</p>
+        <p>宿の主人——私は心の中で「おじいさん」と呼んでいる——が、帳場の仕事を手伝わないかと言ってきた。宿賃の代わりに、ということだ。断る理由がなかった。</p>
+        <p>帳場に座っていると、いろんな人間が来る。炭鉱の労働者。行商人。裁判の傍聴に来た人間。M川事件の話をする客が多い。私はただ、聞いている。</p>
+        <p>ある夜、酔った客が言った。「あの二十人は、絶対に無実だ」と。隣の客が「そんなことを言うな」と押し黙らせた。</p>
+        <p><span class="it-term">ノードが二つある</span>、と私は思った。信じる人間と、黙らせる人間。どちらが多いかではなく、どちらが<span class="underline">声を上げ続けるか</span>が問題なのだ。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 昭和二十五年　夏</div>
+      <div class="entry-body">
+        <p>おじいさんの孫娘が、夏休みで来ていた。七歳くらいだ。名前は<span class="lost">██</span>ちゃんという。</p>
+        <p>タコッペを見て、目を丸くした。「なにこれ」と言って、触ろうとした。私は渡した。しばらく抱いていた。</p>
+        <div class="handnote">
+          「返してもらったとき、タグに小さな指の跡がついていた。<br>
+          №0314という数字を、彼女は読めない。<br>
+          読めなくていい。<br>
+          ただ、ここにいた証拠が、また一つ増えた。」
+        </div>
+        <p>七十年後、この子は何歳になっているだろう。<span class="strike">生きていないだろう</span>　<span class="rewrite">でも、誰かに話したかもしれない。記憶は伝わる。</span></p>
+        <p>後で宿の帳面を見た。その子の苗字が書いてあった。<span class="underline">蛸川</span>、とあった。私と同じ苗字だった。偶然だと思った。そのときは。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 昭和二十六年　春　桃の季節</div>
+      <div class="entry-body">
+        <p>三月になった。</p>
+        <p>T湯から少し下ると、福島の街が見える。盆地に桃の花が咲き始めている。白とピンクの霞が、山の裾まで広がっている。</p>
+        <p>きれいだと思った。素直に、きれいだと思った。</p>
+        <div class="handnote">
+          「三月になれば桃が咲く。<br>
+          そうしたら帰れると思っていた。<br>
+          でも私はまだここにいる。<br>
+          来年の桃を、また待つことにした。」
+        </div>
+        <p>小新さんが死んだのは八月だ。桃の季節ではない。でも私がタグに書いた日付は三月十四日——桃の頃だ。なぜそうしたのか、今ならわかる。</p>
+        <p>帰れない日々の中で、<span class="underline">帰れると信じられる季節</span>が必要だったのだ。</p>
+        <p>私はここに残る。記録を続ける。いつか、誰かが読む。</p>
+        <p><span class="it-term">このファイルを読んでいるあなたへ</span>——あなたが読んでいるということは、記録は届いた。それだけで、十分だ。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 宿の見取り図 -->
+  <div id="floorplan-wrap">
+    <h3>// 付記データ① ── 湯宿外観（スキャン）</h3>
+    <div id="yado-photo-wrap">
+      <img src="photo_yado.jpg" alt="T湯の湯宿外観"
+           onerror="this.classList.add('broken')"/>
+      <div class="photo-fallback">
+        ［画像：T湯の湯宿外観（昭和二十四年頃）］<br>
+        ※ 実装時に photo_yado.jpg を同フォルダに配置してください
+      </div>
+    </div>
+    <h3 style="margin-top:16px;">// 付記データ② ── 宿の見取り図（手描きスキャン）</h3>
+    <canvas id="floorplan-canvas" width="420" height="280"></canvas>
+    <div class="fp-note">
+      小蘭が滞在した部屋は「奥の間」。窓からS夫山が見えたと手記にある。<br>
+      柱の印（穿孔パターン）は「帳場」付近に集中している。
+    </div>
+  </div>
+
+  <!-- 残留物リスト -->
+  <div id="items-block">
+    <h3>// 残留物リスト ── 宿跡から発見されたもの（推定）</h3>
+    <div class="item-row">
+      <span class="item-num">001</span>
+      <span class="item-name key" title="タコッペのタグと同じ数字">帳面　数冊（バイナリ数字の記述あり）</span>
+      <span class="item-note">解読済</span>
+    </div>
+    <div class="item-row">
+      <span class="item-num">002</span>
+      <span class="item-name">穿孔パターンの刻み　柱に複数</span>
+      <span class="item-note">02番参照</span>
+    </div>
+    <div class="item-row">
+      <span class="item-num">003</span>
+      <span class="item-name key" title="次のスポークへの鍵が含まれている">古い写真　一枚（人物不明）</span>
+      <span class="item-note">→ photo_001</span>
+    </div>
+    <div class="item-row">
+      <span class="item-num">004</span>
+      <span class="item-name">桃の押し花　帳面に挟まれていた</span>
+      <span class="item-note">昭和二十六年春（推定）</span>
+    </div>
+    <div class="item-row">
+      <span class="item-num">005</span>
+      <span class="item-name">██████████████</span>
+      <span class="item-note">復元不可</span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 末尾データ　次のスポークへ</div>
+    残留物003「古い写真」の裏面に文字あり：<br>
+    <div class="frag-code">
+      古浦　小新<br>
+      昭和二十四年八月　M川付近にて<br>
+      ── この人を、忘れないでください
+    </div>
+    <div class="frag-hint" title="photo_001.htmlへ進んでください">// → スポークB「古い写真」へ接続可能</div>
+  </div>
+
+  <div id="nav">
+    <a href="kiroku_002.html">◄ 02｜手記②へ戻る</a>
+    <a href="photo_001.html">04｜古い写真① ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+(function(){
+  // 宿の見取り図（手描き風・荒川沿い細長間取り）
+  const cv = document.getElementById('floorplan-canvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+
+  // 和紙風背景
+  ctx.fillStyle = '#f0e8d0';
+  ctx.fillRect(0, 0, W, H);
+
+  // 和紙テクスチャ
+  const imgData = ctx.getImageData(0, 0, W, H);
+  for (let i = 0; i < imgData.data.length; i += 4) {
+    const n = (Math.random() - 0.5) * 14;
+    imgData.data[i]   = Math.min(255, Math.max(0, imgData.data[i]   + n));
+    imgData.data[i+1] = Math.min(255, Math.max(0, imgData.data[i+1] + n * 0.9));
+    imgData.data[i+2] = Math.min(255, Math.max(0, imgData.data[i+2] + n * 0.6));
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  function handLine(x1,y1,x2,y2,w=1.5,color='rgba(60,40,20,0.75)'){
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=w; ctx.lineCap='round';
+    const mx=(x1+x2)/2+(Math.random()-0.5)*2;
+    const my=(y1+y2)/2+(Math.random()-0.5)*2;
+    ctx.moveTo(x1+(Math.random()-0.5)*1,y1+(Math.random()-0.5)*1);
+    ctx.quadraticCurveTo(mx,my,x2+(Math.random()-0.5)*1,y2+(Math.random()-0.5)*1);
+    ctx.stroke();
+  }
+  function handRect(x,y,w,h,lw=1.5){
+    handLine(x,y,x+w,y,lw); handLine(x+w,y,x+w,y+h,lw);
+    handLine(x+w,y+h,x,y+h,lw); handLine(x,y+h,x,y,lw);
+  }
+  function label(text,x,y,size=10,color='rgba(60,40,20,0.82)'){
+    ctx.font=`${size}px 'MS Gothic',monospace`;
+    ctx.fillStyle=color; ctx.textAlign='center'; ctx.fillText(text,x,y);
+  }
+
+  // 荒川（下辺）
+  ctx.strokeStyle='rgba(80,120,160,0.35)'; ctx.lineWidth=10; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(0,268); ctx.bezierCurveTo(100,260,300,272,420,264); ctx.stroke();
+  ctx.strokeStyle='rgba(80,120,160,0.18)'; ctx.lineWidth=6;
+  ctx.beginPath(); ctx.moveTo(0,274); ctx.bezierCurveTo(120,268,280,278,420,270); ctx.stroke();
+  label('← 荒 川（渓流）', 210, 278, 8, 'rgba(60,100,140,0.5)');
+
+  // 外壁（川沿いに細長い形）
+  handRect(18, 18, 384, 238, 2.2);
+
+  // 中廊下（縦・建物中央を貫通）
+  ctx.fillStyle='rgba(200,185,155,0.35)';
+  ctx.fillRect(19,19,30,237);
+  handLine(49,18,49,256,1.2,'rgba(60,40,20,0.5)');
+  label('廊', 34, 100, 9, 'rgba(60,40,20,0.55)');
+  label('下', 34, 113, 9, 'rgba(60,40,20,0.55)');
+
+  // 玄関・帳場（道路側・上部左）
+  handRect(49, 18, 100, 70, 1.5);
+  label('玄 関', 99, 42, 10);
+  handLine(49,60,149,60,1.2);
+  label('帳 場', 99, 74, 10);
+
+  // 穿孔パターンのマーク（帳場付近）
+  ctx.fillStyle='rgba(40,100,60,0.75)';
+  ctx.beginPath(); ctx.arc(120,50,4,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(135,62,3,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(112,65,3.5,0,Math.PI*2); ctx.fill();
+  label('● 印', 160, 50, 8, 'rgba(40,100,60,0.75)');
+
+  // 客間①（道路側）
+  handRect(49,88,100,80,1.5);
+  label('客 間 ①', 99,132,10);
+
+  // 客間②（道路側）
+  handRect(49,168,100,88,1.5);
+  label('客 間 ②', 99,215,10);
+
+  // 風呂・脱衣所（川側・上部）
+  handRect(149,18,110,80,1.5);
+  handLine(149,58,259,58,1.2);
+  label('大 浴 場', 204,42,10);
+  label('脱 衣 所', 204,72,10);
+
+  // 厠
+  handRect(149,98,50,50,1.4);
+  label('厠', 174,127,10);
+
+  // 奥の間（蛸川滞在・川側・中央）
+  handRect(149,148,110,108,1.8);
+  ctx.fillStyle='rgba(100,140,100,0.10)';
+  ctx.fillRect(150,149,108,106);
+  label('奥 の 間', 204,198,11,'rgba(40,80,40,0.9)');
+  label('（蛸川氏滞在）',204,213,9,'rgba(40,80,40,0.65)');
+
+  // 窓（奥の間・川側）
+  ctx.strokeStyle='rgba(60,40,20,0.45)'; ctx.lineWidth=3.5;
+  ctx.beginPath(); ctx.moveTo(259,175); ctx.lineTo(259,235); ctx.stroke();
+  label('窓', 272,208,8,'rgba(60,40,20,0.5)');
+  label('↓川', 272,220,8,'rgba(60,100,140,0.55)');
+
+  // 物置・台所（右端）
+  handRect(259,18,143,238,1.5);
+  handLine(259,120,402,120,1.2);
+  label('台 所', 330,75,10);
+  label('物 置', 330,185,10);
+
+  // 道路側の注記
+  label('↑ 道 路（T湯街道）', 210, 12, 8, 'rgba(60,40,20,0.45)');
+
+  // スキャンアーティファクト
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.82);
+  vig.addColorStop(0,'rgba(0,0,0,0)');
+  vig.addColorStop(1,'rgba(20,12,4,0.13)');
+  ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,0,0,0.022)'; ctx.lineWidth=1;
+  for(let y=0;y<H;y+=3){
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
