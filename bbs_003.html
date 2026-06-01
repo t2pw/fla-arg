@@ -1,5 +1,5 @@
 <!--
-  福島地域記録データアーカイブ ── page 08
+  福島地域記録データアーカイブ ── page 09
   このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
   登場する人物・団体・事件はすべて架空です。
   実在の地名・史実はモチーフとして使用しており、
@@ -10,8 +10,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="page-id" content="08">
-<title>bbs_002 ── 福島地域記録データアーカイブ</title>
+<meta name="page-id" content="09">
+<title>bbs_003 ── 福島地域記録データアーカイブ</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -48,24 +48,21 @@ body {
 }
 #restore-bar::after {
   content:''; position:absolute; left:0; top:0;
-  height:100%; width:74%; background:#6a8a6a;
+  height:100%; width:82%; background:#6a8a6a;
 }
 #restore-label {
   font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
 }
 
-/* ビラ画像 */
-#leaflet-wrap {
-  position:relative;
-  margin-bottom:20px;
-  border:1px solid #b8b0a0;
-  overflow:hidden;
-  max-width:420px;
+/* スクラップブック画像 */
+#scrapbook-wrap {
+  position:relative; margin-bottom:20px;
+  border:1px solid #b8b0a0; overflow:hidden;
 }
-#leaflet-wrap img {
+#scrapbook-wrap img {
   display:block; width:100%; height:auto;
 }
-#leaflet-wrap img.broken + .photo-fallback { display:flex; }
+#scrapbook-wrap img.broken + .photo-fallback { display:flex; }
 .photo-fallback {
   display:none; width:100%; min-height:200px;
   align-items:center; justify-content:center;
@@ -73,103 +70,95 @@ body {
   font-size:11px; text-align:center;
   padding:20px; line-height:1.8;
 }
-
-/* 本文オーバーレイ（政治的内容を隠す） */
-.body-stain {
-  position:absolute;
-  pointer-events:none;
-  border-radius:2px;
-}
-.stain-body-1 {
-  left:8%; top:28%;
-  width:84%; height:42%;
-  background:radial-gradient(ellipse at center,
-    rgba(100,85,55,0.72) 0%,
-    rgba(110,95,62,0.55) 40%,
-    rgba(130,115,80,0.25) 70%,
-    rgba(140,125,90,0) 88%);
-  filter:blur(2px);
-}
-.stain-body-2 {
-  left:5%; top:58%;
-  width:70%; height:28%;
-  background:radial-gradient(ellipse at 40% 50%,
-    rgba(95,80,50,0.65) 0%,
-    rgba(110,95,65,0.4) 50%,
-    rgba(130,115,80,0) 80%);
-  filter:blur(2.5px);
-}
-.stain-body-blur {
-  left:6%; top:26%;
-  width:88%; height:62%;
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
-}
-.leaflet-caption {
-  font-size:10px; color:#7a7060;
-  text-align:center; padding:6px;
-  background:#f0ece0; border-top:1px solid #c8c4b4;
+.scrapbook-caption {
+  font-size:10px; color:#7a7060; text-align:center;
+  padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4;
   font-family:'MS Mincho','游明朝',serif;
   letter-spacing:0.1em;
 }
 
-/* 解読パネル */
-#decoded {
-  border:1px solid #c4c0b0; background:#f8f4e8;
-  padding:14px 16px; margin-bottom:24px; font-size:11px;
+/* 切り抜き解読 */
+#clippings {
+  margin-bottom:24px;
 }
-#decoded h3 {
-  font-size:10px; color:#4a6a4a; font-weight:normal;
-  margin-bottom:12px; letter-spacing:0.15em;
-  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
-}
-.decode-note {
-  font-size:11px; color:#6a6858; line-height:2;
-  margin-bottom:12px; font-style:italic;
-  border-left:2px solid #c4c0b0; padding-left:10px;
-}
-.decode-block {
-  background:#f0ece0; border:1px solid #d4d0c4;
-  padding:12px 14px; margin-bottom:10px;
-  font-family:'MS Mincho','游明朝',serif;
-}
-.decode-block .label {
+#clippings h3 {
   font-family:'MS Gothic',monospace;
-  font-size:10px; color:#7a9a7a; margin-bottom:6px;
-  letter-spacing:0.1em;
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:14px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4c0b0; padding-bottom:6px;
 }
-.decode-block .text {
-  font-size:13px; color:#3a3020; line-height:2.4;
-  text-align:justify;
+
+.clipping {
+  border:1px solid #c4b89a;
+  background:#f8f0dc; margin-bottom:12px;
+  position:relative;
 }
-.decode-block .text p { text-indent:1em; margin-bottom:0.6em; }
-.decode-block .text p:last-child { margin-bottom:0; }
+.clipping-header {
+  background:#f0e8d0; padding:6px 12px;
+  border-bottom:1px solid #d4c8a8;
+  font-size:10px; color:#7a6848;
+  display:flex; gap:12px; flex-wrap:wrap;
+}
+.clip-date { color:#5a4828; }
+.clip-source { color:#8a7858; }
+.clip-annotation {
+  margin-left:auto; color:#4a7a5a; font-style:italic;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.clipping-body {
+  padding:10px 14px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:13px; color:#3a3020;
+  line-height:2.4; text-align:justify;
+}
+.clipping-body p { margin-bottom:0.8em; text-indent:1em; }
+.clipping-body p:last-child { margin-bottom:0; }
+.clip-highlight { background:#f0f8e8; border-color:#a8c4a0; }
 .lost {
   color:#c4c0b0; background:#ede9dd;
   border-radius:2px; padding:0 2px;
 }
-.notable { border-bottom:1px solid #6a8a6a; }
+.notable { border-bottom:1px solid #6a8a6a; padding-bottom:1px; }
+.handnote {
+  font-size:11px; color:#5a7a5a;
+  border-left:2px solid #8aba8a;
+  padding:4px 10px; margin-top:8px;
+  font-style:italic; background:#eef4e8;
+}
 
-/* 会員名簿断片 */
-#roster {
-  border:1px solid #c4b89a; background:#f8f0dc;
+/* 現代との対比 */
+#modern-compare {
+  border:1px solid #b8c0c8; background:#eef0f4;
   padding:14px 16px; margin-bottom:24px; font-size:11px;
 }
-#roster h3 {
-  font-size:10px; color:#5a4820; font-weight:normal;
-  margin-bottom:10px; letter-spacing:0.15em;
-  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+#modern-compare h3 {
+  font-size:10px; color:#3a4a6a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c8ccd4; padding-bottom:6px;
 }
-.roster-row {
-  display:flex; gap:12px; padding:4px 0;
-  border-bottom:1px solid #e8dfc8;
-  font-size:11px; font-family:'MS Mincho','游明朝',serif;
+.compare-block {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; margin-bottom:8px;
 }
-.roster-row:last-child { border-bottom:none; }
-.roster-num { color:#9a8868; min-width:28px; font-family:'MS Gothic',monospace; }
-.roster-name { color:#4a3820; min-width:100px; }
-.roster-note { color:#7a6848; font-size:10px; }
-.roster-name.highlight { color:#3a6a3a; border-bottom:1px dashed #6a9a6a; }
+.compare-item {
+  padding:10px 12px; font-size:11px; line-height:1.9;
+}
+.compare-item.past {
+  background:#f8f0dc; border:1px solid #d4c8a8; color:#5a4828;
+}
+.compare-item.present {
+  background:#e8ecf4; border:1px solid #c0c8d4; color:#2a3a5a;
+}
+.compare-item .c-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; letter-spacing:0.15em;
+  margin-bottom:6px; color:#9a9888;
+}
+.compare-note {
+  font-size:11px; color:#4a5060; line-height:2;
+  border-top:1px solid #c8ccd4; padding-top:10px; margin-top:4px;
+}
 
 /* 注目ポイント */
 #notice-block {
@@ -220,7 +209,6 @@ body {
 #disclaimer {
   margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
 }
-
 .glitch { animation:g 12s infinite; }
 @keyframes g {
   0%,96%,100%{opacity:1;transform:none}
@@ -235,101 +223,109 @@ body {
   <div id="breadcrumb">
     <a href="index.html">archive /</a>
     <a href="bbs_001.html"> bbs_001 /</a>
-    bbs_002.txt
+    <a href="bbs_002.html"> bbs_002 /</a>
+    bbs_003.txt
   </div>
 
   <div id="file-header">
-    <div class="filename glitch">bbs_002_leaflet.dat ── M川事件被告を守る会・ビラ（復元）</div>
+    <div class="filename glitch">bbs_003_scrapbook.dat ── 新聞切り抜きスクラップブック</div>
     <div class="fh-row">
-      <span>発行：<span class="fh-val warn">「M川事件被告を守る会」昭和二十六年頃</span></span>
-      <span>復元率：<span class="fh-val">74% ── 経年劣化・インクかすれ</span></span>
+      <span>収集期間：<span class="fh-val warn">昭和二十四年〜三十八年（推定）</span></span>
+      <span>収集者：<span class="fh-val warn">不明（手書き注釈あり）</span></span>
+      <span>復元率：<span class="fh-val">82%</span></span>
     </div>
   </div>
 
   <div id="restore-bar"></div>
-  <div id="restore-label">// 復元済：74% ── 本文一部は経年劣化により判読不能</div>
+  <div id="restore-label">// 復元済：82% ── 14年間の記録が一冊に</div>
 
-  <!-- ビラ画像（本文オーバーレイあり） -->
-  <div id="leaflet-wrap">
-    <div class="stain-body-blur body-stain"></div>
-    <div class="stain-body-1 body-stain"></div>
-    <div class="stain-body-2 body-stain"></div>
-    <img src="photo_leaflet.jpg" alt="M川事件被告を守る会・ガリ版ビラ"
+  <!-- スクラップブック画像 -->
+  <div id="scrapbook-wrap">
+    <img src="photo_scrapbook.jpg" alt="M川事件スクラップブック"
          onerror="this.classList.add('broken')"/>
     <div class="photo-fallback">
-      ［画像：M川事件被告を守る会・ガリ版ビラ（昭和二十六年頃）］<br>
-      ※ 実装時に photo_leaflet.jpg を同フォルダに配置してください
+      ［画像：M川事件スクラップブック（昭和二十四年〜三十八年）］<br>
+      ※ 実装時に photo_scrapbook.jpg を同フォルダに配置してください
     </div>
-    <div class="leaflet-caption">
-      「M川事件被告を守る会」ガリ版印刷ビラ ── 昭和二十六年頃（本文部分は経年劣化により判読不能）
-    </div>
-  </div>
-
-  <!-- 解読テキスト -->
-  <div id="decoded">
-    <h3>// TEXT DECODE ── 判読可能部分の復元</h3>
-    <div class="decode-note">
-      見出し部分のみ判読可能。本文は経年劣化・インクのにじみにより復元不能。<br>
-      以下は判読できた箇所のみを抜粋。
-    </div>
-
-    <div class="decode-block">
-      <div class="label">// 見出し（判読済）</div>
-      <div class="text">
-        <p>市民諸君、<span class="notable">無実の人間を見捨ててはならない</span>。</p>
-      </div>
-    </div>
-
-    <div class="decode-block">
-      <div class="label">// 本文・冒頭のみ（部分的に判読）</div>
-      <div class="text">
-        <p>M川事件の被告二十人は、いずれも<span class="lost">████████████</span>。私たちは彼らの無実を信じ、<span class="lost">████████████████████</span>。</p>
-        <p>裁判所が記録しないことを、<span class="notable">私たちが記録する</span>。法廷の外で、声を上げ続ける。</p>
-        <p><span class="lost">████████████████████████████████████████</span></p>
-      </div>
-    </div>
-
-    <div class="decode-block">
-      <div class="label">// 末尾署名（判読済）</div>
-      <div class="text">
-        <p>昭和二十六年　M川事件被告を守る会<br>
-        会員数：<span class="notable">一千三百余名</span>（昭和二十六年時点）</p>
-      </div>
+    <div class="scrapbook-caption">
+      M川事件スクラップブック ── 昭和二十四年〜三十八年　収集者不明　手書き注釈「重要、要保存」「検閲の記録」
     </div>
   </div>
 
-  <!-- 会員名簿断片 -->
-  <div id="roster">
-    <h3>// 付記 ── 会員名簿の断片（別紙より）</h3>
-    <div class="roster-row">
-      <span class="roster-num">001</span>
-      <span class="roster-name">██████</span>
-      <span class="roster-note">福島市在住・教員</span>
+  <!-- 切り抜き解読 -->
+  <div id="clippings">
+    <h3>// CLIPPINGS DECODE ── 判読可能な切り抜きの復元</h3>
+
+    <div class="clipping">
+      <div class="clipping-header">
+        <span class="clip-date">昭和二十四年八月　事件直後</span>
+        <span class="clip-source">福島██新聞（推定）</span>
+      </div>
+      <div class="clipping-body">
+        <p>東北本線M川付近にて列車転覆。乗務員三名死亡。当局はK鉄および東芝労組員の犯行と断定、二十名を逮捕・起訴した。</p>
+        <p><span class="lost">████████████████████████████</span></p>
+        <div class="handnote">→ 「三名」とある。しかし<span class="notable">本当は四名ではないか</span>　猫塚という名の保線作業員のことを聞いた（書き込み・鉛筆）</div>
+      </div>
     </div>
-    <div class="roster-row">
-      <span class="roster-num">002</span>
-      <span class="roster-name">██████</span>
-      <span class="roster-note">福島市在住・商店主</span>
+
+    <div class="clipping clip-highlight">
+      <div class="clipping-header">
+        <span class="clip-date">昭和二十五年十二月　一審判決</span>
+        <span class="clip-source">福島██新聞（推定）</span>
+        <span class="clip-annotation">重要</span>
+      </div>
+      <div class="clipping-body">
+        <p>福島地方裁判所は本日、M川事件の被告二十名全員に有罪判決を言い渡した。うち五名に死刑、五名に無期懲役が含まれる。</p>
+        <p>被告らは全員無実を主張。弁護団は即日控訴する方針を示した。</p>
+        <div class="handnote">→ 二十名全員有罪。しかし<span class="notable">記録にない者が一名いる</span>。なぜ誰も気づかないのか。（書き込み・インク）</div>
+      </div>
     </div>
-    <div class="roster-row">
-      <span class="roster-num">003</span>
-      <span class="roster-name highlight">蛸川　██</span>
-      <span class="roster-note">住所不明・職業不明　── 後から追記された様子</span>
+
+    <div class="clipping">
+      <div class="clipping-header">
+        <span class="clip-date">昭和三十一年　差し戻し審</span>
+        <span class="clip-source">██新聞</span>
+      </div>
+      <div class="clipping-body">
+        <p>M川事件、最高裁が審理を差し戻す。アリバイを証明する資料が新たに発見された。</p>
+        <p>支援団体「守る会」は声明を発表。<span class="notable">「主戦場は法廷の外にある」</span>として、引き続き市民への訴えを続けるとした。</p>
+        <div class="handnote">→ やっと。やっと動いた。（書き込み・インク・筆跡が乱れている）</div>
+      </div>
     </div>
-    <div class="roster-row">
-      <span class="roster-num">004</span>
-      <span class="roster-name">██████</span>
-      <span class="roster-note">福島市在住・農業</span>
+
+    <div class="clipping clip-highlight">
+      <div class="clipping-header">
+        <span class="clip-date">昭和三十八年　九月　無罪確定直後</span>
+        <span class="clip-source">██新聞　号外</span>
+        <span class="clip-annotation">要保存</span>
+      </div>
+      <div class="clipping-body">
+        <p>最高裁判所は本日、M川事件被告二十名全員の無罪を確定した。事件から十四年。</p>
+        <div class="handnote">→ 二十名は、無罪になった。<br>
+        　 <span class="notable">猫塚 清治は、今日も存在しない。</span><br>
+        　 生きているのに、記録がない。無罪にも有罪にもなれない。<br>
+        　 私はこの記録を、誰かに渡さなければならない。（書き込み・インク）</div>
+      </div>
     </div>
-    <div class="roster-row">
-      <span class="roster-num">005</span>
-      <span class="roster-name">██████</span>
-      <span class="roster-note">福島市在住・主婦</span>
+
+  </div>
+
+  <!-- 現代との対比 -->
+  <div id="modern-compare">
+    <h3>// NOTE ── 当時と現代　声の伝わり方</h3>
+    <div class="compare-block">
+      <div class="compare-item past">
+        <div class="c-label">昭和二十四〜三十八年</div>
+        新聞投書欄・ガリ版ビラ・集会・口コミ。一通の投書が掲載されるまで数週間。声は遅く、重かった。それでも、一千三百人が集まった。
+      </div>
+      <div class="compare-item present">
+        <div class="c-label">現代</div>
+        SNS・動画・掲示板。声は光の速さで広がる。しかし同じ速さで消える。何が本当かを見極める時間がない。
+      </div>
     </div>
-    <div class="roster-row">
-      <span class="roster-num">･･････</span>
-      <span class="roster-name" style="color:#b8b0a0;">（以下一千三百余名）</span>
-      <span class="roster-note"></span>
+    <div class="compare-note">
+      声の速さが変わっても、<span class="notable">記録し続ける意志</span>がなければ、真実は埋もれる。<br>
+      このスクラップブックを作った人間は、そのことを知っていた。
     </div>
   </div>
 
@@ -339,37 +335,44 @@ body {
     <div class="notice-row">
       <span class="notice-icon">●</span>
       <span class="notice-text">
-        会員名簿003番に「蛸川　██」の名前がある。住所・職業不明。後から追記。
-        <span class="hint" title="蛸川小蘭が守る会に加入していた——あるいは名前だけ残した">── いつ、どうやって加入したのか</span>
+        手書き注釈の筆跡が複数存在する。一人が書き続けたものではない。
+        <span class="hint" title="複数の人間がこのスクラップブックに書き込んでいた">── 誰かから誰かへ渡された記録</span>
       </span>
     </div>
     <div class="notice-row">
       <span class="notice-icon">●</span>
       <span class="notice-text">
-        「裁判所が記録しないことを、私たちが記録する」という文言。
-        <span class="hint" title="このARG全体のテーマと完全に一致する">── 00番侵入口の言葉と呼応している</span>
+        最終の書き込み「私はこの記録を、誰かに渡さなければならない」。
+        <span class="hint" title="このアーカイブ自体が、その『渡された記録』である可能性">── このアーカイブがその答えかもしれない</span>
+      </span>
+    </div>
+    <div class="notice-row">
+      <span class="notice-icon">●</span>
+      <span class="notice-text">
+        事件直後の切り抜きに「本当は四名ではないか」という鉛筆書き。
+        <span class="hint" title="古浦小新の存在を、当時から知っていた人間がいた">── 最初から気づいていた人間がいた</span>
       </span>
     </div>
     <div class="notice-row">
       <span class="notice-icon">○</span>
       <span class="notice-text">
-        会員数一千三百余名。思想・階層を超えた市民が集まった。
-        <span class="hint" title="現代のSNSとの違いは何か——09番でさらに掘り下げる">── 09番の新聞切り抜きに詳細がある</span>
+        スポークCの三つのファイルが揃った。
+        <span class="hint" title="16番・記録保存会の核心へのアクセス条件が近づいている">── 他のスポークも揃えると、次の扉が開く</span>
       </span>
     </div>
   </div>
 
   <div id="fragment">
-    <div class="frag-title">// FILE FRAGMENT ── 次のファイルへ</div>
-    <span style="color:#4a7a4a;">09</span>_scrapbook.dat
+    <div class="frag-title">// FILE FRAGMENT ── スポークC完了</div>
+    掲示板スポーク（07〜09）── 完了。
     <span style="color:#b8c4b0;">──</span>
-    <span style="color:#4a6a5a;">新聞切リ抜キ集　昭和二十四年〜三十八年</span>
-    <div class="frag-hint" title="bbs_003.htmlへ進んでください">// データ断片 ── 復元不完全</div>
+    <span style="color:#4a6a5a;">他ノスポークヲ集メヨ</span>
+    <div class="frag-hint" title="10番・地図スポークへ、または他のスポークへ">// → 未踏のスポークへ接続可能</div>
   </div>
 
   <div id="nav">
-    <a href="bbs_001.html">◄ 07｜新聞投書欄へ戻る</a>
-    <a href="bbs_003.html">09｜新聞切り抜き集 ►</a>
+    <a href="bbs_002.html">◄ 08｜守る会のビラへ戻る</a>
+    <a href="map_001.html">10｜地図① 福島市中心 ►</a>
   </div>
 
   <div id="disclaimer">
