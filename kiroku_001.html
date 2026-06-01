@@ -1,0 +1,197 @@
+<!--
+  福島地域記録データアーカイブ ── page 01
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="01">
+<title>kiroku_001.txt ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+#breadcrumb {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-family:'MS Gothic',monospace; font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:63%; background:#6a8a6a;
+}
+#restore-label {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+#diary {
+  position:relative;
+  padding:32px 28px 32px 52px;
+  background:#f8f4e8; border:1px solid #c4c0b0;
+  margin-bottom:28px;
+}
+#diary::before {
+  content:''; position:absolute;
+  left:44px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+.entry {
+  margin-bottom:36px; padding-bottom:36px;
+  border-bottom:1px dashed #d4d0c0;
+}
+.entry:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.entry-date {
+  font-family:'MS Gothic',monospace; font-size:10px;
+  color:#9a8a68; margin-bottom:14px; letter-spacing:0.1em;
+}
+.entry-body {
+  font-size:13px; color:#3a3830;
+  line-height:2.5; text-align:justify;
+}
+.entry-body p { margin-bottom:1.2em; text-indent:1em; }
+.entry-body p:last-child { margin-bottom:0; }
+.underline { border-bottom:1px solid #8a7a5a; padding-bottom:1px; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+.lost {
+  color:#c4c0b0; letter-spacing:0.05em;
+  background:#ede9dd; border-radius:2px; padding:0 2px;
+}
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px; border:1px solid #c4d4c0;
+}
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+#nav {
+  font-family:'MS Gothic',monospace;
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="breadcrumb">
+    <a href="index.html">archive /</a> kiroku_001.txt
+  </div>
+  <div id="file-header">
+    <div class="filename glitch">kiroku_001.txt</div>
+    <div class="fh-row">
+      <span>作成：<span class="fh-val warn">昭和██年██月██日（推定）</span></span>
+      <span>文字コード：<span class="fh-val">不明</span></span>
+      <span>復元率：<span class="fh-val warn">63%</span></span>
+    </div>
+  </div>
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：63% ── 残り37%は欠損</div>
+
+  <div id="diary">
+    <div class="entry">
+      <div class="entry-date">── 昭和██年　██月██日（推定）　曇り</div>
+      <div class="entry-body">
+        <p>頭がおかしくなったのかと思った。</p>
+        <p>気がついたら、道の上に倒れていた。アスファルトじゃない。土だ。轍の跡がある。車が通った跡だが、<span class="underline">タイヤの幅がおかしい</span>。細すぎる。</p>
+        <p>スマホを確認しようとしたら、ポケットにない。バッグもない。あるのは、なぜか<span class="underline">タコのぬいぐるみだけ</span>だった。首元のタグが、手のひらに食い込んでいた。</p>
+        <p>立ち上がって、周りを見た。山が見える。川が見える。空気が、違う。エンジン音がしない。排気ガスの匂いがしない。遠くから、蒸気機関車の音がした。</p>
+        <p><span class="strike">これは夢だ</span>　<span class="rewrite">夢じゃない。</span></p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 同日、夜</div>
+      <div class="entry-body">
+        <p>近くの農家に頼み込んで、紙と墨をもらった。現金を持っていなかったが、<span class="lost">████████████████</span>で何とかなった。</p>
+        <p>とにかく記録しなければいけない。記録することが、私の習慣だ。<span class="it-term">ログを残す</span>。何があったかを、残す。</p>
+        <p>新聞が置いてあった。日付を見た。<span class="underline">昭和二十四年八月十六日</span>。</p>
+        <p>明日、何かが起きる。私はそれを知っている。曾祖父が、記録から消される。</p>
+        <p>曾祖父の名前は、<span class="underline">猫塚 清治</span>。K鉄の保線作業員。明日の夜、線路の近くにいるはずだ。事件に巻き込まれ、被告にもなれず、ただ「いなかった」ことにされる。</p>
+        <p>証拠を残さなければ。彼がそこにいたという記録を。間に合う。まだ間に合う。</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-date">── 昭和██年　██月██日　雨</div>
+      <div class="entry-body">
+        <p>間に合わなかった。</p>
+        <p><span class="lost">████████████████████████████████████████████████████████</span></p>
+        <p>小新さんは生きている。でも、記録の上では存在しない。</p>
+        <p>夜が明けたら、また探す。この時代に、私の話を信じてくれる人間を探す。<span class="strike">証拠を集める方法を</span>　<span class="rewrite">まず、清治さんのことを記録する。</span></p>
+        <p>記録されなかったものは、存在しなかったことになる。</p>
+        <p>私はそれを、許せない。</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// FILE FRAGMENT ── 末尾データ</div>
+    <span style="color:#4a7a4a;">02</span>_kiroku.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">S夫山ノ麓ニテ</span>
+    <div class="frag-hint" title="次のファイルへの手がかりがここにある">// データ断片 ── 復元不完全</div>
+  </div>
+
+  <div id="nav">
+    <a href="index.html">◄ 00｜侵入口へ戻る</a>
+    <a href="kiroku_002.html">02｜手記② T湯の記録 ►</a>
+  </div>
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
