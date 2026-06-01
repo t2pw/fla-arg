@@ -1,0 +1,414 @@
+<!--
+  福島地域記録データアーカイブ ── page 17
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="17">
+<title>koaru_record ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:83%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* 人物カード */
+#person-card {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px; margin-bottom:24px;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.person-photo {
+  width:80px; height:100px; flex-shrink:0;
+  background:#c8c0a8; border:1px solid #b8b0a0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; color:#8a8878; text-align:center;
+  line-height:1.6;
+}
+.person-photo img {
+  width:100%; height:100%; object-fit:cover;
+  display:block;
+}
+.person-info { flex:1; }
+.person-name {
+  font-size:15px; color:#3a3020;
+  font-family:'MS Mincho','游明朝',serif;
+  margin-bottom:6px; letter-spacing:0.1em;
+}
+.person-meta {
+  font-size:10px; color:#7a6848; line-height:2;
+}
+.person-meta span { display:block; }
+.person-tag {
+  display:inline-block; font-size:9px;
+  background:#d4c8a8; color:#5a4820;
+  padding:1px 6px; border-radius:2px;
+  margin-top:4px;
+}
+
+/* セクション共通 */
+.section {
+  border:1px solid #c4c0b0; background:#f8f4e8;
+  padding:14px 16px; margin-bottom:16px;
+}
+.section h3 {
+  font-size:10px; color:#4a6a4a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4d0c4; padding-bottom:6px;
+}
+
+/* 事件概要ブロック */
+.fact-block {
+  border-left:3px solid #c4a870; background:#f4ecd8;
+  padding:10px 14px; margin-bottom:12px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.fact-label {
+  font-family:'MS Gothic',monospace;
+  font-size:9px; color:#8a7848; margin-bottom:4px;
+  letter-spacing:0.15em;
+}
+.fact-text {
+  font-size:12px; color:#3a3020; line-height:2.2;
+}
+.fact-text .notable { border-bottom:1px solid #8a7a5a; }
+.fact-text .fiction {
+  color:#6a8a6a; font-size:11px;
+  border-left:2px solid #a8c4a0; padding-left:8px;
+  margin-top:6px; display:block; font-style:italic;
+}
+
+/* 年表 */
+.timeline { margin-bottom:0; }
+.tl-row {
+  display:flex; gap:12px; padding:7px 0;
+  border-bottom:1px solid #e8e4d8; align-items:flex-start;
+}
+.tl-row:last-child { border-bottom:none; }
+.tl-year {
+  font-size:10px; color:#8a7848; min-width:80px;
+  font-family:'MS Gothic',monospace; flex-shrink:0;
+  padding-top:2px;
+}
+.tl-content {
+  font-size:12px; color:#3a3020; line-height:1.9;
+  font-family:'MS Mincho','游明朝',serif; flex:1;
+}
+.tl-content .sub {
+  font-size:10px; color:#7a6848; margin-top:2px; display:block;
+}
+.tl-content .fiction-note {
+  font-size:10px; color:#5a8a5a; font-style:italic;
+  display:block; margin-top:2px;
+}
+.tl-dot-wrap {
+  display:flex; flex-direction:column; align-items:center;
+  flex-shrink:0; width:14px;
+}
+.tl-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:#8a8878; flex-shrink:0; margin-top:5px;
+}
+.tl-dot.red { background:#c4604a; }
+.tl-dot.green { background:#4a8a5a; }
+.tl-dot.blue { background:#4a6a9a; }
+.tl-dot.purple { background:#7a5a9a; }
+
+/* 注釈 */
+.annotation-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:16px;
+  font-size:11px;
+}
+.annotation-block h4 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.annotation-text { color:#3a4a3a; line-height:2; }
+
+/* 資料案内 */
+.resource-block {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:12px 14px; margin-bottom:16px; font-size:11px;
+}
+.resource-block h4 {
+  font-size:10px; color:#4a5a6a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.resource-item {
+  padding:4px 0; border-bottom:1px solid #e0dcd4;
+  font-size:11px; color:#4a5060; line-height:1.8;
+}
+.resource-item:last-child { border-bottom:none; }
+.resource-item .r-name { color:#3a4a5a; }
+.resource-item .r-note { color:#8a8878; font-size:10px; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> koaru_record
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">koaru_record.dat ── 古浦小新の記録／M川事件の全体像</div>
+    <div class="fh-row">
+      <span>分類：<span class="fh-val">人物記録・事件記録（統合）</span></span>
+      <span>復元率：<span class="fh-val">83%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：83%</div>
+
+  <!-- 人物カード -->
+  <div id="person-card">
+    <div class="person-photo">
+      <img src="photo_koaru.jpg" alt="猫塚清治"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;flex-direction:column;color:#8a8878;font-size:9px;text-align:center;">
+        猫塚<br>清治<br>（写真）
+      </div>
+    </div>
+    <div class="person-info">
+      <div class="person-name">猫塚 清治（ねこづか せいじ）</div>
+      <div class="person-meta">
+        <span>事件当時：34歳</span>
+        <span>職業：K鉄（国鉄）保線作業員</span>
+        <span>状況：M川事件の夜、現場付近にいた。生存。</span>
+        <span>記録：被告リストなし。証人リストなし。公式記録上「存在しない」</span>
+        <span>その後：仕事を失い、記録の外で生き続けた。無罪にも有罪にもなれなかった。</span>
+      </div>
+      <div class="person-tag">架空の人物 ── M川（松川）事件をモチーフとした創作</div>
+    </div>
+  </div>
+
+  <!-- 事件概要 -->
+  <div class="section">
+    <h3>// M川事件とは ── 史実に基づく記録</h3>
+
+    <div class="fact-block">
+      <div class="fact-label">// 事件の概要</div>
+      <div class="fact-text">
+        昭和二十四年（1949年）八月十七日午前三時九分、東北本線M川駅付近で上り旅客列車が脱線・転覆した。線路への破壊工作によるもので、<span class="notable">乗務員三名が死亡</span>、乗客ら八名が負傷した。
+        <span class="fiction">※ このアーカイブでは「四人目の死者」として古浦小新（架空）を設定している。</span>
+      </div>
+    </div>
+
+    <div class="fact-block">
+      <div class="fact-label">// 逮捕の経緯</div>
+      <div class="fact-text">
+        事件から二十四日後、元国鉄線路工の少年が別件で逮捕され、取り調べの中で自供した。その自供をもとに芋づる式に逮捕が進み、国鉄・東芝両労働組合員など計二十名が起訴された。<span class="notable">全員が犯行を否認した</span>にもかかわらず、無実を示す証拠が捜査機関によって隠蔽されていた。
+      </div>
+    </div>
+
+    <div class="fact-block">
+      <div class="fact-label">// 時代背景</div>
+      <div class="fact-text">
+        1949年の夏は、占領下の日本で労働運動が高まっていた時期だった。M川事件の前後に「下山事件」「三鷹事件」が相次ぎ、当局は労働組合・共産党への弾圧に事件を利用しようとした。<span class="notable">事件の真相は現在も不明のまま</span>、時効が成立している。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 裁判の年表 -->
+  <div class="section">
+    <h3>// 裁判の経緯 ── 14年間・5度の審理</h3>
+    <div class="timeline">
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot red"></div></div>
+        <div class="tl-year">昭和24年<br>1949年</div>
+        <div class="tl-content">
+          八月十七日未明、M川事件発生。乗務員三名死亡。
+          <span class="sub">二十名が逮捕・起訴される。全員が無実を主張。</span>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot red"></div></div>
+        <div class="tl-year">昭和25年<br>1950年</div>
+        <div class="tl-content">
+          一審（福島地裁）：被告二十名全員有罪。うち死刑五名、無期懲役五名。
+          <span class="sub">弁護団は即日控訴。</span>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot red"></div></div>
+        <div class="tl-year">昭和28年<br>1953年</div>
+        <div class="tl-content">
+          二審（仙台高裁）：有罪維持。死刑四名に。
+          <span class="sub">被告・家族の訴えに、作家・広津和郎が雑誌で裁判批判を開始。</span>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot blue"></div></div>
+        <div class="tl-year">昭和34年<br>1959年</div>
+        <div class="tl-content">
+          最高裁が審理を差し戻す。隠されていたアリバイ証拠が発覚。
+          <span class="sub">全国組織「M川事件対策協議会」結成。支援者が全国に広がる。</span>
+          <span class="fiction-note">→ このアーカイブの守る会・新聞投書はこの時期の市民運動を描いている。</span>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot green"></div></div>
+        <div class="tl-year">昭和36年<br>1961年</div>
+        <div class="tl-content">
+          差し戻し審（仙台高裁）：被告全員無罪。
+          <span class="sub">検察が上告。</span>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-dot-wrap"><div class="tl-dot green"></div></div>
+        <div class="tl-year">昭和38年<br>1963年</div>
+        <div class="tl-content">
+          最高裁：検察の上告を棄却。<span class="notable">被告二十名全員の無罪確定。</span>
+          <span class="sub">事件発生から14年、5度の裁判を経た。</span>
+          <span class="fiction-note">→ 07番の投書欄「無罪が確定した」はこの年のこと。</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 広津和郎について -->
+  <div class="section">
+    <h3>// 世論を動かした人物 ── 広津和郎</h3>
+    <div class="fact-block">
+      <div class="fact-label">// 文学者による裁判批判</div>
+      <div class="fact-text">
+        小説家・広津和郎（1891〜1968）は、雑誌『中央公論』などで裁判の矛盾を徹底的に論証し続けた。当時の最高裁長官は広津の活動を「<span class="notable">雑音</span>」と呼んだ。しかしその「雑音」が世論を動かし、証拠の再調査につながった。
+        <span class="fiction">→ 07番の投書欄に登場する「K鉄の同僚（自称）」のモデルの一つはこうした「声を上げた市民」である。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 古浦小新との接点 -->
+  <div class="annotation-block">
+    <h4>// このアーカイブにおける「古浦小新」の位置づけ</h4>
+    <div class="annotation-text">
+      猫塚清治は架空の人物だが、その「消され方」はM川事件の構造から導かれている。<br><br>
+      実際の事件でも、捜査の都合によって証拠が隠された。二十名という数字が「正しい」と決められた。都合の悪い事実は記録されなかった。<br><br>
+      古浦小新は、そういった「記録されなかった可能性」を一人の人間として具体化した存在だ。<br><br>
+      <span style="color:#3a5a3a;">記録されなかったものは、存在しなかったことになる——本当にそれでいいのか。</span>
+    </div>
+  </div>
+
+  <!-- 現地資料案内 -->
+  <div class="resource-block">
+    <h4>// 実在する資料・施設</h4>
+    <div class="resource-item">
+      <span class="r-name">福島大学 松川事件資料室</span><br>
+      <span class="r-note">葉書約10,000点、封書約5,000点を含む一次資料を保管。裁判記録・支援運動の記録が閲覧可能。</span>
+    </div>
+    <div class="resource-item">
+      <span class="r-name">松川運動記念館（松川事件解決記念館）</span><br>
+      <span class="r-note">福島市松川町に実在する。事件の経緯と市民運動の記録を展示。</span>
+    </div>
+    <div class="resource-item">
+      <span class="r-name">松川の塔</span><br>
+      <span class="r-note">事故現場近くに建立された慰霊碑。広津和郎が碑文を書いた。</span>
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">18</span>_inochi.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">冤罪ノ構造　命日ト桃ノ季節</span>
+    <div class="frag-hint" title="inochi.htmlへ進んでください">// → 18番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="hub_002.html">◄ 16｜記録保存会の核心へ戻る</a>
+    <a href="inochi.html">18｜命日と桃の季節 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。実在の事件・地名の記述は史実に基づいており、特定の個人・団体を中傷する意図はありません。
+  </div>
+
+</div>
+<script src="discovery.js"></script>
+</body>
+</html>
