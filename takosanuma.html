@@ -1,0 +1,389 @@
+<!--
+  福島地域記録データアーカイブ ── page 22
+  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
+  登場する人物・団体・事件はすべて架空です。
+  実在の地名・史実はモチーフとして使用しており、
+  当該地域・施設・関係者の名誉を傷つける意図はありません。
+  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="page-id" content="22">
+<title>takosanuma ── 福島地域記録データアーカイブ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#ece8dc;
+  color:#3a3830;
+  font-family:'MS Gothic','Hiragino Kaku Gothic Pro',monospace;
+  font-size:13px;
+  line-height:2;
+  padding:48px 20px;
+  min-height:100vh;
+}
+#container { max-width:640px; margin:0 auto; }
+
+#breadcrumb {
+  font-size:10px; color:#9a9888;
+  margin-bottom:28px; letter-spacing:0.1em;
+}
+#breadcrumb a { color:#4a6a4a; text-decoration:none; }
+#breadcrumb a:hover { color:#2a4a2a; }
+
+#file-header {
+  border:1px solid #c4c0b0; background:#f4f0e4;
+  padding:14px 16px; margin-bottom:24px;
+  font-size:11px; color:#7a7868;
+}
+#file-header .filename { color:#4a5a7a; font-size:12px; margin-bottom:6px; }
+.fh-row { display:flex; gap:20px; font-size:10px; color:#9a9888; flex-wrap:wrap; }
+.fh-val { color:#6a6858; }
+.fh-val.warn { color:#7a6040; }
+
+#restore-bar {
+  height:3px; background:#d8d4c8; margin-bottom:6px;
+  position:relative; overflow:hidden;
+}
+#restore-bar::after {
+  content:''; position:absolute; left:0; top:0;
+  height:100%; width:94%; background:#6a8a6a;
+}
+#restore-label {
+  font-size:10px; color:#8aaa8a; margin-bottom:28px; text-align:right;
+}
+
+/* メイン写真 */
+#main-photo {
+  position:relative; margin-bottom:8px;
+  border:1px solid #b8b0a0; overflow:hidden;
+}
+#main-photo img {
+  display:block; width:100%; height:auto;
+}
+#main-photo img.broken + .photo-fallback { display:flex; }
+.photo-fallback {
+  display:none; width:100%; min-height:200px;
+  align-items:center; justify-content:center;
+  background:#c8c4b0; color:#8a8878;
+  font-size:11px; text-align:center; padding:20px; line-height:1.8;
+}
+.photo-caption {
+  font-size:10px; color:#7a7060; text-align:center;
+  padding:6px; background:#f0ece0;
+  border-top:1px solid #c8c4b4;
+  font-family:'MS Mincho','游明朝',serif;
+  letter-spacing:0.1em; margin-bottom:24px;
+}
+
+/* 手記 */
+#diary-block {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:16px 18px; margin-bottom:20px;
+  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
+  position:relative;
+}
+#diary-block::before {
+  content:'';
+  position:absolute; left:40px; top:0; bottom:0;
+  width:1px; background:#e0ccaa;
+}
+#diary-block h3 {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.diary-entry { margin-bottom:28px; padding-left:20px; }
+.diary-entry:last-child { margin-bottom:0; }
+.diary-date {
+  font-family:'MS Gothic',monospace;
+  font-size:10px; color:#9a8a68;
+  margin-bottom:10px; letter-spacing:0.1em;
+}
+.diary-text {
+  font-size:13px; color:#3a3020;
+  line-height:2.6; text-align:justify;
+}
+.diary-text p { margin-bottom:0.9em; text-indent:1em; }
+.diary-text p:last-child { margin-bottom:0; }
+.lost {
+  color:#c4c0b0; background:#ede9dd;
+  border-radius:2px; padding:0 2px;
+}
+.underline { border-bottom:1px solid #8a7a5a; }
+.strike { text-decoration:line-through; text-decoration-color:#b0a888; color:#9a9080; }
+.rewrite { color:#4a5a3a; }
+.it-term {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#3a5a4a; background:#e4ece0;
+  padding:0 4px; border-radius:2px;
+}
+
+/* 穿孔パターン照合 */
+#punch-section {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:14px 16px; margin-bottom:20px;
+}
+#punch-section h3 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:12px; letter-spacing:0.15em;
+  border-bottom:1px solid #c4d4c0; padding-bottom:6px;
+}
+.punch-compare {
+  display:flex; gap:20px; align-items:flex-start;
+  margin-bottom:12px; flex-wrap:wrap;
+}
+.punch-item { flex:1; min-width:120px; }
+.punch-label {
+  font-size:10px; color:#5a7a5a; margin-bottom:6px;
+  font-family:'MS Gothic',monospace;
+}
+.punch-grid {
+  display:grid; grid-template-columns:repeat(8,18px);
+  gap:3px; margin-bottom:6px;
+}
+.punch-cell {
+  width:18px; height:18px; border-radius:50%;
+  border:1px solid #a8c4b8; display:flex;
+  align-items:center; justify-content:center;
+  font-size:8px; color:#6a9a8a; background:#dcecd8;
+}
+.punch-cell.filled {
+  background:#b8d4c8; border-color:#4a8a78; color:#2a5a4a;
+}
+.punch-match {
+  font-size:10px; color:#3a6a3a; margin-top:8px;
+  border-top:1px solid #c4d4c0; padding-top:8px;
+}
+
+/* 発見物リスト */
+#found-items {
+  border:1px solid #c4b89a; background:#f8f0dc;
+  padding:14px 16px; margin-bottom:20px; font-size:11px;
+}
+#found-items h3 {
+  font-size:10px; color:#5a4820; font-weight:normal;
+  margin-bottom:10px; letter-spacing:0.15em;
+  border-bottom:1px solid #d4c8a8; padding-bottom:6px;
+}
+.found-row {
+  display:flex; gap:10px; padding:5px 0;
+  border-bottom:1px solid #e8dfc8; font-size:11px;
+  font-family:'MS Mincho','游明朝',serif;
+}
+.found-row:last-child { border-bottom:none; }
+.found-num {
+  font-family:'MS Gothic',monospace;
+  color:#9a8868; min-width:28px; font-size:10px;
+}
+.found-name { color:#3a3020; flex:1; }
+.found-name.key { color:#3a6a3a; border-bottom:1px dashed #6a9a6a; cursor:default; }
+.found-note { color:#8a7858; font-size:10px; }
+
+/* 注釈 */
+.annotation-block {
+  border:1px solid #b8c4b0; background:#e8f0e0;
+  padding:12px 14px; margin-bottom:20px; font-size:11px;
+}
+.annotation-block h4 {
+  font-size:10px; color:#3a5a3a; font-weight:normal;
+  margin-bottom:8px; letter-spacing:0.1em;
+}
+.annotation-text { color:#3a4a3a; line-height:2; }
+.annotation-text .notable { color:#2a5a2a; border-bottom:1px solid #4a8a4a; }
+
+#fragment {
+  font-family:'MS Gothic',monospace; font-size:11px;
+  color:#4a6a4a; border:1px solid #b8c4b0;
+  background:#e8f0e0; padding:14px 16px;
+  margin-bottom:28px; line-height:2;
+}
+#fragment .frag-title {
+  color:#3a5a3a; margin-bottom:8px;
+  font-size:10px; letter-spacing:0.15em;
+}
+#fragment .frag-hint {
+  color:#b8c4b0; font-size:10px; margin-top:8px; cursor:default;
+}
+#fragment .frag-hint:hover { color:#7a9a7a; }
+
+#nav {
+  font-size:11px; color:#9a9888; display:flex;
+  justify-content:space-between;
+  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
+}
+#nav a { color:#4a6a4a; text-decoration:none; }
+#nav a:hover { color:#2a4a2a; }
+
+#disclaimer {
+  margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
+}
+.glitch { animation:g 12s infinite; }
+@keyframes g {
+  0%,96%,100%{opacity:1;transform:none}
+  97%{opacity:.6;transform:translateX(2px)}
+  98%{opacity:1;transform:translateX(-1px)}
+}
+</style>
+</head>
+<body>
+<div id="container">
+
+  <div id="breadcrumb">
+    <a href="hub_002.html">archive / hub_002 /</a> takosanuma
+  </div>
+
+  <div id="file-header">
+    <div class="filename glitch">takosanuma.dat ── T沼██施設跡・小蘭の最後の記録</div>
+    <div class="fh-row">
+      <span>場所：<span class="fh-val warn">T沼グリーン██跡（福島市）</span></span>
+      <span>復元率：<span class="fh-val">94%</span></span>
+    </div>
+  </div>
+
+  <div id="restore-bar"></div>
+  <div id="restore-label">// 復元済：94% ── このファイルが最も新しい記録</div>
+
+  <!-- メイン写真 -->
+  <div id="main-photo">
+    <img src="photo_kanransha_base.jpg"
+         alt="T沼グリーンランド跡・観覧車支柱の根元"
+         onerror="this.classList.add('broken')"/>
+    <div class="photo-fallback">
+      ［画像：T沼グリーン██跡・観覧車支柱の根元・夜］<br>
+      ※ photo_kanransha_base.jpg を配置してください
+    </div>
+  </div>
+  <div class="photo-caption">
+    T沼██施設跡　観覧車支柱の根元 ── 発見時の状況<br>
+    タコのぬいぐるみと手帳が、支柱に寄りかかるように置かれていた
+  </div>
+
+  <!-- 手記 -->
+  <div id="diary-block">
+    <h3>// 手帳より ── 最後の記録（復元）</h3>
+
+    <div class="diary-entry">
+      <div class="diary-date">── 平成██年　██月　夜</div>
+      <div class="diary-text">
+        <p>施設が閉まって、何年経ったのか、もう数えていない。</p>
+        <p>観覧車は、まだ立っている。回らないまま、ずっと立っている。私も、まだここにいる。</p>
+        <p>今夜、ここに来た理由は一つだ。記録を、隠す場所を決めた。</p>
+        <p>支柱の根元に、<span class="it-term">データを埋め込むように</span>、帳面を置く。タコのぬいぐるみと一緒に。首のタグには「№0314」とある。黄ばんで、端が破れかけている。でも、番号は読める。</p>
+        <p>誰かが来たとき、分かるように。</p>
+      </div>
+    </div>
+
+    <div class="diary-entry">
+      <div class="diary-date">── 同夜　続き</div>
+      <div class="diary-text">
+        <p>この印を、最後に刻む。</p>
+        <p>T湯の帳面に書いた。障子に穿った。そして今夜、支柱に刻む。三か所目だ。</p>
+        <p>0と1の羅列。●と○の並び。<span class="underline">私はここにいた</span>、という印。</p>
+        <p><span class="strike">帰れると思っていた</span>　<span class="rewrite">帰れなかった。でも、記録は残る。</span></p>
+        <p>猫塚清治は、存在した。私が記録した。</p>
+        <p>私は、存在した。<span class="lost">████</span>あなたが読んでいる。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 穿孔パターン照合 -->
+  <div id="punch-section">
+    <h3>// 穿孔パターン照合 ── 三か所の記録が一致</h3>
+    <div class="punch-compare">
+      <div class="punch-item">
+        <div class="punch-label">// 00番・帳面（1949年）</div>
+        <div class="punch-grid" id="punch-a"></div>
+      </div>
+      <div class="punch-item">
+        <div class="punch-label">// 02番・障子（1950年代）</div>
+        <div class="punch-grid" id="punch-b"></div>
+      </div>
+      <div class="punch-item">
+        <div class="punch-label">// 本ページ・支柱（閉園後）</div>
+        <div class="punch-grid" id="punch-c"></div>
+      </div>
+    </div>
+    <div class="punch-match">
+      ── 三つのパターンは完全に一致する。<br>
+      小蘭は50年以上にわたって、同じ印を残し続けた。<br>
+      <span style="color:#2a5a2a;">「私はここにいた」——その言葉が、時代を超えて繰り返されている。</span>
+    </div>
+  </div>
+
+  <!-- 発見物リスト -->
+  <div id="found-items">
+    <h3>// 発見物リスト ── 支柱の根元から</h3>
+    <div class="found-row">
+      <span class="found-num">001</span>
+      <span class="found-name key" title="首元のタグ「№0314」——このアーカイブへの最後の鍵">タコのぬいぐるみ（首元タグ「№0314」）</span>
+      <span class="found-note">名前：未登録</span>
+    </div>
+    <div class="found-row">
+      <span class="found-num">002</span>
+      <span class="found-name key" title="小蘭の最後の手帳——このページの記録の出典">手帳　一冊（最後の記録）</span>
+      <span class="found-note">本ページに復元</span>
+    </div>
+    <div class="found-row">
+      <span class="found-num">003</span>
+      <span class="found-name">穿孔パターンの刻み（支柱）</span>
+      <span class="found-note">00・02番と一致</span>
+    </div>
+    <div class="found-row">
+      <span class="found-num">004</span>
+      <span class="found-name">桃の押し花（手帳に挟まれていた）</span>
+      <span class="found-note">昭和██年春（推定）</span>
+    </div>
+  </div>
+
+  <!-- 注釈 -->
+  <div class="annotation-block">
+    <h4>// このページについて</h4>
+    <div class="annotation-text">
+      この写真が撮影されたのは、記録が「発見された」時点だ。<br>
+      誰が撮ったのか——小蘭自身が、最後にここを訪れた現代の自分に向けて残した可能性がある。<br><br>
+      <span class="notable">タコのぬいぐるみには、まだ名前がない。</span><br>
+      小蘭は名前をつけなかった。それは、次に来る人間のためにとっておいた。
+    </div>
+  </div>
+
+  <div id="fragment">
+    <div class="frag-title">// 次のファイルへ</div>
+    <span style="color:#4a7a4a;">23</span>_takkope.dat
+    <span style="color:#b8c4b0;">──</span>
+    <span style="color:#4a6a5a;">ぬいぐるみノ来歴　相馬ノ海</span>
+    <div class="frag-hint" title="takkope.htmlへ進んでください">// → 23番へ</div>
+  </div>
+
+  <div id="nav">
+    <a href="loop.html">◄ 21｜ループの伏線回収へ戻る</a>
+    <a href="takkope.html">23｜タコのぬいぐるみの来歴 ►</a>
+  </div>
+
+  <div id="disclaimer">
+    *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設の名誉を傷つける意図はありません。
+  </div>
+
+</div>
+<script>
+(function(){
+  const pattern = [[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1]];
+  ['punch-a','punch-b','punch-c'].forEach(id=>{
+    const g = document.getElementById(id);
+    pattern.forEach(row=>{
+      row.forEach(v=>{
+        const c = document.createElement('div');
+        c.className = 'punch-cell' + (v?' filled':'');
+        c.textContent = v?'●':'○';
+        g.appendChild(c);
+      });
+    });
+  });
+})();
+</script>
+<script src="discovery.js"></script>
+</body>
+</html>
