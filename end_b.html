@@ -1,129 +1,9 @@
-<!--
-  福島地域記録データアーカイブ ── page 29B
-  このコンテンツはフィクションのWeb謎解きゲーム（ARG）です。
-  登場する人物・団体・事件はすべて架空です。
-  実在の地名・史実はモチーフとして使用しており、
-  当該地域・施設・関係者の名誉を傷つける意図はありません。
-  制作：[制作者名・団体名] / お問い合わせ：[連絡先]
--->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="page-id" content="29b">
-<title>end_b ── 福島地域記録データアーカイブ</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:#ece8dc;
-  color:#3a3830;
-  font-family:'MS Mincho','Hiragino Mincho Pro','游明朝',serif;
-  font-size:14px;
-  line-height:2.4;
-  padding:48px 20px;
-  min-height:100vh;
-}
-#container { max-width:600px; margin:0 auto; }
-
-#breadcrumb {
-  font-family:'MS Gothic',monospace;
-  font-size:10px; color:#9a9888;
-  margin-bottom:32px; letter-spacing:0.1em;
-}
-#breadcrumb a { color:#4a6a4a; text-decoration:none; }
-#breadcrumb a:hover { color:#2a4a2a; }
-
-#page-label {
-  font-family:'MS Gothic',monospace;
-  font-size:10px; color:#8a7a6a;
-  margin-bottom:8px; letter-spacing:0.15em;
-}
-
-.page-sep {
-  height:1px; background:#c4c0b0; margin-bottom:32px;
-}
-
-/* エンディングブロック（Bは少し暗め） */
-#end-block {
-  background:#f4f0e8; border:1px solid #c4b89a;
-  padding:32px 28px; margin-bottom:32px;
-  position:relative;
-}
-#end-block::before {
-  content:'';
-  position:absolute; left:44px; top:0; bottom:0;
-  width:1px; background:#d8c8a8;
-}
-
-.end-date {
-  font-family:'MS Gothic',monospace;
-  font-size:10px; color:#9a8a68;
-  margin-bottom:20px; letter-spacing:0.1em;
-  padding-left:20px;
-}
-
-.end-text {
-  font-size:14px; color:#3a3020;
-  line-height:2.8; text-align:justify;
-  padding-left:20px;
-}
-.end-text p { margin-bottom:1.2em; text-indent:1em; }
-.end-text p:last-child { margin-bottom:0; }
-.notable { border-bottom:1px solid #8a7a5a; }
-
-/* 区切り */
-.divider {
-  text-align:center; color:#c4c0b0;
-  font-size:12px; margin:24px 0;
-  letter-spacing:0.3em;
-}
-
-/* エピローグへボタン */
-#to-epilogue {
-  text-align:center; margin-bottom:32px;
-}
-.epilogue-btn {
-  display:inline-block;
-  border:1px solid #b4a08a; background:none;
-  color:#6a5830;
-  font-family:'MS Mincho','游明朝',serif;
-  font-size:13px; padding:14px 48px;
-  text-decoration:none;
-  letter-spacing:0.2em;
-  transition:background 0.2s;
-}
-.epilogue-btn:hover { background:#ede4d0; border-color:#8a7050; }
-
-#nav {
-  font-family:'MS Gothic',monospace;
-  font-size:11px; color:#9a9888; display:flex;
-  justify-content:space-between;
-  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
-}
-#nav a { color:#4a6a4a; text-decoration:none; }
-#nav a:hover { color:#2a4a2a; }
-
-#disclaimer {
-  margin-top:32px; font-size:9px;
-  font-family:'MS Gothic',monospace;
-  color:#c4c0b0; line-height:1.8;
-}
-
-.fade-in { animation:fi 1.2s ease both; }
-@keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-</style>
-</head>
-<body>
-<div id="container">
-
-  <div id="breadcrumb">
-    <a href="momo_kiroku.html">archive / momo_kiroku /</a> end_b
-  </div>
-
-  <div id="page-label">// page 29B ── end_b.html　「記録を消す」</div>
+<div class="page-section">
+  <div class="page-label">// page 29B ── end_b.html　「記録を消す」</div>
   <div class="page-sep"></div>
+  <meta name="page-id" content="29b">
 
-  <div id="end-block" class="fade-in">
+  <div class="end-block">
     <div class="end-date">── エンディングB　記録を消す</div>
     <div class="end-text">
       <p>あなたは、記録を消すことを選んだ。</p>
@@ -137,21 +17,15 @@ body {
     </div>
   </div>
 
-  <div class="divider">── ── ──</div>
-
-  <div id="to-epilogue">
+  <div class="to-epilogue">
     <a href="epilogue.html" class="epilogue-btn">エピローグへ</a>
   </div>
 
-  <div id="nav">
-    <a href="momo_kiroku.html">◄ 28｜桃の手記へ戻る</a>
-    <a href="epilogue.html">30｜エピローグ ►</a>
-  </div>
+  
+</div>
 
-  <div id="disclaimer">
-    *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。
-  </div>
-
+<div id="disclaimer">
+  *このアーカイブに登場する人物・事件・団体はすべて架空です。ただし松川事件は実在の歴史的事件です。
 </div>
 <script src="discovery.js"></script>
 </body>

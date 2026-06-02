@@ -213,13 +213,9 @@ body {
 }
 #fragment .frag-hint:hover { color:#7a9a7a; }
 
-#nav {
-  font-size:11px; color:#9a9888; display:flex;
-  justify-content:space-between;
-  border-top:1px solid #c4c0b0; padding-top:16px; margin-bottom:16px;
-}
-#nav a { color:#4a6a4a; text-decoration:none; }
-#nav a:hover { color:#2a4a2a; }
+
+
+
 
 #disclaimer {
   margin-top:32px; font-size:9px; color:#c4c0b0; line-height:1.8;
@@ -389,10 +385,7 @@ body {
     <div class="frag-hint" title="telegram_002.htmlへ進んでください">// データ断片 ── 復元不完全</div>
   </div>
 
-  <div id="nav">
-    <a href="index.html">◄ 00｜侵入口へ戻る</a>
-    <a href="telegram_002.html">14｜電文② №0314 ►</a>
-  </div>
+  
 
   <div id="disclaimer">
     *このアーカイブに登場する人物・事件・団体はすべて架空です。実在の地名は物語の舞台として使用しており、当該地域・施設・関係者の名誉を傷つける意図はありません。
@@ -411,8 +404,7 @@ function checkDecode(){
     res.innerHTML =
       '// 解読成功。<br>' +
       '// 00110000 00110011 00110001 00110100 → <strong>0314</strong><br><br>' +
-      'この番号の意味は、14番で明かされる。<br><br>' +
-      '<a href="telegram_002.html" style="color:#3a6a3a;">► 14番「№0314の意味」へ進む</a>';
+      'この番号の意味は、後の記録で明かされる。';
   } else if(v.length > 0){
     res.className = 'error';
     res.innerHTML = '// 一致するパターンが見つかりません。バイナリ変換表を確認してください。';
